@@ -16,7 +16,7 @@ export function AddSuiteButton() {
   return (
     <button
       className={`text-on-primary font-label-md text-label-md uppercase tracking-wider px-space-lg py-3 rounded-lg shadow-sm transition-all ${
-        added ? "bg-tertiary" : "bg-primary hover:bg-primary-container"
+        added ? "bg-secondary" : "bg-primary hover:bg-primary-container"
       }`}
       type="button"
       onClick={() => {
@@ -29,7 +29,7 @@ export function AddSuiteButton() {
           priceUsd: 260,
           priceGbp: 210,
           material: "Bundle • Save $35",
-          badge: { label: "Curated Suite", tone: "tertiary" },
+          badge: { label: "Curated Suite", tone: "accent" },
           details: [
             { label: "Harness", value: "Ergonomic, Cognac Tan" },
             { label: "Lead", value: "Highlands 6ft" },

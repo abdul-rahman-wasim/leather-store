@@ -7,44 +7,44 @@ const PROMISES = [
   {
     icon: "verified",
     title: "Full-Grain Vegetable Tanned",
-    text: "Certified Tuscan hides conditioned with organic chestnut bark extracts.",
+    text: "Certified Tuscan hides conditioned with organic chestnut extracts.",
   },
   {
     icon: "hardware",
     title: "Hand-Stitched Guarantee",
-    text: "Traditional two-needle saddle stitching backed by our atelier lifetime warranty.",
+    text: "Traditional two-needle saddle stitching backed by our lifetime warranty.",
   },
   {
     icon: "published_with_changes",
     title: "30-Day Bespoke Exchange",
-    text: "Courier collection across the United States, United Kingdom, and Scotland.",
+    text: "Free courier collection across the United States, UK, and Scotland.",
   },
 ];
 
 const CATALOG_LINKS = [
   { label: "Complete Catalog", href: "/shop" },
-  { label: "Made-to-Order Jackets", href: "/shop/jackets" },
-  { label: "The Canine Collection", href: "/shop/canine" },
+  { label: "Bespoke Outerwear", href: "/shop/jackets" },
+  { label: "Canine Collection", href: "/shop/canine" },
   { label: "Handcrafted Footwear", href: "/shop/shoes" },
-  { label: "Blind-Deboss Monogramming", href: "/products/highlands-ergonomic-harness" },
+  { label: "Blind Monogramming", href: "/products/highlands-ergonomic-harness" },
 ];
 
 const CARE_LINKS = [
   { label: "Leather Care Guide", href: "#" },
-  { label: "US, UK & Scotland Tariffs & Courier", href: "/#shipping" },
+  { label: "US & UK Tariffs & Courier", href: "/#shipping" },
   { label: "Provenance & Sustainability", href: "/#craftsmanship" },
-  { label: "Private Atelier Consultations", href: "/#appointments" },
-  { label: "Track Bespoke Commission", href: "#" },
+  { label: "Private Atelier Consult", href: "/#appointments" },
+  { label: "Track Commission", href: "#" },
 ];
 
 function LinkColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
   return (
     <div>
-      <h5 className="font-label-md text-label-md uppercase tracking-wider text-on-surface mb-space-md">{title}</h5>
-      <ul className="space-y-space-xs">
+      <h5 className="text-xs font-semibold tracking-eyebrow uppercase text-on-surface mb-4">{title}</h5>
+      <ul className="space-y-2 text-xs text-on-surface-variant font-light">
         {links.map((l) => (
-          <li key={l.label} className="font-body-sm text-body-sm">
-            <Link className="text-on-surface-variant hover:text-primary transition-colors" href={l.href}>
+          <li key={l.label}>
+            <Link className="hover:text-primary transition-colors" href={l.href}>
               {l.label}
             </Link>
           </li>
@@ -56,53 +56,49 @@ function LinkColumn({ title, links }: { title: string; links: { label: string; h
 
 export function Footer() {
   return (
-    <footer className="w-full bg-surface-container-low mt-space-xl pt-space-xl pb-space-lg shadow-[0_-1px_12px_rgba(43,27,23,0.03)]">
-      <div className="max-w-360 mx-auto px-margin md:px-margin-desktop">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-space-xl pb-space-lg border-b border-surface-container-high">
+    <footer className="w-full bg-surface-container-low border-t border-outline-variant/30 pt-20 pb-12">
+      <div className="max-w-360 mx-auto px-margin md:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 pb-16 border-b border-outline-variant/25">
           {PROMISES.map((p) => (
-            <div key={p.title} className="flex items-center gap-space-md">
-              <Icon name={p.icon} className="text-primary text-[32px]" />
+            <div key={p.title} className="flex items-start gap-4">
+              <Icon name={p.icon} className="text-secondary text-[28px] mt-0.5" />
               <div>
-                <h4 className="font-headline-sm text-headline-sm text-on-surface">{p.title}</h4>
-                <p className="font-body-sm text-body-sm text-on-surface-variant">{p.text}</p>
+                <h4 className="font-headline text-lg text-on-surface">{p.title}</h4>
+                <p className="text-xs text-on-surface-variant font-light mt-1">{p.text}</p>
               </div>
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-space-xl py-space-xl">
-          <div className="lg:col-span-2 space-y-space-md">
-            <div className="flex items-center gap-space-sm">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 py-16">
+          <div className="lg:col-span-2 space-y-4">
+            <div className="flex items-center gap-3">
               <img alt="Velluto & Hide Atelier Logo" className="h-7 w-auto object-contain" src={LOGO_SRC} />
-              <span className="font-headline-md text-headline-md text-on-surface">Velluto &amp; Hide</span>
+              <span className="font-headline text-xl text-on-surface">Velluto &amp; Hide</span>
             </div>
-            <p className="font-body-md text-body-md text-on-surface-variant max-w-md">
-              Born in the historic mews of Mayfair and refined in the Scottish Highlands. We craft heirlooms of untamed
-              character, honoring leatherworking methods unchanged for over a century.
+            <p className="text-xs sm:text-sm text-on-surface-variant font-light leading-relaxed max-w-sm">
+              Born in the historic mews of Mayfair and refined in the Scottish Highlands. We craft heirlooms honoring
+              leatherworking methods unchanged for over a century.
             </p>
-            <div className="pt-space-xs">
-              <span className="font-label-sm text-label-sm uppercase tracking-widest text-secondary block mb-space-xs">
-                Ateliers
+            <div className="pt-2 text-xs text-on-surface-variant">
+              <span className="uppercase tracking-eyebrow font-semibold block text-[10px] text-secondary mb-1">
+                Atelier Addresses
               </span>
-              <p className="font-body-sm text-body-sm text-on-surface">
-                14 Savile Row, London • 92 George Street, Edinburgh
-              </p>
+              <p>14 Savile Row, London • 92 George Street, Edinburgh</p>
             </div>
           </div>
-          <LinkColumn title="Catalog & Services" links={CATALOG_LINKS} />
-          <LinkColumn title="Patron Care & Trust" links={CARE_LINKS} />
+          <LinkColumn title="Catalog" links={CATALOG_LINKS} />
+          <LinkColumn title="Patron Care" links={CARE_LINKS} />
           <div>
-            <h5 className="font-label-md text-label-md uppercase tracking-wider text-on-surface mb-space-md">
-              The Atelier Journal
-            </h5>
-            <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-sm">
-              Receive bespoke invitations, limited batch notices, and 10% off your initial commission.
+            <h5 className="text-xs font-semibold tracking-eyebrow uppercase text-on-surface mb-4">The Atelier Journal</h5>
+            <p className="text-xs text-on-surface-variant font-light mb-4">
+              Receive batch notices and 10% off your initial bespoke piece.
             </p>
             <NewsletterForm />
           </div>
         </div>
-        <div className="pt-space-lg border-t border-surface-container-high flex flex-col sm:flex-row items-center justify-between gap-space-md font-label-sm text-label-sm text-secondary">
-          <p>© {new Date().getFullYear()} Velluto &amp; Hide Leathercraft Ltd. All rights reserved. Mayfair • Edinburgh.</p>
-          <div className="flex items-center gap-space-md">
+        <div className="pt-8 border-t border-outline-variant/25 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-on-surface-variant font-light">
+          <p>© {new Date().getFullYear()} Velluto &amp; Hide Leathercraft Ltd. All rights reserved. London • Edinburgh.</p>
+          <div className="flex items-center gap-6">
             <Link className="hover:text-on-surface transition-colors" href="#">
               Privacy Policy
             </Link>

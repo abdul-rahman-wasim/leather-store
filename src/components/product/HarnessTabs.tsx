@@ -69,7 +69,7 @@ export function HarnessTabs() {
             role="tab"
             aria-selected={tab === t.id}
             aria-controls={`panel-${t.id}`}
-            className={`font-headline-sm text-[18px] md:text-headline-sm pb-space-sm transition-colors ${
+            className={`font-headline-sm text-[18px] pb-space-sm whitespace-nowrap transition-colors ${
               tab === t.id ? "text-primary border-b-2 border-primary -mb-0.5" : "text-secondary hover:text-on-surface"
             }`}
             type="button"

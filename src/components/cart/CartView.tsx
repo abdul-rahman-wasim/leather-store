@@ -72,7 +72,7 @@ function CartLine({ item, currency }: { item: CartItem; currency: Currency }) {
           {item.badge && (
             <span
               className={`absolute top-2 left-2 bg-surface/90 backdrop-blur-md px-2 py-0.5 rounded-sm font-label-sm text-label-sm uppercase font-semibold ${
-                item.badge.tone === "primary" ? "text-primary" : "text-tertiary"
+                item.badge.tone === "primary" ? "text-primary" : "text-secondary"
               }`}
             >
               {item.badge.label}
@@ -83,7 +83,7 @@ function CartLine({ item, currency }: { item: CartItem; currency: Currency }) {
           <div>
             <div className="flex items-start justify-between gap-space-sm">
               <div>
-                <span className="font-label-sm text-label-sm text-tertiary uppercase tracking-widest block mb-0.5">
+                <span className="font-label-sm text-label-sm text-secondary uppercase tracking-widest block mb-0.5">
                   {item.collection}
                 </span>
                 <h3 className="font-headline-sm text-headline-sm text-on-surface">{item.name}</h3>
@@ -201,7 +201,7 @@ const UPCOMING = [
   },
   {
     badge: "Spring Batch",
-    badgeClass: "bg-surface text-tertiary font-semibold",
+    badgeClass: "bg-surface text-secondary font-semibold",
     collection: "Architectural Portfolios",
     name: "The Mayfair Document Attache",
     text: "Full-grain harness leather conditioned with Scottish beeswax and lined with forest green British wool baize.",
@@ -213,7 +213,7 @@ const UPCOMING = [
   },
   {
     badge: "Complimentary Monogram",
-    badgeClass: "bg-tertiary-fixed text-on-tertiary-fixed font-semibold",
+    badgeClass: "bg-secondary-fixed text-on-secondary-fixed font-semibold",
     collection: "Travel & Field",
     name: "The Glencoe Field Grooming Roll",
     text: "Rollable saddle leather kit containing badger-hair brushes, burnished horn comb, and waterproofing wax.",
@@ -281,7 +281,7 @@ export function CartView() {
           <span className="text-on-surface font-semibold">Bespoke Cart &amp; Courier Dispatch</span>
         </nav>
         <div className="flex items-center gap-space-sm bg-surface-container-high px-space-md py-1.5 rounded-full">
-          <span className="inline-block w-2 h-2 rounded-full bg-tertiary animate-pulse" />
+          <span className="inline-block w-2 h-2 rounded-full bg-secondary animate-pulse" />
           <span className="font-label-sm text-label-sm text-on-surface uppercase tracking-widest">
             Atelier Queue: Priority Stitching Reserved
           </span>
@@ -343,7 +343,7 @@ export function CartView() {
                     <button
                       aria-label={added ? `${r.name} added` : `Add ${r.name} to cart`}
                       className={`p-2 rounded-lg transition-colors shrink-0 ${
-                        added ? "bg-tertiary text-on-tertiary" : "bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface"
+                        added ? "bg-secondary text-on-secondary" : "bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface"
                       }`}
                       type="button"
                       onClick={() => actions.addItem(r)}
@@ -377,7 +377,7 @@ export function CartView() {
               <span className="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold">
                 Courier Destination
               </span>
-              <div className="flex items-center gap-1 text-tertiary">
+              <div className="flex items-center gap-1 text-secondary">
                 <Icon name="lock" className="text-[16px]" />
                 <span className="font-label-sm text-label-sm uppercase font-semibold">256-Bit Encrypted</span>
               </div>
@@ -457,7 +457,7 @@ export function CartView() {
                 </button>
               </div>
               {appliedPostal && (
-                <p className="font-label-sm text-label-sm text-tertiary flex items-center gap-1" role="status">
+                <p className="font-label-sm text-label-sm text-secondary flex items-center gap-1" role="status">
                   <Icon name="check_circle" className="text-[14px]" /> Courier route confirmed for {appliedPostal}
                 </p>
               )}
@@ -473,7 +473,7 @@ export function CartView() {
                 <span className="flex items-center gap-1">
                   Regional Express Freight
                   <span title="Tracked courier included without surcharge">
-                    <Icon name="info" className="text-[14px] text-tertiary" />
+                    <Icon name="info" className="text-[14px] text-secondary" />
                   </span>
                 </span>
                 <span className="text-primary font-medium">Complimentary ({fmt(0)})</span>
@@ -484,7 +484,7 @@ export function CartView() {
               </div>
               <div className="flex justify-between font-body-sm text-body-sm text-on-surface-variant">
                 <span>Atelier Presentation Box &amp; Seal</span>
-                <span className="text-tertiary font-medium">Included</span>
+                <span className="text-secondary font-medium">Included</span>
               </div>
               <div className="pt-space-sm mt-space-sm flex justify-between items-baseline">
                 <div>
@@ -558,13 +558,13 @@ export function CartView() {
             )}
             <div className="bg-surface-container-low p-space-sm rounded-lg space-y-1">
               <div className="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm">
-                <Icon name="swap_horizontal_circle" className="text-[15px] text-tertiary" />
+                <Icon name="swap_horizontal_circle" className="text-[15px] text-secondary" />
                 <span>
                   Klarna available: 3 interest-free payments of <strong className="text-on-surface">{fmt(subtotal / 3)}</strong>
                 </span>
               </div>
               <div className="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm">
-                <Icon name="event_available" className="text-[15px] text-tertiary" />
+                <Icon name="event_available" className="text-[15px] text-secondary" />
                 <span>White-glove courier booking window selectable on next step</span>
               </div>
             </div>
@@ -590,7 +590,7 @@ export function CartView() {
       <div className="mt-space-xl pt-space-lg">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-lg gap-space-sm">
           <div>
-            <span className="font-label-sm text-label-sm text-tertiary uppercase tracking-widest block mb-1">
+            <span className="font-label-sm text-label-sm text-secondary uppercase tracking-widest block mb-1">
               From the Edinburgh Workbenches
             </span>
             <h2 className="font-headline-md text-headline-md text-on-surface">Upcoming Small-Batch Releases</h2>
@@ -624,7 +624,7 @@ export function CartView() {
                     <span className="font-headline-sm text-[20px] text-on-surface">{u.price}</span>
                     {u.quickAdd ? (
                       <button
-                        className="text-primary hover:text-primary-container font-label-sm text-label-sm uppercase tracking-wider font-semibold disabled:text-tertiary"
+                        className="text-primary hover:text-primary-container font-label-sm text-label-sm uppercase tracking-wider font-semibold disabled:text-secondary"
                         type="button"
                         disabled={quickAdded}
                         onClick={() =>
@@ -637,7 +637,7 @@ export function CartView() {
                             priceUsd: u.quickAdd.usd,
                             priceGbp: u.quickAdd.gbp,
                             material: "Saddle Leather",
-                            badge: { label: "Complimentary Monogram", tone: "tertiary" },
+                            badge: { label: "Complimentary Monogram", tone: "accent" },
                             details: [{ label: "Contents", value: "Brushes, Horn Comb, Wax" }],
                           })
                         }

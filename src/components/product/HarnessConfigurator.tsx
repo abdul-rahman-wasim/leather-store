@@ -345,7 +345,7 @@ export function HarnessConfigurator() {
                 <span>
                   Preview:{" "}
                   <strong
-                    className={`tracking-[0.2em] font-headline-sm text-[14px] ${foil === "gold" ? "text-tertiary" : "text-on-surface"}`}
+                    className={`tracking-[0.2em] font-headline-sm text-[14px] ${foil === "gold" ? "text-secondary" : "text-on-surface"}`}
                   >
                     {monogram.trim() ? monogram.trim().toUpperCase() : "BEAU"}
                   </strong>
@@ -358,7 +358,7 @@ export function HarnessConfigurator() {
           <div className="flex flex-col gap-space-sm pt-space-xs">
             <button
               className={`w-full text-on-primary py-3.5 px-space-lg rounded-lg font-label-md text-label-md uppercase tracking-wider font-semibold shadow-md active:scale-[0.99] transition-all flex items-center justify-center gap-space-sm ${
-                added ? "bg-tertiary-container" : "bg-primary hover:bg-primary-container"
+                added ? "bg-secondary" : "bg-primary hover:bg-primary-container"
               }`}
               type="button"
               onClick={addToBag}
@@ -375,7 +375,7 @@ export function HarnessConfigurator() {
                 router.push("/cart");
               }}
             >
-              <Icon name="bolt" className="text-[18px] text-tertiary" />
+              <Icon name="bolt" className="text-[18px] text-secondary" />
               <span>Instant Express Checkout (Apple Pay / Shop)</span>
             </button>
           </div>

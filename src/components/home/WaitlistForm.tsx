@@ -7,52 +7,37 @@ const INTERESTS = [
   { value: "duffle", label: "The Highland Duffle Bag" },
   { value: "canine", label: "Custom Canine Harness Sizes" },
   { value: "shoes", label: "Goodyear Welted Boot Restocks" },
-  { value: "jackets", label: "Bespoke Outerwear Fitting" },
+  { value: "jackets", label: "Bespoke Outerwear Commission" },
   { value: "all", label: "Full Atelier Collection" },
 ];
 
+const FIELD =
+  "w-full bg-surface-container-low border border-outline-variant/30 rounded-sm px-4 py-3 text-sm text-on-surface focus:outline-none focus:border-primary transition-colors";
+const LABEL = "block text-[11px] font-semibold uppercase tracking-eyebrow text-on-surface mb-2";
+
 export function WaitlistForm() {
-  const [interest, setInterest] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
-  const interestLabel = INTERESTS.find((i) => i.value === interest)?.label;
 
   return (
     <>
       <form
-        className="space-y-space-sm"
+        className="space-y-4"
         onSubmit={(e) => {
           e.preventDefault();
           setSubmitted(true);
         }}
       >
         <div>
-          <label
-            className="block font-label-md text-label-md uppercase tracking-wider text-on-surface mb-1"
-            htmlFor="waitlist-email"
-          >
+          <label className={LABEL} htmlFor="waitlist-email">
             Patron Email Address
           </label>
-          <input
-            className="w-full bg-surface-bright px-space-md py-3 rounded-lg text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
-            id="waitlist-email"
-            placeholder="patron@estate.co.uk"
-            required
-            type="email"
-          />
+          <input className={FIELD} id="waitlist-email" placeholder="patron@estate.co.uk" required type="email" />
         </div>
         <div>
-          <label
-            className="block font-label-md text-label-md uppercase tracking-wider text-on-surface mb-1"
-            htmlFor="interest-select"
-          >
+          <label className={LABEL} htmlFor="interest-select">
             Primary Collection Interest
           </label>
-          <select
-            className="w-full bg-surface-bright px-space-md py-3 rounded-lg text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
-            id="interest-select"
-            value={interest ?? INTERESTS[0].value}
-            onChange={(e) => setInterest(e.target.value)}
-          >
+          <select className={FIELD} id="interest-select" defaultValue={INTERESTS[0].value}>
             {INTERESTS.map((i) => (
               <option key={i.value} value={i.value}>
                 {i.label}
@@ -60,29 +45,27 @@ export function WaitlistForm() {
             ))}
           </select>
         </div>
-        <div className="flex items-center gap-space-xs pt-1">
-          <input className="w-4 h-4 rounded accent-primary" id="waitlist-terms" required type="checkbox" />
-          <label className="font-label-sm text-label-sm text-on-surface-variant" htmlFor="waitlist-terms">
-            Notify me of private atelier previews and hide lot allocations.
+        <div className="flex items-center gap-2.5 pt-2">
+          <input className="w-4 h-4 rounded accent-primary cursor-pointer" id="waitlist-terms" required type="checkbox" />
+          <label className="text-xs text-on-surface-variant font-light cursor-pointer" htmlFor="waitlist-terms">
+            Notify me of private previews &amp; lot dispatches
           </label>
         </div>
         <button
-          className="w-full bg-primary text-on-primary hover:bg-primary-container transition-colors py-3 rounded font-label-md text-label-md uppercase tracking-wider font-semibold shadow-md active:scale-[0.99] flex items-center justify-center gap-space-xs mt-space-md disabled:opacity-70"
+          className={`w-full mt-4 text-surface transition-all duration-200 active:scale-95 active:translate-y-0.5 text-xs font-semibold tracking-eyebrow uppercase py-4 rounded-sm shadow-md flex items-center justify-center gap-2 ${
+            submitted ? "bg-secondary" : "bg-primary hover:bg-primary-container"
+          }`}
           type="submit"
           disabled={submitted}
         >
-          <Icon name="lock" className="text-[18px]" />
-          <span>{interestLabel ? `Join Waitlist for ${interestLabel}` : "Join The Atelier Waitlist"}</span>
+          <Icon name={submitted ? "check" : "lock"} className="text-[17px]" />
+          <span>{submitted ? "Joined Priority Atelier" : "Join The Atelier Waitlist"}</span>
         </button>
       </form>
       {submitted && (
-        <div
-          className="mt-space-md p-space-sm bg-surface-bright rounded-lg text-primary text-center font-body-sm text-body-sm flex items-center justify-center gap-space-xs"
-          role="status"
-        >
-          <Icon name="verified" className="text-[18px]" />
-          <span>Welcome to the registry. Your private invitation is dispatched.</span>
-        </div>
+        <p className="mt-4 text-xs text-secondary text-center" role="status">
+          Welcome to the registry. Your private invitation is dispatched.
+        </p>
       )}
     </>
   );
