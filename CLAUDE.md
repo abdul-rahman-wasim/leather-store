@@ -37,4 +37,11 @@ src/
 - Icons: `<Icon name="material_symbol_name" />`, never inline SVG.
 - Images: plain `<img>` with descriptive `alt` (remote host not configured for `next/image`).
 - Each non-home page exports `metadata` / `generateMetadata` with a `title` (layout applies `%s | Velluto & Hide`).
-- Run `npm run lint` and `npm run build` before committing. Conventional commits (`feat:`, `fix:`, `style:`).
+- Run `npm run lint` and `npm run build` before committing.
+
+## Commits (MUST follow)
+
+- Conventional commit format: `type: short summary` (`feat`, `fix`, `style`, `refactor`, `chore`, `docs`, ...).
+- One line only. Short, no body, no bullet lists.
+- NEVER add a `Co-Authored-By` trailer or any Claude/AI attribution to commits or PRs.
+- NEVER amend, rebase or force-push commits that are already pushed. Fix mistakes with a new follow-up commit.
