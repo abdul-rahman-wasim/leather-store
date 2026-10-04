@@ -4,77 +4,87 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { IMG, formatPrice } from "@/lib/catalog";
 import { actions, useStore } from "@/lib/store";
-import { Icon, Stars } from "../Icon";
+import { useDispatchCountdown } from "@/lib/useDispatchCountdown";
+import { Icon } from "../Icon";
 
 const PRICE = { usd: 165, gbp: 135 };
 
 const GALLERY = [
   {
-    main: `${IMG}AB6AXuDxGi6hLMnIoNpp7EjQAuDQzNoUuZx0CPvAV7OaDzI5pqHPk5uy8eF_QulYQFCC9keUy1mqmY85RUyP9SPtJyDvLq2SPC88RTaHDgwO-DTcuJNM8Wk7ejB1cyDPAR8bEapHghiwnKCp0elPzVNjhiFIIHeQZ9WPXKF_AW6Y-dVXRZpNegl0PIZFs0Hl60mNI6xMUc5kTbHmxE6M6hqpMquJecDKVD8vgOe8iQxug4lDGd4j_XJTtMkj`,
-    thumb: `${IMG}AB6AXuC3lPRFyidZWM9j4174I7j_1XNXKd8s0-4IGGNq4MvousH03PVmACpbl8rEmxiR6WuatigLw5PUnY2aXUW79-FFK_AzR0xyy5uwYt30QQ4hgz6rT9Wjqz3Fy2l0sef1PZb6CtUoWkwghUjMXq3Ya_ZAJT5qmquzU_ks8NJTkA0aIGpMJEDYvA5wgZ1SyowMHRQeMuxgRPTmYcuHIHR9BBnNHFO4P0iXP_kB9hwY9Pv7SVx4KyMhJJCj`,
-    alt: "Handcrafted saddle cognac leather dog harness with brushed brass buckles on a neutral linen pedestal",
+    main: `${IMG}AB6AXuB4HdzRuSHwUkkuRoHqdX32r8nSpEEG8GCzJSqR_r17bBvUTJ9k7Zy50ClOIDBaGgDgJTk3Or5HJql1UwhTOA-xZpYVrHwp05SwvjL-tg2bwk7br1wI1KSN5RnYaB7wSyrfLZ1KYtMHihusfyb5JdNGdxDqfbzTE2HvzFm1UZPn3LSMdcYH6sMd03EPtUhWTwvvbg9QIJZ-w1KWp9zIzdaf3O8kvw8pcePwHWBN3ssn79Vin8lgxty4`,
+    thumb: `${IMG}AB6AXuBAFSUEqVmlhRYyZH56Ny5ihVWVgBbvb2oBqKJ9FLVMIxZQfbRXYO7yTvnm0S6iAb2Fwz29UmLm3FklfXJLxF0IhZn_Y5A_g3iVrzGtdGKL2YO2RTw-eRKJAzKirloCWPa5gxJ-oP3sOMtIdyYIVetbY7EoEd5yTohZFLATYJa59r9VHmn8-Kw1Q9TxcA6EWFsL4O9znmSF50GepO5uaxyuGKBOOY4BeN3x8Cde0VDRuxsKun0Yilfd`,
+    alt: "The Highlands Ergonomic Canine Leather Harness in cognac tan vegetable-tanned leather with brushed brass O-rings on alabaster limestone",
   },
   {
-    main: `${IMG}AB6AXuDBANZVMVhVnHr7rbzCTCU7WdSRx5GsBPm_41j4BpLqX0sBIQi9Pb4sP4mN97cf50zmH2h2Z98MPTrjNsqdFQ9nOwW4yTa_JpWKlfU0wuuzIx2lBBhR1KnsfteM5rhl70WUqY2fyAHtOljzeUJwZdHJYmPGG02KnrLNuEsyPjKeHiJd5sxDUe4QDsqRGtX-aApIORU7KiZF_C7Z98poXHKDEGQxS0Di3oMo7Aj4CBzlq5HmNfqZgXlf`,
-    alt: "Macro view of the cast solid brass D-ring and hand-riveted stress points on the cognac harness",
+    main: `${IMG}AB6AXuDlfQ8TeZincdKxOeToV4n-zzAw_ucn-9Xt_Sw3H6uDBLmYtp1rxfLL3mIQ5DShkHXI979LYH17C3bydw4VZX1YGISsfoFJPlxEidBOb3E9vqAgtCyRxDc8jLht8irH2T8Ic0I6kuQ8c6YyZXtxvtmLrUe5ac8TVccH5Q90EgiR-Ewl1S3pH9UCBIksn4W8NZx88ZsOutxD58tCgL2hjpAMA90m9BeRbnPgs6XyP8mZkcE-t-Q1XQ4l`,
+    alt: "Macro view of a sand-cast unlacquered brass ring stitched with waxed linen thread into Bavarian bridle leather",
   },
   {
-    main: `${IMG}AB6AXuAmR4p0mcU-qz7xpWIkH9F7eQEFp6VooUqnr62AebweLJjNsjL9dYbgV8ys1tSv0ECGrfxqnllbxDw4tvGSR8tH44aDCv_g8ylrE6QK8uHUpizRvkRUh2HgtQ7VBkpsANjSVxSXj86814PbMTTLjAWQF-_MSU5UwKDsB03t0pDf6b2kZWX9hNJbBZ44pHlDU5Aos69eaDk3jUO99Mhp5C8ApERB_3H01qAPkKeASCoxIX1O-_sCl2nQ`,
-    alt: "Hand-burnished beeswax edge beveling on thick bridle leather straps with embossed seal",
+    main: `${IMG}AB6AXuCW2k5U9UAWR8yzrKkO43r3ks-q7KmpcAW0JkqicnWcH3o9JFeTSqMqErF-f0qW8pVdGhYMbhodEAju870983i77l9Y1AoZ6f8PMnwTND5KINZGpNtuwJoUKGSegYHzy5HU0qXEUufJ3ljtaZ6wXFq0z2z9_avoD27-_Q7-LBMRdb1lmNW8rxu_sc0tvV56mpz8S0lHuH4Zub7B_HXNN359MM7-27F5anMKRVAq_h-mBDpKOG2e_bwx`,
+    alt: "Hot-stamped serif atelier seal debossed on a full-grain strap with bevelled, beeswax-burnished edges",
   },
   {
-    main: `${IMG}AB6AXuAx55hLWI_jBanLc1tF73G7_a915-FnTOKEFUT4RE7JLM1DN4GLIcA05SIa60Pth-xtCQRr9A8dXE4UM4XEIoKudGEHDJbuavAdFbEoyMiiP1AF6py7vi0pnoh2BBShtU7XSrMvvIuedaqYBUp6ahr1u5BC7iFrFpHIbQ61tjSwsaxRX9cNA_hNgy8h0B4BgnNMFmCs0wlBoHzSMowhLH4pDeA6b_lUNQ4Q_rlgQs0ELgsTkyP_Lu5t`,
-    alt: "Golden Retriever wearing the cognac harness running through misty heather in the Scottish Highlands",
+    main: `${IMG}AB6AXuBDeZfVROUaP1Z5wAjmhgamdP7PVKQFEYHVtY-0dm8V0ec7QnotpOUpqQ5Egzo-dKuSv8wks5KgNdYof0DPbO1ObEkfsSuU4s7FQhpleJbkezSsozwYWPVvEHp-OpDzHWtVVhwYQB1NyMP_kC1aUReYIy6ZShNd9UUEdECw1Cxwqiz00LWBO1xXTAFgYdSF6JhJsjTs1SFXaugLAi4UgeJ1vuC7EqpcA1NOznHGgdxjE7H0aRZyQ9Ny`,
+    alt: "Golden Retriever wearing the handcrafted leather harness on misty Scottish Highland heather moorland",
   },
 ];
 
 const LEATHERS = [
-  { name: "Cognac Tan", hex: "#9A532C" },
-  { name: "Espresso Dark Chocolate", hex: "#2B1B17" },
-  { name: "British Racing Green", hex: "#1C2E24" },
+  { name: "Cognac Tan", hex: "#80551a" },
+  { name: "Espresso Noir", hex: "#211008" },
+  { name: "Highland Forest Green", hex: "#27382B" },
 ];
 
 const HARDWARE = [
-  { name: "Brushed Solid Brass", short: "Brushed Brass", hex: "#C5A059" },
-  { name: "Matte Gunmetal", short: "Matte Gunmetal", hex: "#4A4846" },
+  { name: "Brushed Solid Brass", short: "Brushed Brass", hex: "#d4af37" },
+  { name: "Matte Gunmetal Alloy", short: "Matte Gunmetal", hex: "#3a3d40" },
 ];
 
-type Size = "S" | "M" | "L" | "Custom";
+type Size = "S" | "M" | "L" | "Bespoke";
 
-const SIZES: { value: Size; label: string; breeds: string; girth: string; rec: string }[] = [
-  { value: "S", label: "Small", breeds: "Frenchie/Jack", girth: 'Chest 15" - 21"', rec: "Size Small (S)" },
-  { value: "M", label: "Medium", breeds: "Spaniel/Beagle", girth: 'Chest 21" - 29"', rec: "Size Medium (M)" },
-  { value: "L", label: "Large", breeds: "Retriever/Lab", girth: 'Chest 29" - 38"', rec: "Size Large (L)" },
-  { value: "Custom", label: "Custom", breeds: "Bespoke Fit", girth: "Hand-patterned", rec: "Custom Bespoke Fit" },
+const SIZES: { value: Size; code: string; label: string; breeds: string; girth: string }[] = [
+  { value: "S", code: "SM", label: "Small", breeds: "Frenchie / Jack", girth: "14-19 in" },
+  { value: "M", code: "MD", label: "Medium", breeds: "Spaniel / Beagle", girth: "20-28 in" },
+  { value: "L", code: "LG", label: "Large", breeds: "Retriever / Lab", girth: "28-36 in" },
+  { value: "Bespoke", code: "BESPOKE", label: "Bespoke", breeds: "Custom Hound", girth: "Hand-patterned" },
 ];
 
 const BREEDS: { label: string; size: Size }[] = [
-  { label: 'French Bulldog (Chest 18-20") → Small', size: "S" },
-  { label: 'Jack Russell / Dachshund (Chest 15-18") → Small', size: "S" },
-  { label: 'Cocker Spaniel / Springer (Chest 22-26") → Medium', size: "M" },
-  { label: 'Beagle / Whippet (Chest 20-25") → Medium', size: "M" },
-  { label: 'Golden Retriever / Lab (Chest 30-34") → Large', size: "L" },
-  { label: 'German Shepherd / Boxer (Chest 32-36") → Large', size: "L" },
-  { label: "Greyhound / Great Dane (Deep Chest) → Custom Atelier", size: "Custom" },
+  { label: "French Bulldog / Jack Russell → Small", size: "S" },
+  { label: "Terrier / Whippet → Small", size: "S" },
+  { label: "Cocker Spaniel / Springer → Medium", size: "M" },
+  { label: "Beagle / Setter / Pointer → Medium", size: "M" },
+  { label: "Golden Retriever / Labrador → Large", size: "L" },
+  { label: "Scottish Deerhound / German Shepherd → Large", size: "L" },
+  { label: "Greyhound / Great Dane (Deep Chest) → Bespoke", size: "Bespoke" },
 ];
+
+const FINISHES = [
+  { value: "blind", label: "Blind Deboss (Tactile)", tag: "Blind Deboss" },
+  { value: "gold", label: "24K Florentine Gold Leaf", tag: "24K Gold Leaf" },
+] as const;
+
+const pad = (n: number) => String(n).padStart(2, "0");
 
 export function HarnessConfigurator() {
   const router = useRouter();
   const { currency } = useStore();
+  const countdown = useDispatchCountdown();
   const [imageIndex, setImageIndex] = useState(0);
-  const [zoomed, setZoomed] = useState(false);
   const [leather, setLeather] = useState(LEATHERS[0]);
   const [hardware, setHardware] = useState(HARDWARE[0]);
   const [size, setSize] = useState<Size>("M");
   const [monogram, setMonogram] = useState("");
-  const [foil, setFoil] = useState<"blind" | "gold">("blind");
+  const [finish, setFinish] = useState<(typeof FINISHES)[number]>(FINISHES[0]);
   const [guideOpen, setGuideOpen] = useState(false);
   const [breedIndex, setBreedIndex] = useState(2);
   const [added, setAdded] = useState(false);
 
   const price = formatPrice(PRICE.usd, PRICE.gbp, currency);
+  const altPrice = currency === "USD" ? `£${PRICE.gbp.toFixed(2)} GBP` : `$${PRICE.usd.toFixed(2)} USD`;
   const sizeInfo = SIZES.find((s) => s.value === size)!;
   const breedSize = SIZES.find((s) => s.value === BREEDS[breedIndex].size)!;
+  const mono = monogram.trim().toUpperCase();
 
   useEffect(() => {
     if (!added) return;
@@ -90,314 +100,340 @@ export function HarnessConfigurator() {
   }, [guideOpen]);
 
   function addToBag() {
-    const mono = monogram.trim().toUpperCase();
     actions.addItem({
       productId: "highlands-harness",
       name: "The Highlands Ergonomic Canine Leather Harness",
       collection: "The Canine Collection",
-      image: GALLERY[0].thumb ?? GALLERY[0].main,
+      image: GALLERY[0].main,
       imageAlt: GALLERY[0].alt,
       priceUsd: PRICE.usd,
       priceGbp: PRICE.gbp,
       material: "Tuscan Saddle Hide",
-      badge: mono ? { label: "Personalized", tone: "primary" } : undefined,
       details: [
-        { label: "Color", value: leather.name },
-        { label: "Size", value: `${sizeInfo.label} (${sizeInfo.girth.replace("Chest ", "Girth ")})` },
+        { label: "Harness Shade", value: leather.name },
+        { label: "Dimension", value: `${sizeInfo.label} (${sizeInfo.girth})` },
         { label: "Hardware", value: hardware.name },
-        mono
-          ? { label: "Debossing", value: foil === "gold" ? "(Gold Foil)" : "(Blind Deboss)", highlight: `"${mono}"` }
-          : { label: "Debossing", value: "None" },
+        mono ? { label: finish.tag, value: "", highlight: mono } : { label: "Monogram", value: "None" },
       ],
-      editLabel: { label: "Edit Monogram", icon: "edit_note" },
+      editLabel: { label: "Edit Monogram", icon: "edit" },
     });
     setAdded(true);
   }
 
-  const optionBtn = (active: boolean) =>
-    active ? "bg-surface-container ring-1 ring-primary" : "bg-surface-container-low hover:bg-surface-container";
-
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
-        <div className="lg:col-span-7 flex flex-col gap-space-md">
-          <div className="relative w-full aspect-4/5 bg-surface-container-low rounded-xl overflow-hidden shadow-sm">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-16 items-start">
+        <div className="lg:col-span-7 flex flex-col gap-6">
+          <div className="relative w-full aspect-4/5 bg-surface-container overflow-hidden">
             <img
-              className={`w-full h-full object-cover object-center transition-transform duration-500 ease-out ${zoomed ? "scale-150 cursor-zoom-out" : ""}`}
+              key={imageIndex}
+              className="w-full h-full object-cover object-center animate-fade-in"
               alt={GALLERY[imageIndex].alt}
               src={GALLERY[imageIndex].main}
-              onClick={() => zoomed && setZoomed(false)}
             />
-            <div className="absolute top-space-md left-space-md bg-surface-bright/95 backdrop-blur-md px-space-md py-1.5 rounded-lg shadow-sm flex items-center gap-space-xs">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface font-semibold">
-                Tuscan Bridle Leather
+            <div className="absolute top-6 left-6">
+              <span className="bg-surface/90 backdrop-blur-md text-primary px-3 py-1.5 text-label-sm font-label-sm uppercase tracking-eyebrow shadow-sm">
+                Hand-Burnished No. 408
               </span>
             </div>
-            <button
-              aria-label={zoomed ? "Zoom out" : "Inspect grain detail"}
-              aria-pressed={zoomed}
-              className="absolute bottom-space-md right-space-md w-10 h-10 rounded-full bg-surface-bright/90 backdrop-blur text-on-surface hover:bg-surface-bright flex items-center justify-center shadow-md transition-transform active:scale-95"
-              type="button"
-              onClick={() => setZoomed((z) => !z)}
-            >
-              <Icon name={zoomed ? "zoom_out" : "zoom_in"} className="text-[20px]" />
-            </button>
+            <div className="absolute bottom-8 right-8 bg-surface-container-lowest/95 backdrop-blur-sm p-4 shadow-xl max-w-[60%]">
+              <span className="font-label-sm uppercase text-outline block text-[9px] tracking-eyebrow">Atelier Blind Seal</span>
+              <span
+                className={`font-headline-sm text-headline-sm font-semibold tracking-widest uppercase mt-1 block break-all ${
+                  finish.value === "gold" ? "text-secondary-container" : "text-primary"
+                }`}
+              >
+                {mono || "PATRON"}
+              </span>
+              <span className="text-[9px] tracking-widest uppercase font-semibold text-secondary mt-0.5 block">{finish.tag}</span>
+            </div>
           </div>
-          <div className="grid grid-cols-4 gap-space-sm">
+
+          <div className="grid grid-cols-4 gap-4">
             {GALLERY.map((g, i) => (
               <button
                 key={g.main}
                 type="button"
                 aria-label={`View image ${i + 1}`}
                 aria-current={i === imageIndex}
-                onClick={() => {
-                  setImageIndex(i);
-                  setZoomed(false);
-                }}
-                className={`relative aspect-square rounded-lg overflow-hidden bg-surface-container-high transition-all shadow-sm ${
-                  i === imageIndex ? "ring-2 ring-primary" : "opacity-80 hover:opacity-100"
+                onClick={() => setImageIndex(i)}
+                className={`group relative aspect-square bg-surface-container-low overflow-hidden transition-all duration-300 ${
+                  i === imageIndex ? "ring-2 ring-primary" : "opacity-70 hover:opacity-100"
                 }`}
               >
-                <img className="w-full h-full object-cover" alt="" src={g.thumb ?? g.main} />
+                <img
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  alt=""
+                  src={g.thumb ?? g.main}
+                />
+                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors" />
               </button>
             ))}
           </div>
-          <div className="mt-space-lg p-space-lg bg-surface-container-low rounded-xl flex items-center justify-between gap-space-md">
-            <div className="flex items-center gap-space-md">
-              <Icon name="workspace_premium" className="text-primary text-[30px]" />
+
+          <div className="bg-surface-container-low p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
+            <div className="flex items-center gap-3">
+              <Icon name="verified_user" className="text-secondary text-2xl" />
               <div>
-                <p className="font-headline-sm text-headline-sm text-on-surface">Registered Atelier Registry No. 4920</p>
+                <p className="font-headline-sm text-headline-sm text-primary">Highland Field Provenance</p>
                 <p className="font-body-sm text-body-sm text-on-surface-variant">
-                  Each harness is serialized with an unvarnished brass tag hand-stamped in Edinburgh.
+                  Each harness is logged into our Mayfair ledger with an individual serial stamp.
                 </p>
               </div>
             </div>
-            <span className="font-label-sm text-label-sm uppercase tracking-widest text-primary font-semibold hidden sm:inline-block">
-              Made in UK
+            <span className="text-label-sm font-label-sm uppercase tracking-eyebrow text-secondary font-bold shrink-0">
+              Edinburgh Bench 04
             </span>
           </div>
         </div>
 
-        <div className="lg:col-span-5 flex flex-col gap-space-lg lg:sticky lg:top-32">
-          <div>
-            <div className="flex items-center justify-between gap-space-sm mb-space-xs">
-              <span className="font-label-sm text-label-sm uppercase tracking-[0.2em] text-secondary">
+        <div className="lg:col-span-5 flex flex-col space-y-8 lg:sticky lg:top-32">
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-label-sm font-label-sm tracking-eyebrow uppercase text-secondary font-bold">
                 Canine Equestrian Series
               </span>
-              <div className="flex items-center gap-1">
-                <Stars />
-                <a className="font-label-sm text-label-sm text-on-surface underline ml-1" href="#reviews-section">
-                  4.9 (128 reviews)
+              <div className="flex items-center gap-1.5 text-secondary">
+                <div className="flex" role="img" aria-label="4.9 out of 5 stars">
+                  {["star", "star", "star", "star", "star_half"].map((s, i) => (
+                    <Icon key={i} name={s} filled className="text-[16px]" />
+                  ))}
+                </div>
+                <span className="text-label-sm font-label-sm text-primary font-semibold">4.9</span>
+                <a
+                  className="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4 decoration-outline-variant/60 ml-1"
+                  href="#patron-appraisals"
+                >
+                  (128 appraisals)
                 </a>
               </div>
             </div>
-            <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-space-xs">
+            <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary tracking-display leading-[1.1]">
               The Highlands Ergonomic Canine Leather Harness
             </h1>
-            <div className="flex flex-wrap items-baseline gap-x-space-sm mt-space-xs">
-              <span className="font-display-lg text-[32px] leading-tight text-on-surface font-semibold">$165.00</span>
-              <span className="font-body-md text-body-md text-on-surface-variant">/ £135.00 GBP</span>
-              <span className="font-label-sm text-label-sm uppercase tracking-wider text-secondary ml-space-xs">
-                Duty &amp; VAT Prepaid
+            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2 pt-2">
+              <span className="font-headline-md text-headline-md font-normal text-primary">{price}</span>
+              <span className="text-body-md font-body-md text-on-surface-variant opacity-50">{altPrice}</span>
+              <span className="bg-secondary-container/40 text-on-secondary-container px-2.5 py-0.5 text-label-sm font-label-sm uppercase tracking-eyebrow">
+                Duty &amp; VAT Pre-Cleared
               </span>
             </div>
-            <p className="font-body-md text-body-md text-on-surface-variant mt-space-sm">
-              Architecturally curved to distribute chest load without impinging shoulder kinematics. Hand-crafted from
-              9oz vegetable-tanned Bavarian bridle leather with unlacquered solid brass hardware.
-            </p>
           </div>
 
-          <div className="space-y-space-md">
-            <div>
-              <div className="flex justify-between items-center mb-space-xs">
-                <span className="font-label-md text-label-md uppercase tracking-wider text-on-surface">
-                  Leather Selection: <span className="font-normal text-on-surface-variant">{leather.name}</span>
-                </span>
-                <span className="font-label-sm text-label-sm uppercase text-secondary">Tuscan Tannery</span>
-              </div>
-              <div aria-label="Leather Shade" className="flex items-center gap-space-sm" role="radiogroup">
-                {LEATHERS.map((l) => {
-                  const active = l.name === leather.name;
-                  return (
-                    <button
-                      key={l.name}
-                      role="radio"
-                      aria-checked={active}
-                      className={`group relative p-1 rounded-full transition-all ${
-                        active ? "ring-2 ring-primary" : "ring-0 hover:ring-1 ring-outline-variant"
-                      }`}
-                      type="button"
-                      onClick={() => setLeather(l)}
-                    >
-                      <span className="w-8 h-8 rounded-full block shadow-inner" style={{ backgroundColor: l.hex }} />
-                      <span className="sr-only">{l.name}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+          <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Engineered around canine skeletal kinematics, the wide breastplate shifts lead load directly away from the
+            delicate trachea and cervical spine onto the pectoral sternum. Cut by hand from 9oz full-grain Bavarian bridle
+            leather, tanned for 60 days in chestnut liquor and tethered by heavy unlacquered sand-cast brass.
+          </p>
 
-            <div>
-              <div className="flex justify-between items-center mb-space-xs">
-                <span className="font-label-md text-label-md uppercase tracking-wider text-on-surface">
-                  Hardware Metallurgy: <span className="font-normal text-on-surface-variant">{hardware.name}</span>
-                </span>
-                <span className="font-label-sm text-label-sm uppercase text-secondary">Salt-Mist Tested</span>
-              </div>
-              <div className="grid grid-cols-2 gap-space-sm" role="radiogroup" aria-label="Hardware finish">
-                {HARDWARE.map((h) => {
-                  const active = h.name === hardware.name;
-                  return (
-                    <button
-                      key={h.name}
-                      role="radio"
-                      aria-checked={active}
-                      className={`py-space-sm px-space-md rounded-lg font-label-md text-label-md uppercase tracking-wider text-center flex items-center justify-center gap-space-xs transition-colors ${
-                        active ? "bg-surface-container text-on-surface shadow-sm ring-1 ring-primary" : "bg-surface-container-low text-on-surface-variant hover:bg-surface-container"
-                      }`}
-                      type="button"
-                      onClick={() => setHardware(h)}
-                    >
-                      <span className="w-3 h-3 rounded-full inline-block shadow-sm" style={{ backgroundColor: h.hex }} />
-                      {h.short}
-                    </button>
-                  );
-                })}
-              </div>
+          <div className="space-y-3 pt-2">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-label-sm font-label-sm uppercase tracking-eyebrow text-primary">
+                Leather Hide: <span className="font-bold text-secondary">{leather.name}</span>
+              </span>
+              <span className="text-label-sm font-label-sm uppercase text-on-surface-variant shrink-0">9oz Tuscan Tannery</span>
             </div>
+            <div aria-label="Leather hide" className="flex items-center gap-3" role="radiogroup">
+              {LEATHERS.map((l) => {
+                const active = l.name === leather.name;
+                return (
+                  <button
+                    key={l.name}
+                    role="radio"
+                    aria-checked={active}
+                    title={l.name}
+                    className={`w-12 h-12 shadow-sm transition-all duration-200 ring-primary ring-offset-2 ring-offset-surface focus:outline-none ${
+                      active ? "ring-2" : "ring-0 opacity-80 hover:opacity-100"
+                    }`}
+                    style={{ backgroundColor: l.hex }}
+                    type="button"
+                    onClick={() => setLeather(l)}
+                  >
+                    <span className="sr-only">{l.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
-            <div>
-              <div className="flex justify-between items-center mb-space-xs">
-                <span className="font-label-md text-label-md uppercase tracking-wider text-on-surface">Canine Frame Sizing</span>
-                <button
-                  className="font-label-sm text-label-sm uppercase tracking-wider text-primary hover:text-primary-container transition-colors underline flex items-center gap-1"
-                  type="button"
-                  onClick={() => setGuideOpen(true)}
-                >
-                  <Icon name="straighten" className="text-[15px]" /> Breed Fit Finder
-                </button>
-              </div>
-              <div aria-label="Canine Size" className="grid grid-cols-4 gap-space-xs" role="radiogroup">
-                {SIZES.map((s) => (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-label-sm font-label-sm uppercase tracking-eyebrow text-primary">
+                Sand-Cast Metallurgy: <span className="font-bold text-secondary">{hardware.name}</span>
+              </span>
+              <span className="text-label-sm font-label-sm uppercase text-on-surface-variant shrink-0">450kg Load Rated</span>
+            </div>
+            <div className="grid grid-cols-2 gap-3" role="radiogroup" aria-label="Hardware finish">
+              {HARDWARE.map((h) => {
+                const active = h.name === hardware.name;
+                return (
+                  <button
+                    key={h.name}
+                    role="radio"
+                    aria-checked={active}
+                    className={`py-3 px-4 flex items-center justify-between transition-all duration-200 ${
+                      active
+                        ? "bg-surface-container-high text-primary ring-1 ring-primary shadow-sm"
+                        : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"
+                    }`}
+                    type="button"
+                    onClick={() => setHardware(h)}
+                  >
+                    <span className="flex items-center gap-2.5">
+                      <span className="w-3.5 h-3.5 inline-block shadow-inner" style={{ backgroundColor: h.hex }} />
+                      <span className="text-label-sm font-label-sm uppercase tracking-wider font-semibold">{h.short}</span>
+                    </span>
+                    <Icon name="check" className={`text-[16px] text-primary ${active ? "" : "opacity-0"}`} />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-label-sm font-label-sm uppercase tracking-eyebrow text-primary">Canine Frame Anatomy</span>
+              <button
+                className="text-label-sm font-label-sm uppercase tracking-eyebrow text-secondary hover:underline flex items-center gap-1"
+                type="button"
+                onClick={() => setGuideOpen(true)}
+              >
+                <Icon name="straighten" className="text-[14px]" /> Breed Fit Finder
+              </button>
+            </div>
+            <div aria-label="Canine size" className="grid grid-cols-4 gap-2" role="radiogroup">
+              {SIZES.map((s) => {
+                const active = size === s.value;
+                return (
                   <button
                     key={s.value}
                     role="radio"
-                    aria-checked={size === s.value}
-                    className={`p-space-sm rounded-lg text-on-surface text-center transition-all flex flex-col items-center justify-center gap-0.5 ${optionBtn(size === s.value)}`}
+                    aria-checked={active}
+                    className={`p-3 text-center transition-all ${
+                      active ? "bg-primary ring-1 ring-primary shadow-sm" : "bg-surface-container hover:bg-surface-container-high"
+                    }`}
                     type="button"
                     onClick={() => setSize(s.value)}
                   >
-                    <span className="font-label-md text-label-md font-semibold">{s.label}</span>
-                    <span className="font-label-sm text-[10px] text-secondary truncate max-w-full">{s.breeds}</span>
+                    <span
+                      className={`block text-label-md font-label-md font-bold truncate ${
+                        active ? "text-surface" : s.value === "Bespoke" ? "text-secondary" : "text-primary"
+                      }`}
+                    >
+                      {s.code}
+                    </span>
+                    <span
+                      className={`block text-[9px] uppercase tracking-wider mt-0.5 ${
+                        active ? "text-surface/80" : "text-on-surface-variant"
+                      }`}
+                    >
+                      {s.breeds}
+                    </span>
                   </button>
-                ))}
-              </div>
+                );
+              })}
             </div>
+          </div>
 
-            <div className="p-space-md bg-surface-container-low rounded-xl space-y-space-sm">
-              <div className="flex items-center justify-between gap-space-sm">
-                <div className="flex items-center gap-space-xs">
-                  <Icon name="draw" className="text-primary text-[18px]" />
-                  <span className="font-label-md text-label-md uppercase tracking-wider text-on-surface font-semibold">
-                    Complimentary Bespoke Monogram
-                  </span>
-                </div>
-                <span className="font-label-sm text-label-sm text-secondary uppercase tracking-wider shrink-0">
-                  Free (Save $25)
+          <div className="bg-surface-container-low p-6 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Icon name="draw" className="text-secondary text-[20px]" />
+                <span className="text-label-sm font-label-sm uppercase tracking-eyebrow text-primary font-bold">
+                  Complimentary Hot-Stamp Monogram
                 </span>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+              <span className="text-label-sm font-label-sm uppercase tracking-wider text-secondary">Free Atelier Service</span>
+            </div>
+            <div className="space-y-3">
+              <div className="relative">
                 <input
                   aria-label="Monogram text"
-                  className="w-full bg-surface rounded-lg px-space-sm py-2 font-label-md text-label-md tracking-widest uppercase text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary"
-                  maxLength={8}
-                  placeholder="PET NAME (MAX 8)"
+                  className="w-full bg-surface-container-lowest text-primary text-body-md font-body-md tracking-widest uppercase py-3 pl-4 pr-28 focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-outline/40 shadow-inner"
+                  maxLength={10}
+                  placeholder="CANINE NAME"
                   type="text"
                   value={monogram}
                   onChange={(e) => setMonogram(e.target.value)}
                 />
-                <div className="flex gap-space-xs" role="radiogroup" aria-label="Monogram finish">
-                  {(
-                    [
-                      ["blind", "Blind Deboss"],
-                      ["gold", "24k Gold Leaf"],
-                    ] as const
-                  ).map(([value, label]) => (
-                    <button
-                      key={value}
-                      role="radio"
-                      aria-checked={foil === value}
-                      className={`flex-1 py-1.5 px-space-xs rounded-lg text-center font-label-sm text-label-sm uppercase tracking-wider ${
-                        foil === value
-                          ? "bg-surface-bright text-on-surface ring-1 ring-primary"
-                          : "bg-surface text-on-surface-variant hover:text-on-surface"
-                      }`}
-                      type="button"
-                      onClick={() => setFoil(value)}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
+                <span className="absolute right-3 top-3.5 text-[10px] tracking-widest text-outline uppercase">Max 10 Char</span>
               </div>
-              <div className="flex items-center justify-between gap-space-sm text-secondary font-label-sm text-label-sm pt-space-xs">
-                <span>
-                  Preview:{" "}
-                  <strong
-                    className={`tracking-[0.2em] font-headline-sm text-[14px] ${foil === "gold" ? "text-secondary" : "text-on-surface"}`}
-                  >
-                    {monogram.trim() ? monogram.trim().toUpperCase() : "BEAU"}
-                  </strong>
-                </span>
-                <span>Embossed by Hand at Edinburgh Atelier</span>
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-1" role="radiogroup" aria-label="Monogram finish">
+                {FINISHES.map((f) => (
+                  <label key={f.value} className="flex items-center gap-2.5 cursor-pointer group">
+                    <input
+                      checked={finish.value === f.value}
+                      className="w-4 h-4 accent-primary cursor-pointer"
+                      name="monogram-finish"
+                      type="radio"
+                      onChange={() => setFinish(f)}
+                    />
+                    <span className="text-label-sm font-label-sm uppercase tracking-wider text-on-surface group-hover:text-primary transition-colors">
+                      {f.label}
+                    </span>
+                  </label>
+                ))}
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-space-sm pt-space-xs">
+          <div className="space-y-3 pt-2">
             <button
-              className={`w-full text-on-primary py-3.5 px-space-lg rounded-lg font-label-md text-label-md uppercase tracking-wider font-semibold shadow-md active:scale-[0.99] transition-all flex items-center justify-center gap-space-sm ${
+              className={`w-full text-on-primary py-4 px-8 flex items-center justify-between text-label-md font-label-md uppercase tracking-eyebrow transition-all duration-200 active:scale-[0.98] shadow-lg hover:shadow-xl ${
                 added ? "bg-secondary" : "bg-primary hover:bg-primary-container"
               }`}
               type="button"
               onClick={addToBag}
               aria-live="polite"
             >
-              <Icon name={added ? "check_circle" : "shopping_bag"} className="text-[20px]" />
-              <span>{added ? "Added To Your Satchel" : `Add To Bespoke Satchel • ${price}`}</span>
+              <span className="flex items-center gap-2">
+                <Icon name={added ? "check_circle" : "shopping_bag"} className="text-[18px]" />
+                <span>{added ? "Added to Your Satchel" : "Add to Bespoke Satchel"}</span>
+              </span>
+              <span>{price}</span>
             </button>
             <button
-              className="w-full bg-surface-container hover:bg-surface-container-high text-on-surface py-3 px-space-lg rounded-lg font-label-md text-label-md uppercase tracking-wider transition-colors flex items-center justify-center gap-space-xs shadow-sm"
+              className="w-full bg-surface-container-highest hover:bg-surface-variant text-primary py-3.5 px-6 flex items-center justify-center gap-2 text-label-md font-label-md uppercase tracking-eyebrow transition-all duration-200 active:scale-[0.98]"
               type="button"
               onClick={() => {
                 addToBag();
                 router.push("/cart");
               }}
             >
-              <Icon name="bolt" className="text-[18px] text-secondary" />
-              <span>Instant Express Checkout (Apple Pay / Shop)</span>
+              <span>Express Pay</span>
+              <span className="opacity-40">|</span>
+              <span className="font-bold tracking-normal">Apple Pay / G Pay</span>
             </button>
           </div>
 
-          <div className="p-space-md bg-surface-container-high/60 rounded-xl space-y-space-xs text-on-surface-variant">
-            <div className="flex items-start gap-space-sm">
-              <Icon name="local_shipping" className="text-primary text-[20px] shrink-0 mt-0.5" />
-              <div className="font-body-sm text-body-sm">
-                <span className="font-semibold text-on-surface">Atelier Priority Dispatch: </span>
-                <span>In stock. Orders completed within 4 hours ship today.</span>
-                <ul className="mt-1 space-y-0.5 text-secondary text-[12px]">
-                  <li>
-                    • <strong>United States:</strong> 2-3 Business Days via DHL Express Courier
-                  </li>
-                  <li>
-                    • <strong>United Kingdom:</strong> Next-Day Delivery (Tracked 24)
-                  </li>
-                  <li>
-                    • <strong>Scottish Highlands &amp; Islands:</strong> 1-2 Days via Royal Mail Special Delivery
-                  </li>
-                </ul>
+          <div className="bg-surface-container p-5 space-y-3 text-on-surface">
+            <div className="flex items-center justify-between pb-3 gap-2">
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary" />
+                </span>
+                <span className="text-label-sm font-label-sm uppercase tracking-eyebrow font-bold text-primary">
+                  {countdown?.tomorrow ? "Next Atelier Batch Departing" : "Atelier Batch Departing"}
+                </span>
               </div>
+              <span className="text-label-sm font-label-sm font-mono text-secondary font-bold tabular-nums">
+                {countdown
+                  ? `${pad(countdown.hours)}h ${pad(countdown.minutes)}m ${pad(countdown.seconds)}s`
+                  : "--h --m --s"}
+              </span>
+            </div>
+            <div className="space-y-2 text-body-sm font-body-sm text-on-surface-variant">
+              {[
+                ["United States & Canada", "2–3 Days via DHL Express"],
+                ["United Kingdom Mainlands", "Next-Day Special Delivery"],
+                ["Scottish Highlands & Islands", "1–2 Days Tracked Courier"],
+              ].map(([region, eta]) => (
+                <div key={region} className="flex items-center justify-between gap-4">
+                  <span>{region}</span>
+                  <span className="font-semibold text-primary text-right">{eta}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -405,77 +441,76 @@ export function HarnessConfigurator() {
 
       {guideOpen && (
         <div
-          className="fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm flex items-center justify-center p-space-md"
+          className="fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={(e) => e.target === e.currentTarget && setGuideOpen(false)}
         >
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="breed-finder-title"
-            className="bg-surface rounded-2xl max-w-lg w-full p-space-lg sm:p-space-xl shadow-2xl relative"
+            className="bg-surface max-w-lg w-full p-8 sm:p-10 shadow-2xl relative space-y-6"
           >
             <button
               aria-label="Close"
-              className="absolute top-space-md right-space-md text-on-surface-variant hover:text-on-surface"
+              className="absolute top-4 right-4 text-on-surface-variant hover:text-primary"
               type="button"
               onClick={() => setGuideOpen(false)}
             >
               <Icon name="close" className="text-[24px]" />
             </button>
-            <div className="flex items-center gap-space-sm mb-space-sm pr-space-lg">
-              <Icon name="pets" className="text-primary text-[28px]" />
-              <h3 id="breed-finder-title" className="font-headline-md text-headline-md text-on-surface">
-                Interactive Dog Breed Fit Finder
+            <div className="space-y-2 pr-8">
+              <span className="text-label-sm font-label-sm uppercase tracking-eyebrow text-secondary font-bold">
+                Fit Specialist
+              </span>
+              <h3 id="breed-finder-title" className="font-headline-md text-headline-md text-primary">
+                Breed Fit Finder
               </h3>
+              <p className="font-body-sm text-body-sm text-on-surface-variant">
+                Measure the ribcage girth just behind the forelegs, or choose your companion&apos;s breed family below.
+              </p>
             </div>
-            <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-              Select your companion&apos;s breed profile or enter their chest girth measurement below to lock in the
-              ideal atelier harness dimensions.
-            </p>
-            <div className="space-y-space-md">
-              <div>
-                <label
-                  htmlFor="breed-dropdown"
-                  className="block font-label-md text-label-md uppercase tracking-wider text-on-surface mb-1"
-                >
-                  Select Breed Family
-                </label>
-                <select
-                  id="breed-dropdown"
-                  className="w-full bg-surface-container-low border-0 rounded-lg p-2.5 font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
-                  value={breedIndex}
-                  onChange={(e) => setBreedIndex(Number(e.target.value))}
-                >
-                  {BREEDS.map((b, i) => (
-                    <option key={b.label} value={i}>
-                      {b.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="p-space-md bg-surface-container-low rounded-xl">
-                <p className="font-label-sm text-label-sm uppercase tracking-wider text-primary font-semibold">
-                  Recommended Match
-                </p>
-                <div className="flex justify-between items-baseline mt-1">
-                  <p className="font-headline-sm text-headline-sm text-on-surface">{breedSize.rec}</p>
-                  <span className="font-body-sm text-body-sm text-secondary">{breedSize.girth}</span>
-                </div>
-                <p className="font-body-sm text-[12px] text-on-surface-variant mt-1">
-                  Includes 4 points of 2-inch micro-adjustability with self-locking brass tang buckles.
-                </p>
-              </div>
-              <button
-                className="w-full bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md uppercase tracking-wider py-3 rounded-lg shadow-sm transition-colors"
-                type="button"
-                onClick={() => {
-                  setSize(breedSize.value);
-                  setGuideOpen(false);
-                }}
+            <div className="space-y-2">
+              <label
+                htmlFor="breed-dropdown"
+                className="block text-label-sm font-label-sm uppercase tracking-eyebrow text-primary"
               >
-                Apply Sizing To Harness
-              </button>
+                Breed Family
+              </label>
+              <select
+                id="breed-dropdown"
+                className="w-full bg-surface-container-low p-3 font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
+                value={breedIndex}
+                onChange={(e) => setBreedIndex(Number(e.target.value))}
+              >
+                {BREEDS.map((b, i) => (
+                  <option key={b.label} value={i}>
+                    {b.label}
+                  </option>
+                ))}
+              </select>
             </div>
+            <div className="bg-surface-container-low p-5">
+              <p className="text-label-sm font-label-sm uppercase tracking-eyebrow text-secondary font-bold">
+                Recommended Frame
+              </p>
+              <div className="flex justify-between items-baseline mt-1 gap-4">
+                <p className="font-headline-sm text-headline-sm text-primary">{breedSize.label}</p>
+                <span className="font-body-sm text-body-sm text-on-surface-variant">Chest {breedSize.girth}</span>
+              </div>
+              <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                Five points of brass buckle adjustment and a felted calfskin chest pad.
+              </p>
+            </div>
+            <button
+              className="w-full bg-primary hover:bg-primary-container text-on-primary text-label-md font-label-md uppercase tracking-eyebrow py-4 shadow-md transition-colors"
+              type="button"
+              onClick={() => {
+                setSize(breedSize.value);
+                setGuideOpen(false);
+              }}
+            >
+              Apply Frame To Harness
+            </button>
           </div>
         </div>
       )}

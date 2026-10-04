@@ -1,260 +1,216 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { HARNESS_SLUG, IMG, RECOMMENDED, formatPrice, type CartItem, type Currency } from "@/lib/catalog";
 import { actions, useStore, type Region } from "@/lib/store";
+import { useDispatchCountdown } from "@/lib/useDispatchCountdown";
 import { Icon } from "../Icon";
 
 const REGIONS: Record<
   Region,
-  { label: string; courierTitle: string; courierDesc: string; postal: string; taxLabel: string; note: string }
+  {
+    label: string;
+    courierTitle: string;
+    courierDesc: string;
+    postalLabel: string;
+    postal: string;
+    hub: string;
+    currencyTag: string;
+  }
 > = {
   us: {
-    label: "USA ($)",
-    courierTitle: "Complimentary Express Transatlantic Courier",
-    courierDesc: "2–3 Business Days direct via DHL Express Air. Import duties & customs pre-cleared by the atelier.",
-    postal: "10021",
-    taxLabel: "Estimated Sales Tax (NY, US)",
-    note: "Charged in USD ($)",
+    label: "USA ($ USD)",
+    courierTitle: "Express Transatlantic Courier",
+    courierDesc:
+      "Direct Express Air to United States (2–3 Business Days via DHL Express). All US customs tariffs, border clearances, and state import duties are 100% pre-paid by Velluto & Hide.",
+    postalLabel: "Zip Code / State",
+    postal: "10021 (New York, NY)",
+    hub: "Verified US Hub",
+    currencyTag: "USD Freight",
   },
   uk: {
-    label: "UK (£)",
-    courierTitle: "Royal Mail Tracked 24 / DPD Next Day",
-    courierDesc: "Next working day by 13:00 across England and Wales. Fully carbon offset delivery.",
-    postal: "SW1A 1AA",
-    taxLabel: "UK 20% VAT (Included in price)",
-    note: "Charged in GBP (£)",
+    label: "UK (£ GBP)",
+    courierTitle: "Royal Mail Special Bespoke Courier",
+    courierDesc:
+      "Next-Day Guaranteed Delivery from Savile Row Atelier. Signed delivery in padded protective linen cases.",
+    postalLabel: "UK Postcode",
+    postal: "W1S 2JR (Mayfair, London)",
+    hub: "London Atelier Hub",
+    currencyTag: "GBP Domestic",
   },
   scot: {
     label: "Scotland (£)",
-    courierTitle: "Scottish Highlands & Islands Tracked Courier",
+    courierTitle: "Scottish Workbench Direct Courier",
     courierDesc:
-      "Atelier direct courier covering Edinburgh, Glasgow, Argyll & Outer Hebrides without regional surcharges.",
-    postal: "EH2 2PF",
-    taxLabel: "Scottish / UK VAT (Included in price)",
-    note: "Charged in GBP (£) • Edinburgh Hub",
+      "Same-day or overnight courier dispatched direct from George Street, Edinburgh. Hand-inspected with certified tartan seal.",
+    postalLabel: "Scottish Postal Code",
+    postal: "EH2 3BU (Edinburgh)",
+    hub: "Edinburgh Workbench",
+    currencyTag: "GBP Scotland",
   },
 };
+
+const UPCOMING = [
+  {
+    batch: "Batch of 18 Pieces",
+    release: "November",
+    name: "The Cairngorm Shearling Aviator",
+    text: "Double-faced Highlands fleece, hand-waxed saddle leather exterior, solid antique brass double buckles.",
+    price: "$1,480.00",
+    image: `${IMG}AB6AXuDbzZj8_0lx4j2ktWgHyVZuSNfptJ78NMZLwqLBp4ZcODT8AgV0jKdSTRmXu9SHTPtLVpWQY_kjmJveB5NwfUQVt3QLAFxgAOpLY_5oj61u2G0tU7yvrWnpzsoRaFcDdsqMDxtkFj5KfGBMkzFljT3yOKvdN7uvkOAbrsnPL3kTGSqXaxmWH7xjuChEglJrIv8gzCK2qQSgppaopMsUKi0Dy5z3znE4SY83TqRqsI3-y6OhSY_NFXTP`,
+    alt: "Heavyweight Scottish shearling aviator jacket in deep espresso leather draped over an oak bench",
+  },
+  {
+    batch: "Batch of 25 Pieces",
+    release: "December",
+    name: "The Mayfair Document Attaché",
+    text: "Museum calfskin lined with racing green British pigskin suede. Integrated laptop shield and document bellows.",
+    price: "$890.00",
+    image: `${IMG}AB6AXuClbEzLOeY603xlzMvWPs377IsBa46lhiJtXq2bbZu9Ryk_86yFnmXl_DLDh-tYQsWmwRMO-fgfWIgAKbeXla47fOI_IPuGH_OdjGTeyrs56eXrnTueighCg4LnYewKLQvJxwU34NzAGKWwzthBbH2XtO4q4FwJnrOQXtKMG9NrbWySBIW-LNzaneIJZLuncuZ5tgJQ7AkPpPhxTtsdfUyFqUJIqVQfnLX7aHblC7Ox7N4p8nlk0KIP`,
+    alt: "Slim structured briefcase in midnight espresso bridle hide with solid brass combination lock",
+  },
+  {
+    batch: "Batch of 40 Pieces",
+    release: "October",
+    name: "The Glencoe Field Grooming Roll",
+    text: "Pull-up oiled harness leather with waterproof Scottish tartan canvas interior and hand-forged hanging hook.",
+    price: "$260.00",
+    image: `${IMG}AB6AXuBX_-whk9Yf0OaAWCo3QDrHNcpk70fg1GuUtHOm8XHEGvwsz4bMJnopJUFqfoAHnbgEFv4fp8ncIoCS3OEna0iBdz1IjRpjrpKZkh8FVnlu0Jlf7T8yiArGMPHq3b5dpP1l8KxEfh7v2Mwn1AxyIs1T18xZrfNbfbZTCI__KWHhK3_rS9-PCFuHNZOAZsxYneSo7LvAGgB8zu7dLUuqKt3Te4IJ2rGTGGaNN1fuIZ1GQbVAT0jPQhNt`,
+    alt: "Rolled leather travel washbag with brass turnbuckle unrolled to show horn combs and grooming tools",
+  },
+];
+
+const GUARANTEES = [
+  ["inventory_2", "Cedarwood Unboxing", "Each item rests inside aromatic Scottish cedar gift caskets with raw flax dustbags."],
+  ["workspace_premium", "Lifetime Welt Guarantee", "Continuous warranty covering hand-saddled seams, welts, and bespoke brass rivets."],
+  ["flight_takeoff", "Carbon-Neutral Freight", "DHL GoGreen transatlantic transport with Scottish peatland restoration offset."],
+];
+
+const EYEBROW = "font-label-sm text-label-sm tracking-eyebrow uppercase";
 
 function price(item: { priceUsd: number; priceGbp: number }, currency: Currency, qty = 1) {
   return formatPrice(item.priceUsd * qty, item.priceGbp * qty, currency);
 }
 
-function useDispatchCountdown() {
-  const [now, setNow] = useState<number | null>(null);
-  useEffect(() => {
-    const tick = () => setNow(Date.now());
-    const first = setTimeout(tick, 0);
-    const id = setInterval(tick, 30_000);
-    return () => {
-      clearTimeout(first);
-      clearInterval(id);
-    };
-  }, []);
-  if (now === null) return null;
-  const d = new Date(now);
-  const cutoff = new Date(d);
-  cutoff.setHours(18, 0, 0, 0);
-  const tomorrow = d >= cutoff;
-  if (tomorrow) cutoff.setDate(cutoff.getDate() + 1);
-  const mins = Math.floor((cutoff.getTime() - now) / 60_000);
-  return { text: `${Math.floor(mins / 60)}h ${mins % 60}m`, day: tomorrow ? "tomorrow's" : "today's" };
-}
-
 function CartLine({ item, currency }: { item: CartItem; currency: Currency }) {
   const editHref = item.productId === "highlands-harness" ? `/products/${HARNESS_SLUG}` : undefined;
   return (
-    <div className="bg-surface-container-lowest p-space-md md:p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all">
-      <div className="flex flex-col sm:flex-row gap-space-md md:gap-space-lg">
-        <div className="relative w-full sm:w-44 h-48 sm:h-52 bg-surface-container-low rounded-lg overflow-hidden shrink-0">
-          <img className="w-full h-full object-cover object-center" alt={item.imageAlt} src={item.image} />
-          {item.badge && (
-            <span
-              className={`absolute top-2 left-2 bg-surface/90 backdrop-blur-md px-2 py-0.5 rounded-sm font-label-sm text-label-sm uppercase font-semibold ${
-                item.badge.tone === "primary" ? "text-primary" : "text-secondary"
-              }`}
-            >
-              {item.badge.label}
-            </span>
+    <div className="bg-surface-container p-6 md:p-8 flex flex-col md:flex-row gap-6 shadow-sm">
+      <div className={`w-full md:w-44 ${item.blurb ? "h-36" : "h-48"} bg-surface-container-high overflow-hidden shrink-0`}>
+        <img
+          className="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-105"
+          alt={item.imageAlt}
+          src={item.image}
+        />
+      </div>
+      <div className="flex flex-col justify-between flex-1 min-w-0">
+        <div>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <span className={`${EYEBROW} text-secondary`}>{item.collection}</span>
+              <h2 className="font-headline-sm text-headline-sm text-primary mt-1">{item.name}</h2>
+            </div>
+            <div className="text-right shrink-0">
+              <span className="font-headline-sm text-headline-sm text-primary tracking-tight whitespace-nowrap block">
+                {price(item, currency, item.qty)}
+              </span>
+              {item.qty > 1 && (
+                <span className="font-body-sm text-body-sm text-on-surface-variant">{price(item, currency)} each</span>
+              )}
+            </div>
+          </div>
+          {item.blurb && <p className="font-body-sm text-body-sm text-on-surface-variant mt-2">{item.blurb}</p>}
+          {item.details.length > 0 && (
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-on-surface-variant font-body-sm text-body-sm">
+              {item.details.map((d) => (
+                <p key={d.label} className="flex flex-wrap items-center gap-1.5">
+                  <strong className="text-on-surface font-medium">{d.label}:</strong>
+                  {d.highlight && (
+                    <span className="bg-surface-container-high px-2 py-0.5 text-primary tracking-wider font-semibold">
+                      &ldquo;{d.highlight}&rdquo;
+                    </span>
+                  )}
+                  {d.value}
+                </p>
+              ))}
+            </div>
           )}
         </div>
-        <div className="flex-1 flex flex-col justify-between">
-          <div>
-            <div className="flex items-start justify-between gap-space-sm">
-              <div>
-                <span className="font-label-sm text-label-sm text-secondary uppercase tracking-widest block mb-0.5">
-                  {item.collection}
-                </span>
-                <h3 className="font-headline-sm text-headline-sm text-on-surface">{item.name}</h3>
-              </div>
-              <div className="text-right shrink-0">
-                <span className="font-headline-sm text-headline-sm text-on-surface block">
-                  {price(item, currency, item.qty)}
-                </span>
-                <span className="font-label-sm text-label-sm text-secondary">
-                  {item.qty > 1 ? `${price(item, currency)} each` : item.material}
-                </span>
-              </div>
-            </div>
-            {item.details.length > 0 && (
-              <div className="mt-space-sm grid grid-cols-1 sm:grid-cols-2 gap-space-xs text-body-sm font-body-sm text-on-surface-variant">
-                {item.details.map((d) => (
-                  <p key={d.label}>
-                    <span className="text-secondary font-medium">{d.label}:</span>{" "}
-                    {d.highlight && <span className="text-primary font-semibold">{d.highlight}</span>} {d.value}
-                  </p>
-                ))}
-              </div>
-            )}
+        <div className="flex flex-wrap items-center justify-between gap-4 mt-6 bg-surface-container-low px-4 py-2.5">
+          <div className="flex items-center bg-surface px-3 py-1 shadow-sm">
+            <button
+              aria-label="Decrease quantity"
+              className="text-primary hover:text-secondary transition-colors p-1 active:scale-90 disabled:opacity-30"
+              type="button"
+              disabled={item.qty <= 1}
+              onClick={() => actions.updateQty(item.key, -1)}
+            >
+              <Icon name="remove" className="text-[16px]" />
+            </button>
+            <span className="w-8 text-center font-label-md text-label-md text-primary font-semibold" aria-label={`Quantity ${item.qty}`}>
+              {item.qty}
+            </span>
+            <button
+              aria-label="Increase quantity"
+              className="text-primary hover:text-secondary transition-colors p-1 active:scale-90"
+              type="button"
+              onClick={() => actions.updateQty(item.key, 1)}
+            >
+              <Icon name="add" className="text-[16px]" />
+            </button>
           </div>
-          <div className="flex flex-wrap items-center justify-between gap-space-sm pt-space-md mt-space-sm">
-            <div className="flex items-center gap-space-xs bg-surface-container-high px-space-xs py-1 rounded-lg">
-              <button
-                aria-label="Decrease quantity"
-                className="w-7 h-7 flex items-center justify-center text-on-surface hover:text-primary transition-colors text-lg font-semibold disabled:opacity-40"
-                type="button"
-                disabled={item.qty <= 1}
-                onClick={() => actions.updateQty(item.key, -1)}
-              >
-                -
-              </button>
-              <span className="font-label-md text-label-md px-2 text-on-surface" aria-label={`Quantity ${item.qty}`}>
-                {item.qty}
-              </span>
-              <button
-                aria-label="Increase quantity"
-                className="w-7 h-7 flex items-center justify-center text-on-surface hover:text-primary transition-colors text-lg font-semibold"
-                type="button"
-                onClick={() => actions.updateQty(item.key, 1)}
-              >
-                +
-              </button>
-            </div>
-            <div className="flex items-center gap-space-md font-label-sm text-label-sm uppercase tracking-wider">
-              {item.editLabel && editHref && (
-                <Link className="text-secondary hover:text-primary transition-colors flex items-center gap-1" href={editHref}>
-                  <Icon name={item.editLabel.icon} className="text-[16px]" /> {item.editLabel.label}
+          <div className={`flex items-center gap-4 text-on-surface-variant ${EYEBROW}`}>
+            {item.editLabel && editHref && (
+              <>
+                <Link className="hover:text-primary transition-colors flex items-center gap-1" href={editHref}>
+                  <Icon name={item.editLabel.icon} className="text-[14px]" /> {item.editLabel.label}
                 </Link>
-              )}
-              <button
-                className="text-outline hover:text-error transition-colors flex items-center gap-1 uppercase"
-                type="button"
-                onClick={() => actions.removeItem(item.key)}
-              >
-                <Icon name="delete" className="text-[16px]" /> Remove
-              </button>
-            </div>
+                <span className="opacity-30">|</span>
+              </>
+            )}
+            <button
+              className="hover:text-error transition-colors flex items-center gap-1 uppercase"
+              type="button"
+              onClick={() => actions.removeItem(item.key)}
+            >
+              <Icon name="delete" className="text-[14px]" /> Relinquish
+            </button>
           </div>
         </div>
       </div>
     </div>
   );
 }
-
-function AddOnLine({ item, currency }: { item: CartItem; currency: Currency }) {
-  return (
-    <div className="bg-surface-container-low p-space-md md:p-space-lg rounded-xl flex flex-col sm:flex-row items-center justify-between gap-space-md">
-      <div className="flex items-center gap-space-md">
-        <div className="w-16 h-16 rounded-lg bg-surface-container-highest overflow-hidden shrink-0">
-          <img className="w-full h-full object-cover" alt={item.imageAlt} src={item.image} />
-        </div>
-        <div>
-          <div className="flex items-center gap-space-xs">
-            <span className="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider">{item.collection}</span>
-            <span className="text-secondary text-xs">•</span>
-            <span className="font-label-sm text-label-sm text-on-surface-variant">{item.addOn?.title}</span>
-          </div>
-          <h4 className="font-headline-sm text-[18px] leading-tight text-on-surface">
-            {item.name}
-            {item.qty > 1 && <span className="text-secondary"> × {item.qty}</span>}
-          </h4>
-          <p className="font-body-sm text-body-sm text-secondary">{item.addOn?.blurb}</p>
-        </div>
-      </div>
-      <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-space-xs shrink-0">
-        <span className="font-headline-sm text-[20px] text-on-surface">{price(item, currency, item.qty)}</span>
-        <button
-          className="text-primary hover:text-primary-container font-label-sm text-label-sm uppercase tracking-wider font-semibold"
-          type="button"
-          onClick={() => actions.removeItem(item.key)}
-        >
-          Remove
-        </button>
-      </div>
-    </div>
-  );
-}
-
-const UPCOMING = [
-  {
-    badge: "Waitlist Only • 25 Pieces",
-    badgeClass: "bg-inverse-surface text-inverse-on-surface",
-    collection: "Bespoke Outerwear",
-    name: "The Cairngorm Shearling Aviator",
-    text: "Scottish tweed collar backing, thick oiled sheepskin, and custom solid copper buckles forged in Galloway.",
-    price: "$1,480.00",
-    cta: "Join Allocation List →",
-    image:
-      "AB6AXuAgzGrFy2MAJwB4PBYpLSiv2C9wOdbPqyUApkZDJFRk_67SYfKPdjZC9ydhALSSE9lfiqFgfENdb6Z4Xuzdv8v9m6_v3BA05rc-I841ML7FeaypAW-REAPmkL0STWwJCxEQZGs5vqGWOFtptd1Bk6eQLftj2ipWtkVfcKF51UCeKJofDEHCqDMYPNkCT-_HQ6V_RwDpJPAWttHvM-tBB1We7gcUZ7llkokJlurtyLshje63Zed-bhf7",
-    alt: "Heavyweight shearling and oil-waxed leather flight jacket in a Scottish stone cottage workshop",
-  },
-  {
-    badge: "Spring Batch",
-    badgeClass: "bg-surface text-secondary font-semibold",
-    collection: "Architectural Portfolios",
-    name: "The Mayfair Document Attache",
-    text: "Full-grain harness leather conditioned with Scottish beeswax and lined with forest green British wool baize.",
-    price: "$720.00",
-    cta: "Reserve Serial # →",
-    image:
-      "AB6AXuAmpTtqesBecClfZ8aqTXyEygpISx9Fgobg9pgtyCdygEPW-Z4fdKfYVLZVkD_2Ej6-mo2do_pKJXm0-Qzkx_tuCh3jvQ5KAmUjIKlUn_hhwdm-tAOcV5SoC_9qK-MqaXSdfk88xSdUu_nS5N9gSYFNYSILQ0yNxW8xOeWIBL-PWUvZ0u_lFkTFEPnVKVohLwqkJe-1F6BJK8olsse-LrTm_h3vtHTtHHQxWgK8TaOELmV3cJdffqqI",
-    alt: "Hand-stitched bridle leather portfolio briefcase with brass turn-lock beside a fountain pen",
-  },
-  {
-    badge: "Complimentary Monogram",
-    badgeClass: "bg-secondary-fixed text-on-secondary-fixed font-semibold",
-    collection: "Travel & Field",
-    name: "The Glencoe Field Grooming Roll",
-    text: "Rollable saddle leather kit containing badger-hair brushes, burnished horn comb, and waterproofing wax.",
-    price: "$295.00",
-    cta: "Quick Add +",
-    quickAdd: { usd: 295, gbp: 240 },
-    image:
-      "AB6AXuCWW2t0rzRgo5xJ9erbeVrey8OHeG8eY5W6st1YD0YFJy9Z3qWnxcwKAChl7E16nLyIZVleDD1n6EQv1VUhfPPPbMcrUX8R-NvJmVVrQmAwJzKrkKY2XUQPsd77Ft6ZMdxH37gVdQdpWkoi-Fmh87bWCeqKx5huoOwe2_IiwwglCEupeECYlZDPHT60UJN3aF72fqE9JiIZrgXXDD36GLlmv8Rz-j_uFOzSIJjGjuly78AAgZvpynoF",
-    alt: "Bridle leather grooming roll unrolled with horsehair brushes, horn comb and brass tins",
-  },
-];
 
 export function CartView() {
   const { cart, region, currency, subtotal, itemCount } = useStore();
   const info = REGIONS[region];
   const [postalByRegion, setPostalByRegion] = useState<Partial<Record<Region, string>>>({});
-  const [appliedPostal, setAppliedPostal] = useState<string | null>(null);
+  const [verified, setVerified] = useState(false);
   const [checkoutNote, setCheckoutNote] = useState(false);
-  const postalRef = useRef<HTMLInputElement>(null);
-  const countdown = useDispatchCountdown();
+  const countdown = useDispatchCountdown(30_000);
 
   const postal = postalByRegion[region] ?? info.postal;
-  const vat = currency === "GBP" ? subtotal / 6 : 0;
   const fmt = (n: number) => formatPrice(n, n, currency);
   const inCart = (productId: string) => cart.some((c) => c.productId === productId);
-  const quickAdded = inCart("glencoe-grooming-roll");
+  const releaseWindow = countdown ? `${countdown.hours}h ${countdown.minutes}m` : "—";
 
   if (cart.length === 0) {
     return (
-      <div className="max-w-360 mx-auto px-margin md:px-margin-desktop py-space-xl w-full">
-        <div className="bg-surface-container-low rounded-2xl p-space-xl text-center max-w-2xl mx-auto space-y-space-md">
-          <Icon name="shopping_bag" className="text-primary text-[40px]" />
-          <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
-            Your Commission Portfolio is Empty
+      <div className="max-w-360 mx-auto w-full px-6 md:px-12 py-20">
+        <div className="bg-surface-container-low p-12 text-center max-w-2xl mx-auto space-y-6 shadow-sm">
+          <Icon name="shopping_bag" className="text-secondary text-[40px]" />
+          <span className={`${EYEBROW} text-secondary font-semibold block`}>Order Dispatch Docket</span>
+          <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary tracking-display">
+            Your Commission Satchel is Empty
           </h1>
           <p className="font-body-md text-body-md text-on-surface-variant">
             Explore hand-welted footwear, bespoke outerwear, and the canine collection to begin your commission.
           </p>
           <Link
             href="/shop"
-            className="inline-flex items-center justify-center bg-primary hover:bg-primary-container text-on-primary px-space-lg py-3 rounded-lg font-label-md text-label-md uppercase tracking-wider"
+            className="inline-flex items-center justify-center bg-primary hover:bg-primary-container text-on-primary px-8 py-4 font-label-md text-label-md uppercase tracking-eyebrow shadow-md transition-colors"
           >
             Explore the Catalog
           </Link>
@@ -263,400 +219,328 @@ export function CartView() {
     );
   }
 
-  const mainItems = cart.filter((c) => !c.addOn);
-  const addOns = cart.filter((c) => c.addOn);
-
   return (
-    <div className="max-w-360 mx-auto px-margin md:px-margin-desktop py-space-md w-full">
-      <div className="flex flex-wrap items-center justify-between gap-space-sm pb-space-md mb-space-lg">
-        <nav aria-label="Breadcrumb" className="flex items-center gap-space-xs font-label-sm text-label-sm uppercase tracking-wider text-secondary">
-          <Link className="hover:text-primary transition-colors" href="/">
-            Atelier
-          </Link>
-          <span>/</span>
-          <Link className="hover:text-primary transition-colors" href="/shop">
-            Catalog
-          </Link>
-          <span>/</span>
-          <span className="text-on-surface font-semibold">Bespoke Cart &amp; Courier Dispatch</span>
-        </nav>
-        <div className="flex items-center gap-space-sm bg-surface-container-high px-space-md py-1.5 rounded-full">
-          <span className="inline-block w-2 h-2 rounded-full bg-secondary animate-pulse" />
-          <span className="font-label-sm text-label-sm text-on-surface uppercase tracking-widest">
-            Atelier Queue: Priority Stitching Reserved
-          </span>
+    <div className="flex flex-col w-full">
+      <div className="w-full bg-surface-container-low px-6 md:px-12 py-5 shadow-sm">
+        <div className="max-w-360 mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <nav
+            aria-label="Breadcrumb"
+            className="flex flex-wrap items-center gap-3 text-on-surface-variant font-label-md text-label-md tracking-eyebrow uppercase"
+          >
+            <Link className="hover:text-primary transition-colors" href="/">
+              Atelier Index
+            </Link>
+            <span className="opacity-40">/</span>
+            <span className="text-secondary font-semibold">Bespoke Satchel &amp; Transatlantic Freight</span>
+          </nav>
+          <div className="flex items-center gap-3 bg-surface px-4 py-1.5 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+            <span className={`${EYEBROW} text-on-surface-variant`}>
+              Bench Slot Reserved • Release Window: <strong className="text-on-surface">{releaseWindow}</strong>
+            </span>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
-        <div className="lg:col-span-7 xl:col-span-8 space-y-space-xl">
-          <div>
-            <div className="flex flex-wrap items-baseline justify-between gap-space-sm mb-space-md">
-              <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
-                Your Commission Portfolio
-              </h1>
-              <span className="font-label-md text-label-md text-secondary uppercase tracking-widest">
-                {itemCount} Bespoke {itemCount === 1 ? "Item" : "Items"}
+      <div className="max-w-360 mx-auto w-full px-6 md:px-12 py-12 lg:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          <div className="lg:col-span-7 flex flex-col gap-12">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <span className={`${EYEBROW} text-secondary font-semibold`}>Order Dispatch Docket • No. VH-8492</span>
+                <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary tracking-display mt-2">
+                  Commission Satchel
+                </h1>
+              </div>
+              <span className="font-label-md text-label-md uppercase tracking-eyebrow text-on-surface-variant hidden sm:inline-block">
+                {itemCount} Bespoke {itemCount === 1 ? "Commission" : "Commissions"}
               </span>
             </div>
-            <p className="font-body-md text-body-md text-on-surface-variant max-w-2xl">
-              Each artifact is inspected by our senior leatherwright in Edinburgh prior to final hot-stamp debossing,
-              hand-oiling, and cedar-box packaging.
-            </p>
-          </div>
 
-          <div className="space-y-space-md">
-            {mainItems.map((item) => (
-              <CartLine key={item.key} item={item} currency={currency} />
-            ))}
-            {addOns.map((item) => (
-              <AddOnLine key={item.key} item={item} currency={currency} />
-            ))}
-          </div>
-
-          <div className="bg-surface-container p-space-lg rounded-xl space-y-space-md">
-            <div className="flex flex-wrap items-center justify-between gap-space-xs">
-              <h3 className="font-headline-sm text-headline-sm text-on-surface">Recommended Atelier Complements</h3>
-              <span className="font-label-sm text-label-sm uppercase tracking-widest text-secondary">
-                Hand-Selected For This Order
-              </span>
+            <div className="flex flex-col gap-6">
+              {cart.map((item) => (
+                <CartLine key={item.key} item={item} currency={currency} />
+              ))}
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
-              {RECOMMENDED.map((r) => {
-                const added = inCart(r.productId);
-                return (
-                  <div
-                    key={r.productId}
-                    className="bg-surface-container-lowest p-space-md rounded-lg flex items-center justify-between gap-space-sm shadow-sm hover:shadow transition-shadow"
-                  >
-                    <div className="flex items-center gap-space-sm">
-                      <div className="w-14 h-14 bg-surface-container rounded-lg overflow-hidden shrink-0">
+
+            <div className="bg-surface-container-low p-6 md:p-8 shadow-sm">
+              <div className="flex items-center justify-between mb-6 gap-4">
+                <div>
+                  <span className={`${EYEBROW} text-secondary font-semibold`}>Hand-Selected Pairings</span>
+                  <h3 className="font-headline-sm text-headline-sm text-primary">Atelier Complements for Your Order</h3>
+                </div>
+                <Icon name="auto_awesome" className="text-secondary text-2xl" />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {RECOMMENDED.map((r) => {
+                  const added = inCart(r.productId);
+                  return (
+                    <div
+                      key={r.productId}
+                      className="bg-surface p-4 flex items-center gap-4 shadow-sm hover:bg-surface-container transition-colors"
+                    >
+                      <div className="w-16 h-16 bg-surface-container-highest shrink-0 overflow-hidden">
                         <img className="w-full h-full object-cover" alt={r.imageAlt} src={r.image} />
                       </div>
-                      <div>
-                        <h4 className="font-headline-sm text-[16px] leading-tight text-on-surface">{r.name}</h4>
-                        <p className="font-label-sm text-label-sm text-secondary tracking-wide">
-                          {r.caption} • {price(r, currency)}
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-headline-sm text-body-md text-primary truncate">{r.name}</h4>
+                        <p className="font-body-sm text-body-sm text-on-surface-variant font-medium mt-0.5">
+                          {price(r, currency)} {currency}
                         </p>
                       </div>
+                      <button
+                        aria-label={added ? `${r.name} added` : `Add ${r.name} to commission`}
+                        className={`w-9 h-9 flex items-center justify-center transition-all active:scale-90 shrink-0 ${
+                          added ? "bg-secondary text-on-secondary" : "bg-primary hover:bg-primary-container text-surface"
+                        }`}
+                        type="button"
+                        onClick={() => actions.addItem(r)}
+                      >
+                        <Icon name={added ? "check" : "add"} className="text-[18px]" />
+                      </button>
                     </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 bg-surface-container p-6 shadow-sm">
+              {GUARANTEES.map(([icon, title, text]) => (
+                <div key={title} className="flex flex-col gap-2">
+                  <Icon name={icon} className="text-secondary text-2xl" />
+                  <h4 className="font-label-lg text-label-lg uppercase tracking-eyebrow text-primary">{title}</h4>
+                  <p className="font-body-sm text-body-sm text-on-surface-variant">{text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <aside className="lg:col-span-5 lg:sticky lg:top-32 flex flex-col gap-6">
+            <div className="bg-surface-container-low p-6 md:p-8 shadow-md">
+              <div className="flex items-center justify-between pb-6 gap-4">
+                <h2 className="font-headline-md text-headline-md text-primary">Regional Dispatch</h2>
+                <span className={`${EYEBROW} text-on-surface-variant font-semibold`}>Tier 1 Carrier</span>
+              </div>
+
+              <div className="mb-6">
+                <span className={`${EYEBROW} text-on-surface-variant block mb-2 font-medium`}>Destination Territory</span>
+                <div className="grid grid-cols-3 bg-surface p-1 gap-1 shadow-sm" role="radiogroup" aria-label="Destination territory">
+                  {(Object.keys(REGIONS) as Region[]).map((r) => (
                     <button
-                      aria-label={added ? `${r.name} added` : `Add ${r.name} to cart`}
-                      className={`p-2 rounded-lg transition-colors shrink-0 ${
-                        added ? "bg-secondary text-on-secondary" : "bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface"
+                      key={r}
+                      role="radio"
+                      aria-checked={region === r}
+                      className={`py-2.5 px-1 text-center font-label-md text-label-md uppercase tracking-eyebrow transition-all ${
+                        region === r ? "bg-primary text-surface" : "text-on-surface-variant hover:text-primary"
                       }`}
                       type="button"
-                      onClick={() => actions.addItem(r)}
+                      onClick={() => {
+                        actions.setRegion(r);
+                        setVerified(false);
+                      }}
                     >
-                      <Icon name={added ? "check" : "add"} className="text-[18px]" />
+                      {REGIONS[r].label}
                     </button>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+                  ))}
+                </div>
+              </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md pt-space-xs">
-            {[
-              ["inventory_2", "Bespoke Cedar Unboxing", "Dispatched in reusable aromatic wood cases with organic unbleached cotton dust jackets."],
-              ["verified_user", "Lifetime Stitch Warranty", "Two-needle saddle stitching backed unconditionally by our Mayfair & Edinburgh benches."],
-              ["eco", "Carbon-Neutral Freight", "Fully offset international maritime and air routes direct from our workshop hub."],
-            ].map(([icon, title, text]) => (
-              <div key={title} className="bg-surface-container-low p-space-md rounded-xl space-y-space-xs">
-                <Icon name={icon} className="text-primary text-[26px]" />
-                <h5 className="font-headline-sm text-[17px] text-on-surface">{title}</h5>
-                <p className="font-body-sm text-body-sm text-on-surface-variant">{text}</p>
+              <div className="bg-surface p-5 mb-6 shadow-sm">
+                <div className="flex items-center gap-2 mb-2">
+                  <Icon name="local_shipping" className="text-secondary text-[20px]" />
+                  <h3 className="font-label-lg text-label-lg uppercase tracking-eyebrow text-primary">{info.courierTitle}</h3>
+                </div>
+                <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">{info.courierDesc}</p>
+                <div className={`mt-3 flex items-center gap-2 text-secondary ${EYEBROW}`}>
+                  <Icon name="verified" className="text-[16px]" />
+                  <span>Guaranteed Delivered-Duty-Paid (DDP)</span>
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
 
-        <aside className="lg:col-span-5 xl:col-span-4 lg:sticky lg:top-32 space-y-space-md">
-          <div className="bg-surface-container-lowest p-space-md md:p-space-lg rounded-xl shadow-md space-y-space-md">
-            <div className="flex items-center justify-between pb-space-xs">
-              <span className="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold">
-                Courier Destination
-              </span>
-              <div className="flex items-center gap-1 text-secondary">
-                <Icon name="lock" className="text-[16px]" />
-                <span className="font-label-sm text-label-sm uppercase font-semibold">256-Bit Encrypted</span>
-              </div>
-            </div>
-            <div className="space-y-space-xs">
-              <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface block font-medium">
-                Select Region &amp; Currency
-              </span>
-              <div className="grid grid-cols-3 gap-1 bg-surface-container-high p-1 rounded-lg" role="radiogroup" aria-label="Region">
-                {(Object.keys(REGIONS) as Region[]).map((r) => (
-                  <button
-                    key={r}
-                    role="radio"
-                    aria-checked={region === r}
-                    className={`py-2 text-center rounded-lg font-label-sm text-label-sm uppercase font-semibold transition-all ${
-                      region === r ? "bg-surface text-primary shadow-sm" : "text-secondary hover:text-on-surface"
-                    }`}
-                    type="button"
-                    onClick={() => {
-                      actions.setRegion(r);
-                      setAppliedPostal(null);
-                    }}
-                  >
-                    {REGIONS[r].label}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="bg-surface-container-low p-space-sm rounded-lg flex items-start gap-space-sm">
-              <Icon name="flight_takeoff" className="text-primary text-[22px] shrink-0 mt-0.5" />
-              <div>
-                <p className="font-label-md text-label-md text-on-surface font-semibold">{info.courierTitle}</p>
-                <p className="font-body-sm text-body-sm text-on-surface-variant">{info.courierDesc}</p>
-              </div>
-            </div>
-            <div className="bg-primary/5 p-space-sm rounded-lg flex items-center justify-between gap-space-sm text-on-surface">
-              <div className="flex items-center gap-space-xs">
-                <Icon name="timer" className="text-primary text-[18px]" />
-                <span className="font-body-sm text-body-sm font-medium">
-                  Order in next <strong className="text-primary font-bold">{countdown?.text ?? "—"}</strong> for{" "}
-                  {countdown?.day ?? "today's"} flight
-                </span>
-              </div>
-              <span className="font-label-sm text-label-sm text-secondary uppercase tracking-wider shrink-0">Departs 18:00</span>
-            </div>
-            <form
-              className="space-y-space-xs"
-              onSubmit={(e) => {
-                e.preventDefault();
-                setAppliedPostal(postal.trim().toUpperCase());
-              }}
-            >
-              <label htmlFor="postal-input" className="font-label-sm text-label-sm uppercase tracking-wider text-secondary flex justify-between">
-                <span>Delivery Postal / ZIP Code</span>
-                <button type="button" className="text-primary uppercase hover:underline" onClick={() => postalRef.current?.select()}>
-                  Change {region === "us" ? "State" : "Postcode"}
-                </button>
-              </label>
-              <div className="flex gap-2">
-                <input
-                  ref={postalRef}
-                  className="flex-1 min-w-0 bg-surface-container-low px-space-sm py-2 rounded-lg font-body-sm text-body-sm text-on-surface focus:outline-none focus:bg-surface focus:ring-1 focus:ring-primary"
-                  id="postal-input"
-                  placeholder="ZIP / Postal Code"
-                  type="text"
-                  value={postal}
-                  onChange={(e) => {
-                    setPostalByRegion((p) => ({ ...p, [region]: e.target.value }));
-                    setAppliedPostal(null);
-                  }}
-                />
-                <button
-                  className="bg-surface-container-high hover:bg-secondary hover:text-on-secondary px-space-md py-2 rounded-lg font-label-sm text-label-sm uppercase tracking-wider font-semibold transition-colors"
-                  type="submit"
-                >
-                  Apply
-                </button>
-              </div>
-              {appliedPostal && (
-                <p className="font-label-sm text-label-sm text-secondary flex items-center gap-1" role="status">
-                  <Icon name="check_circle" className="text-[14px]" /> Courier route confirmed for {appliedPostal}
-                </p>
-              )}
-            </form>
-            <div className="space-y-space-xs pt-space-sm">
-              <div className="flex justify-between font-body-sm text-body-sm text-on-surface-variant">
-                <span>Item Portfolio Subtotal</span>
-                <span className="text-on-surface font-medium">
-                  {fmt(subtotal)} {currency}
-                </span>
-              </div>
-              <div className="flex justify-between font-body-sm text-body-sm text-on-surface-variant">
-                <span className="flex items-center gap-1">
-                  Regional Express Freight
-                  <span title="Tracked courier included without surcharge">
-                    <Icon name="info" className="text-[14px] text-secondary" />
+              <form
+                className="mb-6"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setVerified(true);
+                }}
+              >
+                <div className="flex items-center justify-between mb-2 gap-2">
+                  <label className={`${EYEBROW} text-on-surface-variant font-medium`} htmlFor="dest-zip">
+                    {info.postalLabel}
+                  </label>
+                  <span className={`${EYEBROW} text-secondary`} role="status">
+                    {verified ? "Recalculated: Pre-Cleared" : info.hub}
                   </span>
-                </span>
-                <span className="text-primary font-medium">Complimentary ({fmt(0)})</span>
+                </div>
+                <div className="flex">
+                  <input
+                    className="w-full min-w-0 bg-surface text-on-surface font-body-sm text-body-sm px-4 py-3 focus:outline-none focus:bg-surface-bright focus:ring-1 focus:ring-primary shadow-sm"
+                    id="dest-zip"
+                    placeholder="Enter Zip or Postal Code"
+                    type="text"
+                    value={postal}
+                    onChange={(e) => {
+                      setPostalByRegion((p) => ({ ...p, [region]: e.target.value }));
+                      setVerified(false);
+                    }}
+                  />
+                  <button
+                    className="bg-primary hover:bg-primary-container text-surface px-4 font-label-md text-label-md uppercase tracking-eyebrow transition-all active:scale-95"
+                    type="submit"
+                  >
+                    Apply
+                  </button>
+                </div>
+              </form>
+
+              <div className="space-y-3 py-4 text-on-surface-variant font-body-sm text-body-sm">
+                <div className="flex items-center justify-between gap-4">
+                  <span>Item Portfolio Subtotal</span>
+                  <span className="font-medium text-on-surface font-headline-sm text-body-md">
+                    {fmt(subtotal)} {currency}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="flex flex-wrap items-center gap-1.5">
+                    Regional Express Freight
+                    <span className="bg-surface-container-highest px-1.5 py-0.5 text-[10px] tracking-wider uppercase text-secondary font-bold">
+                      Complimentary
+                    </span>
+                  </span>
+                  <span className="text-secondary font-medium">{fmt(0)}</span>
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="flex items-center gap-1.5">
+                    {currency === "USD" ? "Estimated Import Duties & Taxes" : "UK 20% VAT"}
+                    <span title="The atelier absorbs all clearance costs">
+                      <Icon name="info" className="text-[14px] text-on-surface-variant" />
+                    </span>
+                  </span>
+                  <span className="text-on-surface font-medium text-right">
+                    {currency === "USD" ? `Pre-Paid by Atelier (${fmt(0)})` : `Included (${fmt(subtotal / 6)})`}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <span>Aromatic Cedar Coffret &amp; Bags</span>
+                  <span className="text-on-surface font-medium">Included</span>
+                </div>
               </div>
-              <div className="flex justify-between gap-space-sm font-body-sm text-body-sm text-on-surface-variant">
-                <span>{info.taxLabel}</span>
-                <span className="text-on-surface font-medium shrink-0">{currency === "USD" ? "$0.00*" : fmt(vat)}</span>
-              </div>
-              <div className="flex justify-between font-body-sm text-body-sm text-on-surface-variant">
-                <span>Atelier Presentation Box &amp; Seal</span>
-                <span className="text-secondary font-medium">Included</span>
-              </div>
-              <div className="pt-space-sm mt-space-sm flex justify-between items-baseline">
+
+              <div className="mt-4 bg-surface p-4 shadow-sm flex items-end justify-between gap-4">
                 <div>
-                  <span className="font-headline-sm text-headline-sm text-on-surface block">Total Due</span>
-                  <span className="font-label-sm text-label-sm text-secondary uppercase tracking-widest block">{info.note}</span>
+                  <span className={`${EYEBROW} text-on-surface-variant block font-medium`}>Total Balance</span>
+                  <span className="text-[11px] text-on-surface-variant">All taxes and duties pre-settled</span>
                 </div>
                 <div className="text-right">
-                  <span className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary block leading-none">
-                    {fmt(subtotal)}
-                  </span>
-                  <span className="font-label-sm text-label-sm text-secondary">All tariffs prepaid</span>
+                  <span className="font-headline-md text-headline-md text-primary font-normal leading-none">{fmt(subtotal)}</span>
+                  <span className={`block ${EYEBROW} text-secondary font-semibold mt-1`}>{info.currencyTag}</span>
                 </div>
               </div>
-              {currency === "USD" && (
-                <p className="font-label-sm text-[10px] text-secondary">*Sales tax calculated at dispatch.</p>
-              )}
-            </div>
-            <div className="space-y-space-xs pt-space-xs">
+
+              <div className="mt-6 space-y-2.5">
+                <button
+                  className="w-full bg-primary hover:bg-black text-on-primary py-3.5 flex items-center justify-center gap-2 font-label-md text-label-md uppercase tracking-eyebrow shadow-sm transition-all active:scale-95"
+                  type="button"
+                  onClick={() => setCheckoutNote(true)}
+                >
+                  <Icon name="phone_iphone" className="text-[18px]" /> Pay with Apple Pay
+                </button>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    className={`bg-surface hover:bg-surface-container text-primary py-2.5 flex items-center justify-center gap-1 ${EYEBROW} shadow-sm transition-all active:scale-95`}
+                    type="button"
+                    onClick={() => setCheckoutNote(true)}
+                  >
+                    Google Pay
+                  </button>
+                  <button
+                    className={`bg-surface hover:bg-surface-container text-primary py-2.5 flex items-center justify-center gap-1 ${EYEBROW} shadow-sm transition-all active:scale-95`}
+                    type="button"
+                    onClick={() => setCheckoutNote(true)}
+                  >
+                    Klarna <span className="text-[11px] font-normal normal-case tracking-normal">(3x {fmt(subtotal / 3)})</span>
+                  </button>
+                </div>
+              </div>
+
               <button
-                className="w-full bg-[#111111] hover:bg-[#222222] text-white py-3.5 rounded-lg flex items-center justify-center gap-space-xs transition-all shadow hover:shadow-lg font-semibold text-sm"
+                className="mt-4 w-full bg-secondary hover:bg-secondary/90 text-on-secondary py-4 text-center font-label-lg text-label-lg tracking-eyebrow uppercase font-bold shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-3"
                 type="button"
                 onClick={() => setCheckoutNote(true)}
               >
-                <span className="tracking-tight text-white font-medium">Buy with</span>
-                <span className="font-bold text-base tracking-normal">Pay</span>
+                <span>Proceed to Private Checkout</span>
+                <Icon name="lock" className="text-[18px]" />
               </button>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  className="bg-surface-container-high hover:bg-surface-container-highest text-on-surface py-2.5 rounded-lg flex items-center justify-center gap-1 transition-colors font-label-md text-label-md uppercase font-semibold"
-                  type="button"
-                  onClick={() => setCheckoutNote(true)}
-                >
-                  <span className="normal-case">
-                    <span className="font-bold text-[#4285F4]">G</span>
-                    <span className="font-bold text-[#EA4335]">o</span>
-                    <span className="font-bold text-[#FBBC05]">o</span>
-                    <span className="font-bold text-[#4285F4]">g</span>
-                    <span className="font-bold text-[#34A853]">l</span>
-                    <span className="font-bold text-[#EA4335]">e</span>
-                  </span>{" "}
-                  Pay
-                </button>
-                <button
-                  className="bg-[#FFB3C7] hover:bg-[#fca1b9] text-[#171717] py-2.5 rounded-lg flex items-center justify-center font-label-md text-label-md uppercase font-bold tracking-wider transition-colors"
-                  type="button"
-                  onClick={() => setCheckoutNote(true)}
-                >
-                  Klarna.
-                </button>
-              </div>
-            </div>
-            <div className="relative flex items-center justify-center py-space-xs">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full h-px bg-surface-container-highest" />
-              </div>
-              <span className="relative bg-surface-container-lowest px-space-sm font-label-sm text-label-sm uppercase tracking-widest text-secondary">
-                or traditional checkout
-              </span>
-            </div>
-            <button
-              className="w-full bg-primary hover:bg-primary-container text-on-primary py-3.5 rounded-lg font-label-md text-label-md uppercase tracking-[0.15em] font-semibold text-center block transition-all shadow-sm hover:shadow-md"
-              type="button"
-              onClick={() => setCheckoutNote(true)}
-            >
-              Proceed to Private Atelier Checkout
-            </button>
-            {checkoutNote && (
-              <p className="font-body-sm text-body-sm text-on-surface-variant text-center" role="status">
-                Checkout isn&apos;t connected yet — payment processing is coming soon.
-              </p>
-            )}
-            <div className="bg-surface-container-low p-space-sm rounded-lg space-y-1">
-              <div className="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm">
-                <Icon name="swap_horizontal_circle" className="text-[15px] text-secondary" />
-                <span>
-                  Klarna available: 3 interest-free payments of <strong className="text-on-surface">{fmt(subtotal / 3)}</strong>
-                </span>
-              </div>
-              <div className="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm">
-                <Icon name="event_available" className="text-[15px] text-secondary" />
-                <span>White-glove courier booking window selectable on next step</span>
-              </div>
-            </div>
-          </div>
-          <div className="p-space-md bg-surface-container rounded-xl flex items-center gap-space-md">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-              <Icon name="support_agent" className="text-[20px]" />
-            </div>
-            <div>
-              <h5 className="font-headline-sm text-[16px] text-on-surface">Concierge Leather Specialist</h5>
-              <p className="font-body-sm text-body-sm text-on-surface-variant">
-                Questions about fit or bespoke monogramming? Call our Edinburgh workshop directly at{" "}
-                <a className="text-primary hover:underline font-medium" href="tel:+441315550198">
-                  +44 (0)131 555 0198
-                </a>
-                .
-              </p>
-            </div>
-          </div>
-        </aside>
-      </div>
+              {checkoutNote && (
+                <p className="mt-3 font-body-sm text-body-sm text-on-surface-variant text-center" role="status">
+                  Checkout isn&apos;t connected yet — payment processing is coming soon.
+                </p>
+              )}
 
-      <div className="mt-space-xl pt-space-lg">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-lg gap-space-sm">
-          <div>
-            <span className="font-label-sm text-label-sm text-secondary uppercase tracking-widest block mb-1">
-              From the Edinburgh Workbenches
-            </span>
-            <h2 className="font-headline-md text-headline-md text-on-surface">Upcoming Small-Batch Releases</h2>
-          </div>
-          <Link
-            className="font-label-md text-label-md uppercase tracking-wider text-primary hover:text-primary-container flex items-center gap-1 font-semibold"
-            href="/shop/preview"
-          >
-            Explore All Rare Editions <Icon name="east" className="text-[18px]" />
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-          {UPCOMING.map((u) => {
-            return (
-              <div key={u.name} className="bg-surface-container-lowest p-space-md rounded-xl space-y-space-md shadow-sm hover:shadow-md transition-all group">
-                <div className="aspect-4/3 bg-surface-container-low rounded-lg overflow-hidden relative">
-                  <img
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    alt={u.alt}
-                    src={IMG + u.image}
-                  />
-                  <span className={`absolute top-3 left-3 font-label-sm text-label-sm uppercase px-2 py-1 rounded ${u.badgeClass}`}>
-                    {u.badge}
-                  </span>
-                </div>
+              <div className="mt-6 bg-surface-container p-4 shadow-sm flex items-start gap-3.5">
+                <Icon name="support_agent" className="text-secondary text-[22px]" />
                 <div>
-                  <span className="font-label-sm text-label-sm text-secondary uppercase tracking-widest">{u.collection}</span>
-                  <h3 className="font-headline-sm text-headline-sm text-on-surface mt-1">{u.name}</h3>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-2">{u.text}</p>
-                  <div className="flex items-center justify-between mt-space-md pt-space-xs">
-                    <span className="font-headline-sm text-[20px] text-on-surface">{u.price}</span>
-                    {u.quickAdd ? (
-                      <button
-                        className="text-primary hover:text-primary-container font-label-sm text-label-sm uppercase tracking-wider font-semibold disabled:text-secondary"
-                        type="button"
-                        disabled={quickAdded}
-                        onClick={() =>
-                          actions.addItem({
-                            productId: "glencoe-grooming-roll",
-                            name: u.name,
-                            collection: u.collection,
-                            image: IMG + u.image,
-                            imageAlt: u.alt,
-                            priceUsd: u.quickAdd.usd,
-                            priceGbp: u.quickAdd.gbp,
-                            material: "Saddle Leather",
-                            badge: { label: "Complimentary Monogram", tone: "accent" },
-                            details: [{ label: "Contents", value: "Brushes, Horn Comb, Wax" }],
-                          })
-                        }
-                      >
-                        {quickAdded ? "Added ✓" : u.cta}
-                      </button>
-                    ) : (
-                      <Link
-                        className="text-primary hover:text-primary-container font-label-sm text-label-sm uppercase tracking-wider font-semibold"
-                        href="/shop/preview"
-                      >
-                        {u.cta}
-                      </Link>
-                    )}
-                  </div>
+                  <p className={`${EYEBROW} text-primary font-bold`}>Atelier Private Concierge</p>
+                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                    Need a bespoke sizing fitting or leather swatch advice? Call directly:
+                  </p>
+                  <a
+                    className="font-label-md text-label-md tracking-eyebrow text-secondary hover:underline font-semibold mt-1 inline-block"
+                    href="tel:+441315550198"
+                  >
+                    +44 (0)131 555 0198 (London/Edin)
+                  </a>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          </aside>
+        </div>
+
+        <div className="mt-24 pt-16">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div>
+              <span className={`${EYEBROW} text-secondary font-semibold`}>Savile Row &amp; Edinburgh Workbenches</span>
+              <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mt-1">
+                Upcoming Small-Batch Releases
+              </h2>
+            </div>
+            <p className="font-body-md text-body-md text-on-surface-variant max-w-md">
+              Limited allocations cut from rare hides. Reserve your bench priority before public atelier reveal.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {UPCOMING.map((u) => (
+              <div
+                key={u.name}
+                className="bg-surface-container p-6 flex flex-col justify-between shadow-sm group hover:shadow-md transition-all"
+              >
+                <div>
+                  <div className="h-64 bg-surface-container-high overflow-hidden mb-5">
+                    <img
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      alt={u.alt}
+                      src={u.image}
+                    />
+                  </div>
+                  <div className={`flex items-center justify-between text-on-surface-variant ${EYEBROW} mb-1`}>
+                    <span>{u.batch}</span>
+                    <span className="text-secondary font-semibold">{u.release}</span>
+                  </div>
+                  <h3 className="font-headline-sm text-headline-sm text-primary">{u.name}</h3>
+                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-2">{u.text}</p>
+                </div>
+                <div className="mt-6 pt-4 flex items-center justify-between gap-4">
+                  <span className="font-headline-sm text-body-lg text-primary font-medium">{u.price}</span>
+                  <Link
+                    className={`bg-surface hover:bg-primary hover:text-surface text-primary ${EYEBROW} px-4 py-2 shadow-sm transition-all active:scale-95`}
+                    href="/shop/preview"
+                  >
+                    Join Allocation
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

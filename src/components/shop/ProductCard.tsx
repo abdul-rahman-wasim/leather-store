@@ -44,7 +44,6 @@ export function ProductCard({ product }: { product: Product }) {
       priceUsd: product.priceUsd,
       priceGbp: product.priceGbp,
       material: product.material,
-      badge: product.commission ? { label: "Made To Order", tone: "accent" } : undefined,
       details: [
         { label: "Color", value: TONES[product.swatches[0]].name },
         { label: product.commission ? "Fit" : "Finish", value: product.commission ? "Bespoke Measurement" : product.tag },

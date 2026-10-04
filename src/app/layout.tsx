@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bodoni_Moda, Hanken_Grotesk } from "next/font/google";
+import { Concierge } from "@/components/Concierge";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import "./globals.css";
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         <main className="w-full pt-28 bg-surface min-h-[calc(100vh-14rem)]">{children}</main>
         <Footer />
+        <Concierge />
       </body>
     </html>
   );

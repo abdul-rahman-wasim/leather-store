@@ -239,10 +239,9 @@ export type CartItemInput = {
   priceUsd: number;
   priceGbp: number;
   material: string;
-  badge?: { label: string; tone: "primary" | "accent" };
   details: CartDetail[];
+  blurb?: string;
   editLabel?: { label: string; icon: string };
-  addOn?: { title: string; blurb: string };
 };
 
 export type CartItem = CartItemInput & { key: string; qty: number };
@@ -250,27 +249,23 @@ export type CartItem = CartItemInput & { key: string; qty: number };
 export const BALM: CartItemInput = {
   productId: "highlands-balm",
   name: "Highlands Leather Protection Balm & Beeswax Bar",
-  collection: "Atelier Add-On",
-  image: `${IMG}AB6AXuA7ZymDtFca5ePXiJ3HDzNNPY65GVT_9jZr8QtcrmTvlIU84i5SoJgzkKmccWX-Jio2BSvRZolH8I7aJ7miBYXIFOToTyG0ke1TM8OHBM5RD4XFAz1jBvmJU26EjbFtApakkP9zvT_yQQisP5ggCEDnk__pMDpSkvLhjZcy6BPgsQ-rtvGU2mFxDDei_PBHenv4Gu-JRXWBnWN_aBXJW7lVYiYYeiJVLWzZ3eXLRSPRX-obFwsJqF1I`,
-  imageAlt: "Tin of organic leather balm and beeswax conditioning bar on linen with Scottish heather",
+  collection: "Edinburgh Apothecary Pairing",
+  image: `${IMG}AB6AXuBpnQumKhAhjRGUeO2wuqdFv1G3jXJnTjSmNnxieJJgWhHkd4A5tGmhJJ9oIulevA5mgCN52Lcj0s8pVfxs33ZhnTYCJSiwqRn1lX0YZDM4N4JK7X-a3DAJqF2RBLsx0YXMWmP9PSaaEwdxADhRCJFGQR_zLii802yqwTSMLYmnV-w9R2jMxqlmS-xDA0p26-MZHtPZG5H6_9T1HICOipsisJa4HLJn7l_yDiBcygvtwwCoCAglZbfn`,
+  imageAlt: "Glass jar of organic Scottish beeswax and lanolin leather protection balm with a wooden spatula",
   priceUsd: 24,
   priceGbp: 20,
   material: "Conditioning Balm",
   details: [],
-  addOn: {
-    title: "Complementary Pairing",
-    blurb: "Formulated with natural lanolin and cold-pressed jojoba for Scottish wet climates.",
-  },
+  blurb: "Organic Scottish beeswax, cold-pressed neatsfoot oil, and highland pine resin. 120ml poured stoneware vessel.",
 };
 
-export const RECOMMENDED: (CartItemInput & { caption: string })[] = [
+export const RECOMMENDED: CartItemInput[] = [
   {
     productId: "brass-shoehorn",
     name: "Solid Cast Brass Shoehorn",
-    caption: "With saddle lanyard",
     collection: "Atelier Accessories",
-    image: `${IMG}AB6AXuDH9_Gv3_qzICQrBopZSFz6OZDfzRg026QMN42qRcPwjSx_c0_W0JwCgJt-7s6rNd0haLATvSBCLQdE4imSxtpfG2IovXZX0hqxtS55s-Rw1cGww6Mj_qdLrvcE4-bsQGcD0LEaL7CeQA8MXwGnJi6gJSK5vpzwyMqELdHO3FP5P0ystazI1WQb0pHPoBOmxUKHCL16RNFSjRbRXyvb6zkiNi9XBKp3tVkdiYiu2CcAAPm2xj5Pwim8`,
-    imageAlt: "Brass shoehorn with debossed leather lanyard",
+    image: `${IMG}AB6AXuDqEDjyALtar-TeTGH5Sf1tC-x2GRxxDq-a-BuOykBJVv7a4t8tlj6xC4ZyZL2aafPU-9yk9VNQaO3JruUslZz9VnchfHXryJnwVpxxxM002lAMUHmYAFu49trFL5m53fiBiKyiYebXpSejRwUVFfC7cz7hZZGHAFhqs4kprVHa6JUnkouxR8HbqCHL_JtxpvwTxMtc8XNlhHV-JhkpiFKFdVV3ouMoiHUaeoukQycWIj7s6JSksRkU`,
+    imageAlt: "Solid hand-cast heavy brass shoehorn engraved with London and Edinburgh hallmarks",
     priceUsd: 38,
     priceGbp: 30,
     material: "Sand-Cast Brass",
@@ -278,11 +273,10 @@ export const RECOMMENDED: (CartItemInput & { caption: string })[] = [
   },
   {
     productId: "highland-lead",
-    name: "The Highland 6ft Walking Lead",
-    caption: "Matching Cognac Tan",
+    name: "Highland 6ft Walking Lead",
     collection: "The Canine Collection",
-    image: `${IMG}AB6AXuB-Lvdhph_U9B6gJv7r7bbTBGlK3LWTP2yxl1M2curqAMqCLoMHMCeZOxz2gdKF-2lAGPe2uV3_RoWYd45ZMOpIDV9sEXB5MTQYpcVeLIgkzlgZ81xl18I3JPaO5QNA1UDJJM52mLdBxwPGns_mpHzb1BQ3jzdJnhcmV-wn4YFR8n247Sa-7OdDWrH1bOI7fMUqtEjMkcXJM_kMYHw8l6H6ZEB67ZyUNc-qrUzttITJXypkTS5XEt8B`,
-    imageAlt: "Vegetable tanned bridle leather dog lead with antique brass clasp",
+    image: `${IMG}AB6AXuAxk5A36q2fRdvzT5L-HTMjn2oYQvsa31vqc2PSK75TM_ZiW2KzBXp1YvtZAWL7axXC2U5wowSjgll4QL9UYWOSSHe4NsBUZka8fVHW3b_v23YZjotRJcyOEw9iEelwqmjUwi4_y7XSKhWVS4NQqBRWQ6Wxz6hWD8mYzJgr7MrK24fBryvwroogaSHsWqfbxJHmuakJh7RVYl_E5EkikGDTaVeKUZ_uhY4nTJVYXYjUnwML4BukfnGH`,
+    imageAlt: "Braided bridle leather six-foot dog walking lead with heavy brass trigger clasp coiled on stone",
     priceUsd: 78,
     priceGbp: 62,
     material: "Bridle Leather",
@@ -300,39 +294,36 @@ export const SEED_CART: CartItem[] = [
     productId: "highlands-harness",
     name: "The Highlands Ergonomic Canine Leather Harness",
     collection: "The Canine Collection",
-    image: `${IMG}AB6AXuBp1z6WpnL0XxNmeCsKiOw_PGlIj9NJaGcOqHzAKPOmxpJdpEevovI0F9CrwzYzf5hyTPX4zLsbxho1ffzsARUmq6Y1IGFG3k-M0J87vg3S8sPM7I6Y55JCW2vpZhiLkhRT6vrTodQfPSg7BuiKhVeWMsdz_N2Xo334sMq3UWRlPrHeL44-ccm8Xkp0aXsbrK4DC8C1_SbuF2hPcjMP7V30MDUfvn6WbYR0QaasJ9oPfhSS1E-J9opM`,
-    imageAlt: "Cognac tan leather canine harness with brass hardware and gold foil monogram BARNABY",
+    image: `${IMG}AB6AXuBdXU0oslp1QbLd8nZI5LA_8qJwPkdLk0UM4nHllE873Ej7DSn6UiFzq29xQYNX8060YLhhwkcavT5CrKX2tr5GdB0EUAJX2OS7s6RDLN_KH_JIBntqS4-soZZcU8bHAycE8YIpNnQqnl4nmQ9feLwO_uLqWwccB8zr2AL4LHhf7B24LbynPn8PRb792dphvSs7-JSsD6wodoOgOaQDqAqlZB05WHHzI9t0QtMxiIKU3huUEDvCuJDI`,
+    imageAlt: "Cognac tan hand-stitched bridle leather dog harness with brass hardware on a travertine workbench",
     priceUsd: 165,
     priceGbp: 135,
     material: "Tuscan Saddle Hide",
-    badge: { label: "Personalized", tone: "primary" },
     details: [
-      { label: "Color", value: "Cognac Tan" },
-      { label: "Size", value: 'Medium (Girth 22"-28")' },
-      { label: "Hardware", value: "Burnished Solid Brass" },
-      { label: "Debossing", value: "(Gold Foil)", highlight: '"BARNABY"' },
+      { label: "Harness Shade", value: "Cognac Tan" },
+      { label: "Dimension", value: "Medium (20-28 in)" },
+      { label: "Hardware", value: "Brushed Solid Brass" },
+      { label: "Blind Deboss", value: "", highlight: "BARNABY" },
     ],
-    editLabel: { label: "Edit Monogram", icon: "edit_note" },
+    editLabel: { label: "Edit Monogram", icon: "edit" },
   },
   {
     key: "seed-derby",
     qty: 1,
     productId: "kensington-derby",
     name: "The Kensington Derby Shoe",
-    collection: "Artisanal Footwear",
-    image: `${IMG}AB6AXuBZ170T-IQT3gsYKW8Y863cIyfC-Yao8TFO1kcbrwh6bCr9F0phhBfX2uMQ0cX1YxHBlJG_ghBckJ33MsgQUdg4QTYAayKWTqTSmyY3FdSyHH83V-BpPP1bA1hbGnQH_c_fjj1EEUebPgJUJP8JB_zSNt1BwwXEwa11t3FmQQaNl0gprfHaKuC9Cnk7KPU9Qe6D41qv7rNA0kG6WoCbVl9ZUO49bs7XInzZ2b7CD_tm8I8d2Tb9O93j`,
-    imageAlt: "Chestnut brown leather derby shoes on an aged oak table",
+    collection: "Mayfair Footwear Edition",
+    image: `${IMG}AB6AXuBrkPgu9lwwZsv5ia8QOYth2exUpj8CKX3wqN7tpglE48PZopRAJTym_T2rQFLbLFIAphbMuH3JkYeV_5Z694qDjuGKsbYMX6xEIIscX0JgpHJt-JUdDgDzr5O1T54uMYj6TlJLxjGwY69VY_bkqXrOUUO7sYH6HmWMXpT4J_Ai8BeSLelTehGZi14M2hN2EI9i5gQTgF-hs4vItbwTo4S5v6_klniRcRJwxU4FiX4mgW81s1pe-kch`,
+    imageAlt: "Hand-burnished deep chestnut derby shoes in vegetable tanned calfskin on an alabaster and oak plinth",
     priceUsd: 420,
     priceGbp: 340,
     material: "Tuscan Calfskin",
-    badge: { label: "Goodyear Welted", tone: "accent" },
     details: [
-      { label: "Color", value: "Hand-Burnished Chestnut" },
-      { label: "Size", value: "43 EU / 10 US / 9.5 UK" },
-      { label: "Sole", value: "Leather Channel Welt" },
-      { label: "Last", value: "British Almond Toe No. 04" },
+      { label: "Hide Burnish", value: "Chestnut Calfskin" },
+      { label: "Bespoke Size", value: "43 EU / 10 US" },
+      { label: "Welting", value: "Hand-Channeled Goodyear" },
+      { label: "Shoe Trees", value: "Solid Aromatic Cedar" },
     ],
-    editLabel: { label: "Adjust Fit Last", icon: "tune" },
   },
   { ...BALM, key: "seed-balm", qty: 1 },
 ];

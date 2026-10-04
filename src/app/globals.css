@@ -53,6 +53,20 @@
   --color-on-error: #ffffff;
   --color-error-container: #ffdad6;
   --color-on-error-container: #93000a;
+  --color-gold: #c5a059;
+
+  --animate-fade-in: fade-in 400ms ease-out;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0.3;
+      transform: scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 
   --font-display-lg: var(--font-serif);
   --font-display-lg-mobile: var(--font-serif);
@@ -203,6 +217,44 @@
   .nav-link:hover::after,
   .nav-link[aria-current="page"]::after {
     width: 100%;
+  }
+
+  .concierge-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .concierge-scrollbar::-webkit-scrollbar-track {
+    background: color-mix(in srgb, var(--color-surface-dim) 30%, transparent);
+  }
+
+  .concierge-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-gold);
+    border-radius: 4px;
+  }
+
+  .typing-dot {
+    animation: typing-bounce 1.2s infinite ease-in-out;
+  }
+
+  .typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+}
+
+@keyframes typing-bounce {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  40% {
+    transform: translateY(-4px);
+    opacity: 1;
   }
 }
 

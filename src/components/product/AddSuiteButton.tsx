@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { IMG } from "@/lib/catalog";
 import { actions } from "@/lib/store";
+import { Icon } from "../Icon";
 
 export function AddSuiteButton() {
   const [added, setAdded] = useState(false);
@@ -15,32 +16,33 @@ export function AddSuiteButton() {
 
   return (
     <button
-      className={`text-on-primary font-label-md text-label-md uppercase tracking-wider px-space-lg py-3 rounded-lg shadow-sm transition-all ${
+      className={`w-full text-on-primary py-4 px-6 flex items-center justify-center gap-3 text-label-md font-label-md uppercase tracking-eyebrow transition-all duration-200 active:scale-95 shadow-md ${
         added ? "bg-secondary" : "bg-primary hover:bg-primary-container"
       }`}
       type="button"
+      aria-live="polite"
       onClick={() => {
         actions.addItem({
           productId: "highlands-suite",
-          name: "The Highlands Canine Suite",
+          name: "Highland Field Trio",
           collection: "The Canine Collection",
-          image: `${IMG}AB6AXuAbW8dZZLjSz5ifIDhNq4ZqbS5jl6Xl0GaQC5OejDPqgNlnNs09o-xeDb0Z3uAIfQZoJUu12raccT1Vq5WGdZx_f7zmym3LdOyyJmKAdQOUC1OvTATD6e7ihJ0ndlDUeH05t5g3OcLePhw087sJJccr6fi5VSvc4fJSquGftN1pDNWq0v3ifSROZ3PZRak4IqKQHdpejQCYFVlnUSAIaO06Yy3H2vnv5EaCYKFdGS-T_CMOXwaIzuzY`,
-          imageAlt: "Highlands Ergonomic Harness in saddle cognac leather",
+          image: `${IMG}AB6AXuANdt3JKzJmR25y6EBz5ehmbVUoybFzINOyBjNpqa98WqdxFpWaXGewmAL2Y9C_ZiqSHptW9fqrv7ejwbItzjOJDlAilht5ekIY_WScdmgCPcROeB2lQt5cRk7Ubn59W-rg1rr3Bppzs5LhdF2XipdEBRz_IHS3pgebqu-SRdg_LDrKvbdsuE6MlXI7mlLaBbAv-zYymJhNVamA703VYq8TmU4rdnz5nVYRpSVwnASYZhfxa5x-vSb4`,
+          imageAlt: "Cognac tan leather dog harness on a warm limestone studio background",
           priceUsd: 260,
           priceGbp: 210,
           material: "Bundle • Save $35",
-          badge: { label: "Curated Suite", tone: "accent" },
           details: [
-            { label: "Harness", value: "Ergonomic, Cognac Tan" },
+            { label: "Harness", value: "Highlands, Cognac Tan" },
             { label: "Lead", value: "Highlands 6ft" },
-            { label: "Pouch", value: "Leather Carrier" },
+            { label: "Pouch", value: "Carrier Pouch" },
             { label: "Hardware", value: "Solid Brass" },
           ],
         });
         setAdded(true);
       }}
     >
-      {added ? "Suite Added to Bag" : "Add Complete Suite"}
+      <Icon name={added ? "check_circle" : "inventory_2"} className="text-[18px]" />
+      <span>{added ? "Suite Added to Satchel" : "Add Complete Suite • $260"}</span>
     </button>
   );
 }
