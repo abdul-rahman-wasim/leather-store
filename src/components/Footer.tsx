@@ -12,12 +12,12 @@ const PROMISES = [
   {
     icon: "hardware",
     title: "Hand-Stitched Guarantee",
-    text: "Traditional two-needle saddle stitching backed by our lifetime warranty.",
+    text: "Traditional two-needle saddle stitching backed by our bespoke craftsmanship guarantee.",
   },
   {
     icon: "published_with_changes",
     title: "30-Day Bespoke Exchange",
-    text: "Free courier collection across the United States, UK, and Scotland.",
+    text: "Free delivery and courier returns across the United States, UK, and Scotland.",
   },
 ];
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useEffect, useRef, useState } from "react";
-import { CONCIERGE_AVATAR_SRC, HARNESS_SLUG, PRODUCTS, formatPrice } from "@/lib/catalog";
+import { HARNESS_SLUG, LEATHER_FINISHES, PRODUCTS, formatPrice } from "@/lib/catalog";
 import { actions, useStore } from "@/lib/store";
 import { Icon } from "./Icon";
 
@@ -13,7 +13,13 @@ type MessageBody =
 
 type Message = MessageBody & { id: number };
 
-const ARTISAN = "Alistair Finch-Hatton";
+const ASSISTANT = "Atelier Concierge AI";
+const OPEN_EVENT = "concierge:open";
+
+/** Opens the concierge panel from anywhere on the page */
+export function openConcierge() {
+  window.dispatchEvent(new Event(OPEN_EVENT));
+}
 
 const QUICK_PROMPTS = [
   { icon: "pets", text: "Dog Sizing Calculator" },
@@ -47,31 +53,10 @@ function replyTo(query: string): Card | string {
   );
 }
 
-/** Current UTC time as "HH:MM GMT". Null until mounted, so server and client markup match. */
-function useGmtClock() {
-  const [time, setTime] = useState<string | null>(null);
-
-  useEffect(() => {
-    const pad = (n: number) => String(n).padStart(2, "0");
-    const tick = () => {
-      const now = new Date();
-      setTime(`${pad(now.getUTCHours())}:${pad(now.getUTCMinutes())} GMT`);
-    };
-    const first = setTimeout(tick, 0);
-    const id = setInterval(tick, 30000);
-    return () => {
-      clearTimeout(first);
-      clearInterval(id);
-    };
-  }, []);
-
-  return time ?? "--:-- GMT";
-}
-
 function ArtisanAvatar() {
   return (
-    <div className="w-8 h-8 rounded-full bg-primary-container text-secondary-container shrink-0 flex items-center justify-center text-[10px] font-headline border border-gold/50 mt-1 shadow-sm">
-      AF
+    <div className="w-8 h-8 rounded-full bg-primary-container text-secondary-container shrink-0 flex items-center justify-center text-[10px] font-headline font-semibold border border-gold/50 mt-1 shadow-sm">
+      VH
     </div>
   );
 }
@@ -82,7 +67,7 @@ function ArtisanMessage({ role, children }: { role: string; children: ReactNode 
       <ArtisanAvatar />
       <div className="space-y-1.5 w-full min-w-0">
         <div className="flex items-center gap-2">
-          <span className="text-[10px] text-on-surface font-semibold">{ARTISAN}</span>
+          <span className="text-[10px] text-on-surface font-semibold">{ASSISTANT}</span>
           <span className="text-[9px] text-secondary uppercase tracking-wider font-medium">{role}</span>
         </div>
         {children}
@@ -92,7 +77,6 @@ function ArtisanMessage({ role, children }: { role: string; children: ReactNode 
 }
 
 const HARNESS = PRODUCTS.find((p) => p.href === `/products/${HARNESS_SLUG}`)!;
-const HARNESS_SHADES = ["Cognac Saddle Tan", "Espresso Tuscan Hide", "Highland Forest Bark"];
 
 function HarnessCard() {
   const [shade, setShade] = useState(0);
@@ -109,7 +93,7 @@ function HarnessCard() {
       priceGbp: HARNESS.priceGbp,
       material: HARNESS.material,
       details: [
-        { label: "Harness Shade", value: HARNESS_SHADES[shade] },
+        { label: "Harness Shade", value: LEATHER_FINISHES[shade].name },
         { label: "Dimension", value: "Large (28-36 in)" },
       ],
     });
@@ -134,23 +118,23 @@ function HarnessCard() {
       <div className="bg-surface-container-low p-2.5 rounded-lg border border-outline-variant/50 space-y-1.5">
         <div className="flex items-center justify-between gap-2 text-[10px]">
           <span className="text-on-surface-variant uppercase tracking-wider font-semibold">Tanned Leather:</span>
-          <span className="font-medium text-primary">{HARNESS_SHADES[shade]}</span>
+          <span className="font-medium text-primary">{LEATHER_FINISHES[shade].name}</span>
         </div>
         <div className="flex items-center gap-3 pt-1" role="radiogroup" aria-label="Tanned leather">
-          {HARNESS.swatches.map((hex, i) => (
+          {LEATHER_FINISHES.map((f, i) => (
             <button
-              key={hex}
+              key={f.name}
               role="radio"
               aria-checked={i === shade}
-              title={HARNESS_SHADES[i]}
+              title={f.name}
               className={`w-6 h-6 rounded-full shadow-sm transition-all ${
                 i === shade ? "ring-2 ring-secondary scale-110" : "hover:scale-105"
               }`}
-              style={{ backgroundColor: hex }}
+              style={{ backgroundColor: f.hex }}
               type="button"
               onClick={() => setShade(i)}
             >
-              <span className="sr-only">{HARNESS_SHADES[i]}</span>
+              <span className="sr-only">{f.name}</span>
             </button>
           ))}
         </div>
@@ -250,7 +234,6 @@ export function Concierge() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [draft, setDraft] = useState("");
   const [typing, setTyping] = useState(false);
-  const clock = useGmtClock();
   const streamRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -258,6 +241,12 @@ export function Concierge() {
   const replyTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => () => clearTimeout(replyTimer.current), []);
+
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener(OPEN_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_EVENT, onOpen);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -321,8 +310,8 @@ export function Concierge() {
             <div className="flex items-center gap-3.5 min-w-0">
               <div className="relative shrink-0">
                 <div className="w-12 h-12 rounded-full p-0.5 bg-linear-to-br from-secondary-container via-gold to-secondary shadow-lg">
-                  <div className="w-full h-full rounded-full bg-primary-container overflow-hidden border border-primary">
-                    <img className="w-full h-full object-cover" alt="Portrait of Alistair Finch-Hatton, master leatherwright" src={CONCIERGE_AVATAR_SRC} />
+                  <div className="w-full h-full rounded-full bg-primary-container border border-primary flex items-center justify-center text-secondary-container font-headline text-base font-semibold">
+                    VH
                   </div>
                 </div>
                 <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-secondary-container border-2 border-primary flex items-center justify-center shadow-xs">
@@ -331,18 +320,18 @@ export function Concierge() {
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <h2 className="font-headline text-[17px] text-surface leading-tight font-normal">{ARTISAN}</h2>
-                  <Icon name="verified" className="text-[15px] text-secondary-container" />
+                  <h2 className="font-headline text-[17px] text-surface leading-tight font-normal">Atelier Concierge</h2>
+                  <Icon name="smart_toy" className="text-[15px] text-secondary-container" />
                 </div>
                 <p className="text-[10px] tracking-eyebrow uppercase text-secondary-container font-semibold mt-0.5">
-                  Master Leatherwright &amp; Sizing Specialist
+                  Virtual Atelier Assistant • Sizing &amp; Delivery Guide
                 </p>
                 <div className="flex flex-wrap items-center gap-2 mt-1 text-[9px] text-surface-dim/85">
                   <span className="inline-flex items-center gap-1 bg-primary-container px-2 py-0.5 rounded-full border border-secondary/40">
                     <span className="w-1.5 h-1.5 rounded-full bg-secondary-container inline-block animate-pulse" />
-                    <span className="tabular-nums">Edinburgh Bench • {clock}</span>
+                    <span>Virtual Assistant • Online</span>
                   </span>
-                  <span className="text-secondary-container/80 font-medium">No. 14 Savile Row</span>
+                  <span className="text-secondary-container/80 font-medium">London &amp; Edinburgh</span>
                 </div>
               </div>
             </div>
@@ -368,7 +357,7 @@ export function Concierge() {
           <div className="mt-3 pt-2.5 border-t border-secondary/30 flex items-center justify-between gap-2 text-[10px]">
             <span className="text-surface-dim/80 font-light flex items-center gap-1">
               <Icon name="deskphone" className="text-[13px] text-secondary-container" />
-              Need phone fitting guidance?
+              Need human tailor fitting guidance?
             </span>
             <button
               className="text-secondary-container hover:text-surface uppercase tracking-wider text-[9px] font-semibold underline underline-offset-2 transition-colors"
@@ -376,7 +365,7 @@ export function Concierge() {
               onClick={() =>
                 push({
                   kind: "notice",
-                  text: "Callback request logged. Alistair's assistant will contact you within 2 business hours.",
+                  text: "Callback request logged. A workshop tailor will contact you within 2 business hours.",
                 })
               }
             >
@@ -396,16 +385,13 @@ export function Concierge() {
             </span>
           </div>
 
-          <ArtisanMessage role="Head Cutter">
+          <ArtisanMessage role="Virtual Guide">
             <div className="bg-surface-container-lowest saddle-stitch text-on-surface p-4 rounded-2xl rounded-tl-sm shadow-sm leading-relaxed">
               <p className="mb-2">
-                Good day. I am currently at the Edinburgh bench inspecting our newest lot of Tuscan vegetable-tanned hides
-                and bridle leathers.
+                Welcome to Velluto &amp; Hide. I am the Atelier Virtual Concierge, here to assist you with canine harness
+                sizing, complimentary monogramming, and our free tracked delivery to the US, UK, and Scotland.
               </p>
-              <p className="text-on-surface-variant font-light">
-                I can calculate bespoke sizing for your hound&apos;s harness, confirm US/UK tracked courier transit, or
-                arrange traditional blind debossing with your estate initials.
-              </p>
+              <p className="text-on-surface-variant font-light">How may I assist your bespoke inquiry today?</p>
             </div>
           </ArtisanMessage>
 
@@ -443,7 +429,7 @@ export function Concierge() {
                 );
               case "artisan":
                 return (
-                  <ArtisanMessage key={m.id} role="Head Cutter">
+                  <ArtisanMessage key={m.id} role="Virtual Guide">
                     <div className="bg-surface-container-lowest saddle-stitch p-3.5 rounded-2xl rounded-tl-sm shadow-sm leading-relaxed text-on-surface font-light">
                       {m.text}
                     </div>
@@ -489,9 +475,9 @@ export function Concierge() {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-[11px] font-medium text-on-surface">
-                    Alistair is consulting the Edinburgh workbench ledger...
+                    Atelier Concierge is checking details...
                   </span>
-                  <span className="text-[9px] text-secondary font-light">Cross-referencing hide lots &amp; courier routes</span>
+                  <span className="text-[9px] text-secondary font-light">Searching atelier sizing guide &amp; courier routes</span>
                 </div>
               </div>
             </div>
@@ -533,7 +519,7 @@ export function Concierge() {
               aria-label="Message the atelier"
               autoComplete="off"
               className="flex-1 min-w-0 bg-surface-container-lowest border border-outline-variant rounded-full px-4 py-2.5 text-xs text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/30 placeholder:text-on-surface-variant/60 shadow-inner"
-              placeholder="Ask Alistair about harness fits, boots, or shipping..."
+              placeholder="Ask about harness fits, boots, or shipping..."
               type="text"
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
@@ -583,11 +569,11 @@ export function Concierge() {
             <span className="flex items-center gap-2">
               <span className="font-headline text-[13px] text-surface tracking-wide font-medium">Atelier Concierge</span>
               <span className="bg-secondary/60 text-secondary-container border border-secondary-container/30 text-[8px] uppercase tracking-wider px-1.5 rounded font-semibold">
-                Live Bench
+                Online
               </span>
             </span>
-            <span className="text-[9.5px] text-surface-dim/90 mt-0.5 font-light tabular-nums">
-              Master Leatherwright Available • Edinburgh ({clock})
+            <span className="text-[9.5px] text-surface-dim/90 mt-0.5 font-light">
+              Atelier Concierge • Virtual Sizing Assistant
             </span>
           </span>
           <span className="w-6 h-6 rounded-full bg-primary-container border border-gold/40 flex items-center justify-center text-secondary-container group-hover:translate-x-0.5 transition-transform shrink-0">

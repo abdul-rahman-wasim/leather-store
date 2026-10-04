@@ -1,14 +1,17 @@
 import Link from "next/link";
 import { Icon, Stars } from "@/components/Icon";
+import { ShippingCalculator } from "@/components/home/ShippingCalculator";
+import { SizingAssistant } from "@/components/home/SizingAssistant";
 import { WaitlistForm } from "@/components/home/WaitlistForm";
-import { IMG } from "@/lib/catalog";
+import { HARNESS_SLUG, IMG, LEATHER_FINISHES } from "@/lib/catalog";
 
 const HERO_IMG = `${IMG}AB6AXuDgaIgUltyX9WIw1EsfhtDXu5vFrXYz-_Gabh0PApS-x453to42xs6gc6kublziMWbtMBaR3Gd2G5Iu3Q9uKqixA4UiEVCo8vz5on0EvF2Bd6sDfKsM0_r-bCxmuG0SYRpGFDmt-0XAcalTv_swRVRVuggjIG8HL-2w8ZP-zF4z_IuZIURJ_6vjZM1KcmLGdqcMgunsHomHf98KqqC3OWhyakPcNodB2CLwqETeyHyEDVrPgxBL6NuT`;
 
 const PILLARS = [
   {
     title: "Hand-Welted Footwear",
-    price: "From $390 • £310",
+    badge: "Made-To-Order Lasts",
+    price: "From $390 / £310",
     image: `${IMG}AB6AXuDLnRgKa78yn3UhiBN2nC4wNczlcaa0QL-EWObgFm063tfJYalJjOYT_kqVwEu36kIjQBn4ubILeV3JrNSo0QOywvoCCmLEVZ4W1OCczKw15EHit08yZwPcG35VDwA8i7oPu1J29dNbnMNElLHq_Fi4urYT909CRGG5lbSZKi5nkcQYxLkp9ffDFO70C4HRfnXbIYLiaYGORGhaZa3rnRXDo3FMUCvGlxAU6LFsoHw0dzmZe3xIW5sP`,
     alt: "Cognac leather oxford and Chelsea boot with visible Goodyear welt stitching on an oak floor",
     text: "Derbys, Belgian Loafers, and Scottish Balmoral Boots. Channel-carved oak-bark outsoles and French calf uppers contoured to mold to your gait.",
@@ -22,7 +25,8 @@ const PILLARS = [
   },
   {
     title: "The Canine Collection",
-    price: "From $145 • £115",
+    badge: "Custom Anatomical Sizing",
+    price: "From $145 / £115",
     image: `${IMG}AB6AXuCjp1yyAQjqG3l7TZRzmYwTLZVEg-5SWzq3MAZY2LtilfhkF6_v6NdhreY6OQhUQJmmq2pVn10Rt1foSnqRi5VTTwVUNhUK_YBFj8Oljg__ifOY4o67Z3uZtYO-O3vcuiHlaezYek120YlrgiWduZr8-iaIqNElrWqnQ4NZL0rMrUKadZsTOPXpuV6B38Tv0m86VJcDAm1lwl4SK7zbfzyXJ2GQaLeJcc0r2U7DpN9yFE6DP6U9xxVj`,
     alt: "Sporting dog wearing a saddle cognac bridle leather harness with brass hardware in a manor library",
     text: "Ergonomic English bridle leather harness engineered to remove throat strain. Padded calfskin sternum shield and sand-cast solid English brass hardware.",
@@ -31,12 +35,14 @@ const PILLARS = [
       "Anatomical Y-frame for natural shoulder extension",
       "Complimentary blind deboss monogramming",
     ],
-    cta: "Explore Canine Gear",
-    href: "/shop/canine",
+    cta: "Configure Sizing",
+    href: `/products/${HARNESS_SLUG}`,
   },
   {
     title: "Bespoke Outerwear",
-    price: "From $890 • £720",
+    badge: "100% Bespoke Custom Fit",
+    featured: true,
+    price: "From $890 / £720",
     image: `${IMG}AB6AXuAC1oPjK--7I65-R9WRfIsDTlBGNE7oE9uiWd2lYE_vpG-0z-kxZraDWjjIQIUV9qbfPAjNARhF86piistia2oJkI4MVqYQD2ZW8qRe4GfghwiZtMGN1-58yq1rNnP054bsHMAXbF-orQJsXXP3T1o6RvpfV00_agHVJIroTJAXxXhVBHrl94CliHJvKwSqvYoTSsdBbv08YFNHVHFd1YwiEK9O1ljyh3FdkwHNqE3hTVZJFVFff2wo`,
     alt: "Bespoke umber lambskin aviator jacket with shearling collar on a mahogany valet stand",
     text: "Full-grain Tuscan calfskin and Scottish lambskin aviator and café jackets. Individually hand-cut per patron and lined with pure natural cupro and heritage silk.",
@@ -45,15 +51,9 @@ const PILLARS = [
       "Solid brass Swiss Riri antiqued closures",
       "Includes atelier or virtual fitting consultation",
     ],
-    cta: "Commission Outerwear",
+    cta: "Commission Bespoke",
     href: "/shop/jackets",
   },
-];
-
-const HUBS = [
-  { region: "United Kingdom", title: "Next Business Day", note: "Royal Mail Special Tracked • Free over £100" },
-  { region: "Scotland & Edinburgh", title: "1–2 Days Tracked", note: "Local New Town pickup or direct dispatch" },
-  { region: "United States", title: "2–3 Days Priority", note: "DHL Express Air • US Tariffs Pre-cleared" },
 ];
 
 const UPCOMING = [
@@ -83,7 +83,7 @@ const UPCOMING = [
 const STORIES = [
   {
     place: "Santa Croce Sull’Arno",
-    title: "Tuscan Vegetable Tanning",
+    title: "Traditional Vegetable Tanning",
     text: "Hides steeped in mimosa and chestnut barks within centuries-old vats. Zero synthetic chromium salts, guaranteeing an earthy bouquet and golden patina over time.",
     footnote: "60 Days Natural Immersion",
     image: `${IMG}AB6AXuADAfE0EL_wrWp2lfY0MurvOwRrwwRyETC-gq6w_mH1MVwQJHO5KaiAEEuPZ2rvctzHfp4VgtI-lepTYYKtAPgWxkjvDrDYEwFqkwb2P2kQhzwB8TTniRQXzdGvqtyF-9NIBaespU9t03flNUzdnmUAdZQ9bKWIEo-N_T_l7K5bmEySNBhHF-7n310ixko89QRkY1ZEET4BUmtKB4UKwoS33sdDqOPGv1RRe6Mh6n1K-yaEv6Rtaq2h`,
@@ -93,7 +93,7 @@ const STORIES = [
     place: "Edinburgh & Mayfair",
     title: "Two-Needle Saddle Stitch",
     text: "Every critical tension seam on harnesses, footwear, and sleeves is sewn completely by hand with beeswaxed linen thread. It will never unravel if a single strand is cut.",
-    footnote: "Atelier Lifetime Guarantee",
+    footnote: "Bespoke Craftsmanship Guarantee",
     image: `${IMG}AB6AXuAWU2Bk-NbGiVBXW0-Dw9Nka-Og9TKSYCwDFQupFWedbAAM7ZKKOfjAzE8TxfhxV5A4lvvTrmEHlOS-FN2xzapz8NMSkn78LhQvPKhgjolfV8GLwqxfPgWcep8xTPrc60zDUtx5jZKLf6UJfX8SY13aZhI8ncKo49Y3rF4PliWzkBHGfz_nwhLodxm5cZmd7O9xa74d5_uOwkgITYg9X-AOMougV_9Ipgxmx-9py_0j91PVVyY0YEpK`,
     alt: "Two-needle hand saddle stitching with waxed linen thread on saddle brown leather",
   },
@@ -112,19 +112,25 @@ const REVIEWS = [
     quote: "“The harness transformed our Highland hill walks.”",
     body: "“My Gordon Setter would pull relentlessly until we switched to the chest-plate harness. The leather has developed the richest dark mahogany glow from Scottish mist and rain.”",
     name: "Hamish MacIntyre",
-    meta: "Edinburgh • The Canine Harness",
+    meta: "Custom Highlands Harness • Edinburgh",
+    commission: "Bespoke Commission #082",
+    item: { icon: "pets", label: "Item: Highland Bridle Harness • Cognac • Size L" },
   },
   {
     quote: "“Equal to the finest houses of Mayfair.”",
     body: "“I ordered the bespoke aviator jacket in cognac Tuscan lambskin. Delivered via hand courier to Chelsea in under 24 hours from final inspection. The drape and Riri zippers are utterly peerless.”",
     name: "Alastair Finch-Hatton",
-    meta: "Mayfair, London • Bespoke Aviator",
+    meta: "Bespoke Aviator Jacket • Mayfair",
+    commission: "Bespoke Commission #114",
+    item: { icon: "checkroom", label: "Item: Bespoke Lambskin Aviator • Hand Courier" },
   },
   {
     quote: "“New York to London seamlessly delivered.”",
     body: "“The Balmoral Boots landed in Manhattan just three days after dispatch with all US duties cleared. The cork insole conformed to my foot within a weekend. The most solid boot in my wardrobe.”",
     name: "Eleanor Vance",
-    meta: "Manhattan, NY • Balmoral Boots",
+    meta: "Made-to-Measure Balmoral Boots • Manhattan",
+    commission: "Bespoke Commission #059",
+    item: { icon: "flight_land", label: "Item: Balmoral Boots US 8.5 • DDP Manhattan" },
   },
 ];
 
@@ -151,29 +157,33 @@ export default function Home() {
           <div className="max-w-3xl">
             <p className="text-xs font-semibold tracking-eyebrow uppercase text-surface/80 mb-6 flex items-center gap-2">
               <span className="inline-block w-4 h-px bg-secondary-container" />
-              Savile Row • Edinburgh New Town
+              Savile Row &amp; Edinburgh • Bespoke British Leathercraft • Made to Measure
             </p>
             <h1 className="font-headline text-5xl sm:text-6xl lg:text-7xl font-normal leading-[1.08] tracking-tight text-surface-bright mb-8">
               The Art of <br />
               <span className="italic font-normal text-secondary-container">Handcrafted</span> Grain.
             </h1>
-            <p className="text-base sm:text-lg text-surface-container-high/90 max-w-xl font-light leading-relaxed mb-12">
+            <p className="text-base sm:text-lg text-surface-container-high/90 max-w-xl font-light leading-relaxed mb-4">
+              Bespoke &amp; Made-To-Order: Each piece is custom cut, hand-stitched, and anatomically drafted to individual
+              patron specifications — unhurried, enduring, and never off-the-rack.
+            </p>
+            <p className="text-xs sm:text-sm text-surface-container-high/70 max-w-xl font-light leading-relaxed mb-10">
               Full-grain vegetable-tanned leather footwear, bespoke outerwear, and luxury canine harnesses. Hand-stitched
               with unhurried devotion to endure generations.
             </p>
             <div className="flex flex-wrap items-center gap-5">
               <Link className={`${LIGHT_BUTTON} shadow-xl`} href="/shop">
-                Explore Collection
+                Explore Atelier Collection
               </Link>
-              <Link className={GHOST_BUTTON} href="/shop/canine">
-                The Canine Edit
+              <Link className={GHOST_BUTTON} href="/shop/jackets">
+                Discover Custom Made-To-Order
               </Link>
             </div>
             <div className="mt-16 pt-8 border-t border-surface/15 flex flex-wrap items-center gap-8 md:gap-12 text-xs font-medium text-surface/75 tracking-wider uppercase">
               {[
-                ["verified", "Tuscan Tannery Hides"],
-                ["local_shipping", "Tracked Delivery: US, UK & Scotland"],
-                ["all_inclusive", "Lifetime Atelier Warranty"],
+                ["verified", "Artisan Bench Handcrafted"],
+                ["local_shipping", "Free Tracked Delivery: US, UK & Scotland"],
+                ["published_with_changes", "30-Day Bespoke Exchanges"],
               ].map(([icon, label]) => (
                 <div key={label} className="flex items-center gap-2">
                   <Icon name={icon} className="text-[16px] text-secondary-container" />
@@ -209,6 +219,13 @@ export default function Home() {
                     alt={p.alt}
                     src={p.image}
                   />
+                  <div
+                    className={`absolute top-4 left-4 text-surface text-[10px] tracking-eyebrow font-semibold uppercase px-3 py-1 rounded-sm backdrop-blur-md border ${
+                      p.featured ? "bg-secondary border-secondary-container/50 shadow-sm" : "bg-primary/90 border-gold/40"
+                    }`}
+                  >
+                    {p.badge}
+                  </div>
                   <div className="absolute bottom-4 right-4 bg-surface/90 backdrop-blur-md px-3.5 py-1.5 rounded-sm border border-outline-variant/20 shadow-sm">
                     <span className="text-xs font-semibold text-primary tracking-wider">{p.price}</span>
                   </div>
@@ -217,7 +234,23 @@ export default function Home() {
                   <h3 className="font-headline text-2xl text-on-surface group-hover:text-secondary transition-colors mb-2">
                     {p.title}
                   </h3>
-                  <p className="text-on-surface-variant text-sm font-light leading-relaxed mb-6">{p.text}</p>
+                  <p className="text-on-surface-variant text-sm font-light leading-relaxed mb-4">{p.text}</p>
+                  <div className="flex flex-wrap items-center gap-2 mb-4">
+                    <span className="text-[10px] uppercase font-semibold text-secondary tracking-wider">Finishes:</span>
+                    <div className="flex items-center gap-1.5">
+                      {LEATHER_FINISHES.map((f) => (
+                        <span
+                          key={f.name}
+                          className="w-3.5 h-3.5 rounded-full border border-outline-variant/40"
+                          style={{ backgroundColor: f.hex }}
+                          title={f.name}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-[10px] text-on-surface-variant font-light">
+                      ({LEATHER_FINISHES.map((f) => f.short).join(", ")})
+                    </span>
+                  </div>
                   <ul className="space-y-2.5 text-xs text-on-surface-variant font-medium pt-2 border-t border-outline-variant/20">
                     {p.points.map((pt) => (
                       <li key={pt} className="flex items-center gap-2">
@@ -242,28 +275,22 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="shipping" className="border-y border-outline-variant/25 bg-surface-container-low py-16 w-full scroll-mt-28">
+      <section
+        id="shipping"
+        className="border-y border-outline-variant/60 bg-surface-container-high/90 py-24 w-full shadow-inner scroll-mt-28"
+      >
         <div className={CONTAINER}>
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
-            <div className="max-w-md">
-              <span className={`${EYEBROW} mb-1`}>Direct From The Workbench</span>
-              <h3 className="font-headline text-2xl sm:text-3xl text-on-surface font-normal">Express Regional Courier</h3>
-              <p className="text-on-surface-variant text-sm font-light mt-2 leading-relaxed">
-                All import duties covered. Fully insured white-glove transport to the United States, United Kingdom, and
-                Scotland.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 lg:gap-12 flex-1 lg:max-w-3xl">
-              {HUBS.map((h) => (
-                <div key={h.region} className="border-l border-outline-variant/40 pl-5">
-                  <span className="text-[11px] font-semibold uppercase tracking-eyebrow text-secondary block mb-1">
-                    {h.region}
-                  </span>
-                  <p className="font-headline text-xl text-on-surface">{h.title}</p>
-                  <p className="text-xs text-on-surface-variant font-light mt-1">{h.note}</p>
-                </div>
-              ))}
-            </div>
+          <div className="mb-12 max-w-2xl">
+            <span className={`${EYEBROW} mb-2`}>Atelier Dispatch &amp; Tailoring Utilities</span>
+            <h3 className="font-headline text-3xl text-on-surface font-normal">Shipping Calculator &amp; Sizing Assistant</h3>
+            <p className="text-on-surface-variant text-sm font-light mt-2 leading-relaxed">
+              Calculate guaranteed duty-precleared transit times and review anatomical measurement benchmarks before
+              commissioning your piece.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <ShippingCalculator />
+            <SizingAssistant />
           </div>
         </div>
       </section>
@@ -373,12 +400,25 @@ export default function Home() {
           {REVIEWS.map((r) => (
             <div
               key={r.name}
-              className="p-8 bg-surface-container-lowest rounded-lg border border-outline-variant/25 flex flex-col justify-between hover:shadow-md transition-shadow"
+              className="relative p-8 bg-surface-container-lowest rounded-lg border border-outline-variant/30 flex flex-col justify-between hover:shadow-lg transition-all duration-300"
             >
+              <div className="absolute -top-3 right-6 bg-primary text-secondary-container text-[9.5px] tracking-wider uppercase font-semibold px-3 py-0.5 rounded-full border border-gold/40 shadow-xs flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-secondary-container" />
+                <span>{r.commission}</span>
+              </div>
               <div>
-                <Stars className="mb-4" />
+                <div className="flex items-center justify-between gap-2 mb-4">
+                  <Stars />
+                  <span className="text-[9px] uppercase tracking-wider font-semibold text-secondary bg-surface-container px-2.5 py-0.5 rounded border border-outline-variant">
+                    Verified Patron
+                  </span>
+                </div>
                 <p className="font-headline text-lg text-on-surface mb-3">{r.quote}</p>
                 <p className="text-xs sm:text-sm text-on-surface-variant font-light italic leading-relaxed mb-6">{r.body}</p>
+                <div className="flex items-center gap-2 mb-4 bg-surface-container-low px-3 py-2 rounded border border-outline-variant/20 text-[11px] text-on-surface-variant font-light">
+                  <Icon name={r.item.icon} className="text-[15px] text-secondary" />
+                  <span>{r.item.label}</span>
+                </div>
               </div>
               <div className="pt-4 border-t border-outline-variant/20 flex items-center justify-between">
                 <div>
