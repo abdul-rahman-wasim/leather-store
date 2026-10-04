@@ -5,6 +5,8 @@ export const IMG = "https://lh3.googleusercontent.com/aida-public/";
 
 export const LOGO_SRC = `${IMG}AB6AXuB_qNej77SyKxQkRyf_Ktk8M3bYzpAO_X23AYZyPoDPP2A2Y7HPskLHfvqVaipp4vTUeIGJ3oXAU8spBuq7DPwmmmH529DeiT-NVaS27FweZuY2Us6z7We1znBXgCU1JwogF5XbEl5XnRHwMjRNVdyjoXWWUGhBRyY2ZFoRDJgyz9zf-s-yY6Xs4zRc8b4wPsQQoQgi1ms4AYSwDu9FdLQDqRXPhuFZCEG7QCK2WkGsYA2BjCQA4QVL`;
 
+export const CONCIERGE_AVATAR_SRC = `${IMG}AB6AXuBp64GI5LdCB5i_qp3jdH7viQvc3A_SRfdY3arcefSB4YdSve8jtaHVNwgomBIAaXY5I_Kc6F6OXRI2-Mvz3tC22Bmh9QsH9YZC7tBogJ8UN5Mbm7WxdKC1g4dfwadkOOpBfo7-fEa0kMStQNjz-a49dX6HnGQ6tsfGU53vcoO7ypB3BxbjqoD6nVGbddaiC8eGNv2-ahnhocJ8CgECEbHx_fMpGg9Zs1Q5EpI-6QcPm20BCwuytdSN`;
+
 export const HARNESS_SLUG = "highlands-ergonomic-harness";
 
 export function formatPrice(usd: number, gbp: number, currency: Currency) {
