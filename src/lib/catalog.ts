@@ -3,13 +3,138 @@ export type Currency = "USD" | "GBP";
 
 export const IMG = "https://lh3.googleusercontent.com/aida-public/";
 
-export const LOGO_SRC = `${IMG}AB6AXuB_qNej77SyKxQkRyf_Ktk8M3bYzpAO_X23AYZyPoDPP2A2Y7HPskLHfvqVaipp4vTUeIGJ3oXAU8spBuq7DPwmmmH529DeiT-NVaS27FweZuY2Us6z7We1znBXgCU1JwogF5XbEl5XnRHwMjRNVdyjoXWWUGhBRyY2ZFoRDJgyz9zf-s-yY6Xs4zRc8b4wPsQQoQgi1ms4AYSwDu9FdLQDqRXPhuFZCEG7QCK2WkGsYA2BjCQA4QVL`;
+export const LOGO_SRC = "/vale-rawat-logo.svg";
 
-/** Signature hide finishes offered across footwear, canine and outerwear */
-export const LEATHER_FINISHES = [
-  { name: "Cognac Saddle Tan", short: "Cognac", hex: "#80471c" },
-  { name: "Espresso Tuscan Hide", short: "Espresso", hex: "#2a1b15" },
-  { name: "Highland Forest Bark", short: "Forest Bark", hex: "#2e3b2e" },
+export const BRAND = "Vale & Rawat";
+
+/** Islamabad export office contact points */
+export const TRADE_DESK = {
+  phone: "+92 (51) 844-7900",
+  tel: "tel:+92518447900",
+  whatsapp: "https://wa.me/92518447900",
+  email: "export@valerawat.com",
+  address: "Plot 144, Sector I-9/2, Industrial Estate, Islamabad, 44000, Pakistan",
+};
+
+export const LOOKBOOK_MESSAGE = `2026 Contract Lookbook requested — the export desk will email the PDF from ${TRADE_DESK.email}`;
+
+export type ContractArticle = {
+  code: string;
+  name: string;
+  division: string;
+  description: string;
+  moq: number;
+  unit: string;
+  image: string;
+  imageAlt: string;
+  specs: [label: string, value: string][];
+  sample: string;
+};
+
+/** OEM / private-label contract lines offered to trade buyers */
+export const CONTRACT_ARTICLES: ContractArticle[] = [
+  {
+    code: "VR-101",
+    name: "Goodyear Welted Boots & Derbys",
+    division: "Footwear Division",
+    description:
+      "Hand-lasted French calf uppers, 360° Goodyear storm welt, channel-carved oak bark soles, and natural granulated cork footbed filler.",
+    moq: 25,
+    unit: "Pairs",
+    image: `${IMG}AB6AXuDLnRgKa78yn3UhiBN2nC4wNczlcaa0QL-EWObgFm063tfJYalJjOYT_kqVwEu36kIjQBn4ubILeV3JrNSo0QOywvoCCmLEVZ4W1OCczKw15EHit08yZwPcG35VDwA8i7oPu1J29dNbnMNElLHq_Fi4urYT909CRGG5lbSZKi5nkcQYxLkp9ffDFO70C4HRfnXbIYLiaYGORGhaZa3rnRXDo3FMUCvGlxAU6LFsoHw0dzmZe3xIW5sP`,
+    imageAlt: "Cognac leather oxford and Chelsea boot with visible Goodyear welt stitching on an oak floor",
+    specs: [
+      ["Sample Lead Time", "12–14 Business Days"],
+      ["Production Lead Time", "35–45 Days (Batch)"],
+      ["Private Branding", "Embossed Sockliner & Custom Last"],
+    ],
+    sample: "Footwear Hides",
+  },
+  {
+    code: "VR-204",
+    name: "Canine Ergonomic Y-Harness",
+    division: "K-9 & Tack",
+    description:
+      "Heavyweight Sedgwick-tanned English bridle leather, padded lambskin sternum guard, and solid sand-cast English brass hardware rated to 450 kg pull.",
+    moq: 50,
+    unit: "Units",
+    image: `${IMG}AB6AXuCjp1yyAQjqG3l7TZRzmYwTLZVEg-5SWzq3MAZY2LtilfhkF6_v6NdhreY6OQhUQJmmq2pVn10Rt1foSnqRi5VTTwVUNhUK_YBFj8Oljg__ifOY4o67Z3uZtYO-O3vcuiHlaezYek120YlrgiWduZr8-iaIqNElrWqnQ4NZL0rMrUKadZsTOPXpuV6B38Tv0m86VJcDAm1lwl4SK7zbfzyXJ2GQaLeJcc0r2U7DpN9yFE6DP6U9xxVj`,
+    imageAlt: "Sporting dog wearing a saddle cognac bridle leather harness with brass hardware",
+    specs: [
+      ["Sample Lead Time", "7 Business Days"],
+      ["Production Lead Time", "25–30 Days"],
+      ["Private Branding", "Brass Buckle Casting & Blind Stamp"],
+    ],
+    sample: "Bridle Leather & Hardware",
+  },
+  {
+    code: "VR-308",
+    name: "Outerwear Aviator & Café Racer",
+    division: "Garments",
+    description:
+      "0.9–1.1mm washed lambskin or calf hides, antiqued Swiss Riri zippers, heavy-gauge waxed nylon stitching, and custom silk/cupro jacquard lining.",
+    moq: 15,
+    unit: "Pieces",
+    image: `${IMG}AB6AXuAC1oPjK--7I65-R9WRfIsDTlBGNE7oE9uiWd2lYE_vpG-0z-kxZraDWjjIQIUV9qbfPAjNARhF86piistia2oJkI4MVqYQD2ZW8qRe4GfghwiZtMGN1-58yq1rNnP054bsHMAXbF-orQJsXXP3T1o6RvpfV00_agHVJIroTJAXxXhVBHrl94CliHJvKwSqvYoTSsdBbv08YFNHVHFd1YwiEK9O1ljyh3FdkwHNqE3hTVZJFVFff2wo`,
+    imageAlt: "Umber lambskin aviator jacket with shearling collar on a mahogany valet stand",
+    specs: [
+      ["Sample Lead Time", "10–12 Business Days"],
+      ["Production Lead Time", "30–40 Days"],
+      ["Private Branding", "Woven Neck Label, Custom Pullers"],
+    ],
+    sample: "Lambskin & Lining Swatches",
+  },
+  {
+    code: "VR-412",
+    name: "Belts & Horology Watch Straps",
+    division: "Small Goods",
+    description:
+      "Vegetable-tanned full-grain bridle leather, hand-creased French edges, beeswax edge burnishing, and surgical stainless or sand-cast buckles.",
+    moq: 100,
+    unit: "Pcs",
+    image: `${IMG}AB6AXuCPqud05xo_1r-K7k8iioP2elcu4egTfFCy73_Z1Fx1SG5y71sndnhBt1RVDJTbE--ISAoV4mg1D_KmZy95gEBqwgEGsfB3x_OXKmxcMlIfgs4iAxATHrGjghnQhadmJS2GzqNJAV-DjMeKJYEWumuItM9DnkfTCmALmHpTaGYXedSXCjrNVFjVWQB2SKITSlNB2xjc8Q7R8Xgf-I7deH4HV-6iNGeM0uX783pAZfxpdt8HaL91WPLa`,
+    imageAlt: "Bridle leather watch straps and dress belts with brass buckles on a jeweler's cloth",
+    specs: [
+      ["Sample Lead Time", "5 Business Days"],
+      ["Production Lead Time", "20–25 Days"],
+      ["Private Branding", "Hot Foil / Blind Deboss / Custom Buckle"],
+    ],
+    sample: "Bridle Leather Straps",
+  },
+  {
+    code: "VR-515",
+    name: "Waxed Canvas & Saddle Duffles",
+    division: "Luggage",
+    description:
+      "24oz Scottish dry-finish waxed canvas reinforced with 3.5mm Tuscan vegetable hide, hand-peened solid copper saddlery rivets, and heavy YKK Excella zippers.",
+    moq: 30,
+    unit: "Pcs",
+    image: `${IMG}AB6AXuCcbpIgSNPdJOCvwYZDKEOwc7JK_UJ6TicKbeHMX3mLn2kmCgmIx42qfmTIF5astq48hY1lvHZi1YO8U5KK96zioxDslY7pDUqSPiz1AziJ_jsmR_Ink0GxHT8Q07CztaOYw7yRV2Pbgb1_2Prnpy9wp2XO91xN7qvjHuOJUjFU8wV8CVBZeewLNb54wm6CluZllSJvZ3SnOXqbnlMHtKrczKhZCzJcYX9YuLukgIx1J6OGgG8an9vz`,
+    imageAlt: "Vegetable-tanned leather duffle bag with brass buckles against a vintage steamer trunk",
+    specs: [
+      ["Sample Lead Time", "8 Business Days"],
+      ["Production Lead Time", "30–35 Days"],
+      ["Private Branding", "Luggage Tag Deboss & Rivet Logo"],
+    ],
+    sample: "Waxed Canvas & Hides",
+  },
+  {
+    code: "VR-620",
+    name: "Sand-Cast Brass Saddlery Hardware",
+    division: "Foundry",
+    description:
+      "Pure molten brass hand-poured in fine sand molds. Zero zinc pot-metal alloys. Available in high-buff foundry polish, antique bronze patina, or matte nickel plate.",
+    moq: 200,
+    unit: "Pcs",
+    image: `${IMG}AB6AXuBqEboT7u1wVD02K1gporw9B1xu4ZhqPweWezoYPvYcScHTGaug0ENznwzbxgCFdnofObPqYeHrzNxOxvyK9MqcgELlPRW5nnUGIw8uL_oMGxMsKqy0JUK-lfsb077gBqta3PhyxrRZsFdQQVPA8cR9V12i_HBG-rl6YAGcC3y-K6BjEU_-AzZmgWqvvBrkmE4u3LuiORiUgDEoEnlE_GLAeAWDvYWgr1-kHUFrH1bI3jLpfV-w3EF5`,
+    imageAlt: "Foundry craftsman pouring molten brass into sand casting molds for saddlery buckles",
+    specs: [
+      ["Sample Mold Tooling", "7 Business Days"],
+      ["Production Lead Time", "18–22 Days"],
+      ["Private Tooling", "Custom CNC 3D Logo Engraving"],
+    ],
+    sample: "Solid Brass Castings",
+  },
 ];
 
 export const HARNESS_SLUG = "highlands-ergonomic-harness";

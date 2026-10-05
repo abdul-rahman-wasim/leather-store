@@ -23,7 +23,7 @@ const REGIONS: Record<
     label: "USA ($ USD)",
     courierTitle: "Express Transatlantic Courier",
     courierDesc:
-      "Direct Express Air to United States (2–3 Business Days via DHL Express). All US customs tariffs, border clearances, and state import duties are 100% pre-paid by Velluto & Hide.",
+      "Direct Express Air to United States (2–3 Business Days via DHL Express). All US customs tariffs, border clearances, and state import duties are 100% pre-paid by Vale & Rawat.",
     postalLabel: "Zip Code / State",
     postal: "10021 (New York, NY)",
     hub: "Verified US Hub",

@@ -7,10 +7,13 @@ type StoreState = {
   cart: CartItem[];
   region: Region;
   wishlist: string[];
+  /** Contract article codes attached to the trade RFQ */
+  rfq: string[];
+  rfqNotes: string;
 };
 
 const STORAGE_KEY = "velluto-hide-store-v1";
-const INITIAL: StoreState = { cart: SEED_CART, region: "us", wishlist: [] };
+const INITIAL: StoreState = { cart: SEED_CART, region: "us", wishlist: [], rfq: ["VR-204"], rfqNotes: "" };
 
 let state = INITIAL;
 let loaded = false;
@@ -81,6 +84,15 @@ export const actions = {
       if (currency === "USD") return { ...s, region: "us" };
       return s.region === "us" ? { ...s, region: "uk" } : s;
     });
+  },
+  addRfq(code: string) {
+    setState((s) => (s.rfq.includes(code) ? s : { ...s, rfq: [...s.rfq, code] }));
+  },
+  removeRfq(code: string) {
+    setState((s) => ({ ...s, rfq: s.rfq.filter((c) => c !== code) }));
+  },
+  setRfqNotes(rfqNotes: string) {
+    setState((s) => ({ ...s, rfqNotes }));
   },
   toggleWishlist(id: string) {
     setState((s) => ({

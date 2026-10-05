@@ -83,7 +83,7 @@ const REVIEWS = [
   },
   {
     title: "Saddlery Grade That Belongs in Hyde Park",
-    body: "Having owned equestrian gear from Hermes and Swaine Adeney, I can unreservedly state that Velluto & Hide’s two-needle saddle stitching matches Savile Row bespoke tailoring. Truly an heirloom item for my Cocker Spaniel.",
+    body: "Having owned equestrian gear from Hermes and Swaine Adeney, I can unreservedly state that Vale & Rawat’s two-needle saddle stitching matches Savile Row bespoke tailoring. Truly an heirloom item for my Cocker Spaniel.",
     name: "Lord Julian Sterling",
     meta: "Kensington, London • Size Medium",
     wide: true,

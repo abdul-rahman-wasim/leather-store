@@ -127,7 +127,7 @@ export function AtelierTeasers() {
                   required
                   className="w-full bg-surface-container-lowest border border-outline-variant/60 rounded-lg px-3.5 py-2.5 text-on-surface font-body-sm text-body-sm focus:outline-none focus:border-primary"
                   type="email"
-                  placeholder="patron@vellutohide.com"
+                  placeholder="patron@valerawat.com"
                 />
               </div>
               <div className="flex items-center gap-3 pt-2">

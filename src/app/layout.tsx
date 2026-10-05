@@ -3,6 +3,8 @@ import { Bodoni_Moda, Hanken_Grotesk } from "next/font/google";
 import { Concierge } from "@/components/Concierge";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Toast } from "@/components/Toast";
+import { BRAND } from "@/lib/catalog";
 import "./globals.css";
 
 const hanken = Hanken_Grotesk({
@@ -20,11 +22,11 @@ const bodoni = Bodoni_Moda({
 
 export const metadata: Metadata = {
   title: {
-    default: "Velluto & Hide — Artisan Leather Atelier",
-    template: "%s | Velluto & Hide",
+    default: `${BRAND} Atelier & Manufacture | Islamabad Leathercraft Exporters`,
+    template: `%s | ${BRAND}`,
   },
   description:
-    "Full-grain vegetable-tanned leather footwear, bespoke outerwear, and luxury canine harnesses. Hand-stitched in London & Edinburgh.",
+    "Contract leather manufacturing for luxury brands and private labels: hand-welted footwear, canine harnesses, outerwear and sand-cast brass hardware from Islamabad.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -43,6 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main className="w-full pt-28 bg-surface min-h-[calc(100vh-14rem)]">{children}</main>
         <Footer />
         <Concierge />
+        <Toast />
       </body>
     </html>
   );

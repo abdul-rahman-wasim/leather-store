@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60" fill="none">
+  <g transform="translate(10, 8)">
+    <!-- Artisan Needle & Crest Hexagon -->
+    <path d="M22 2 L40 12 L40 32 L22 42 L4 32 L4 12 Z" stroke="#38241b" stroke-width="1.75" fill="#f9f3ec" stroke-linejoin="round"/>
+    <path d="M22 6 L36 14 L36 30 L22 38 L8 30 L8 14 Z" stroke="#8c6d58" stroke-width="0.75" stroke-dasharray="2 2" fill="none"/>
+    <!-- Central Stitched Diamond & Awl -->
+    <path d="M22 10 L22 34" stroke="#38241b" stroke-width="1.75" stroke-linecap="round"/>
+    <circle cx="22" cy="14" r="2" fill="#38241b"/>
+    <path d="M15 22 L29 22" stroke="#38241b" stroke-width="1.25"/>
+    <circle cx="15" cy="22" r="1.25" fill="#9a532c"/>
+    <circle cx="29" cy="22" r="1.25" fill="#9a532c"/>
+  </g>
+  <!-- Typography / Brandmark -->
+  <text x="64" y="27" font-family="'Bodoni Moda', 'Playfair Display', Georgia, serif" font-size="19" font-weight="700" letter-spacing="0.12em" fill="#23170f">VALE &amp; RAWAT</text>
+  <text x="65" y="42" font-family="'Cinzel', 'Trajan Pro', serif" font-size="8.5" font-weight="500" letter-spacing="0.32em" fill="#8c6d58">ATELIER &amp; MANUFACTURE • ISLAMABAD</text>
+</svg>

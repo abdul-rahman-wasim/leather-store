@@ -1,112 +1,134 @@
 import Link from "next/link";
-import { LOGO_SRC } from "@/lib/catalog";
+import { BRAND, CONTRACT_ARTICLES, LOGO_SRC, LOOKBOOK_MESSAGE, TRADE_DESK } from "@/lib/catalog";
 import { Icon } from "./Icon";
-import { NewsletterForm } from "./NewsletterForm";
+import { ToastButton } from "./Toast";
 
-const PROMISES = [
-  {
-    icon: "verified",
-    title: "Full-Grain Vegetable Tanned",
-    text: "Certified Tuscan hides conditioned with organic chestnut extracts.",
-  },
-  {
-    icon: "hardware",
-    title: "Hand-Stitched Guarantee",
-    text: "Traditional two-needle saddle stitching backed by our bespoke craftsmanship guarantee.",
-  },
-  {
-    icon: "published_with_changes",
-    title: "30-Day Bespoke Exchange",
-    text: "Free delivery and courier returns across the United States, UK, and Scotland.",
-  },
+const CREDENTIALS = [
+  { icon: "verified", title: "SEDEX SMETA Member", text: "4-Pillar Audited Workplace" },
+  { icon: "shield_with_heart", title: "ISO 9001:2015 Certified", text: "Strict Quality Management System" },
+  { icon: "eco", title: "REACH Chemical Compliant", text: "Vegetable Chrome-Free Tanning" },
+  { icon: "account_balance", title: "Islamabad Chamber (ICCI)", text: "Registered Exporter #ICC-4491-L" },
 ];
 
-const CATALOG_LINKS = [
-  { label: "Complete Catalog", href: "/shop" },
-  { label: "Bespoke Outerwear", href: "/shop/jackets" },
-  { label: "Canine Collection", href: "/shop/canine" },
-  { label: "Handcrafted Footwear", href: "/shop/shoes" },
-  { label: "Blind Monogramming", href: "/products/highlands-ergonomic-harness" },
-];
+const PROGRAM_CODES = ["VR-101", "VR-204", "VR-308", "VR-412", "VR-620"];
 
-const CARE_LINKS = [
-  { label: "Leather Care Guide", href: "#" },
-  { label: "US & UK Tariffs & Courier", href: "/#shipping" },
-  { label: "Provenance & Sustainability", href: "/#craftsmanship" },
-  { label: "Private Atelier Consult", href: "/#appointments" },
-  { label: "Track Commission", href: "#" },
-];
-
-function LinkColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
-  return (
-    <div>
-      <h5 className="text-xs font-semibold tracking-eyebrow uppercase text-on-surface mb-4">{title}</h5>
-      <ul className="space-y-2 text-xs text-on-surface-variant font-light">
-        {links.map((l) => (
-          <li key={l.label}>
-            <Link className="hover:text-primary transition-colors" href={l.href}>
-              {l.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+const LINK = "hover:text-primary transition-colors";
 
 export function Footer() {
+  const programs = CONTRACT_ARTICLES.filter((a) => PROGRAM_CODES.includes(a.code));
+
   return (
-    <footer className="w-full bg-surface-container-low border-t border-outline-variant/30 pt-20 pb-12">
+    <footer className="w-full bg-surface-container-low border-t border-outline-variant/30 pt-16 pb-12">
       <div className="max-w-360 mx-auto px-margin md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 pb-16 border-b border-outline-variant/25">
-          {PROMISES.map((p) => (
-            <div key={p.title} className="flex items-start gap-4">
-              <Icon name={p.icon} className="text-secondary text-[28px] mt-0.5" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 pb-12 border-b border-outline-variant/25 text-xs text-on-surface-variant">
+          {CREDENTIALS.map((c) => (
+            <div key={c.title} className="flex items-center gap-3">
+              <Icon name={c.icon} className="text-[24px] text-accent-saddle" />
               <div>
-                <h4 className="font-headline text-lg text-on-surface">{p.title}</h4>
-                <p className="text-xs text-on-surface-variant font-light mt-1">{p.text}</p>
+                <strong className="text-on-surface block">{c.title}</strong>
+                <span className="text-[11px] font-light">{c.text}</span>
               </div>
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 py-12">
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
-              <img alt="Velluto & Hide Atelier Logo" className="h-7 w-auto object-contain" src={LOGO_SRC} />
-              <span className="font-headline text-xl text-on-surface">Velluto &amp; Hide</span>
-            </div>
-            <p className="text-xs sm:text-sm text-on-surface-variant font-light leading-relaxed max-w-sm">
-              Born in the historic mews of Mayfair and refined in the Scottish Highlands. We craft heirlooms honoring
-              leatherworking methods unchanged for over a century.
+            <img alt={`${BRAND} Logo`} className="h-8 w-auto object-contain" src={LOGO_SRC} />
+            <p className="text-xs text-on-surface-variant font-light leading-relaxed max-w-sm">
+              Contract leather manufacturing facility and export house combining master Pakistani leather artisans with
+              British and European anatomical design benchmarks.
             </p>
-            <div className="pt-2 text-xs text-on-surface-variant">
-              <span className="uppercase tracking-eyebrow font-semibold block text-[10px] text-secondary mb-1">
-                Atelier Addresses
-              </span>
-              <p>14 Savile Row, London • 92 George Street, Edinburgh</p>
+            <div className="text-xs text-on-surface-variant space-y-1">
+              <p>
+                <strong className="font-semibold text-primary">Islamabad Manufacture:</strong> {TRADE_DESK.address}
+              </p>
+              <p>
+                <strong className="font-semibold text-primary">Direct Trade Desk:</strong>{" "}
+                <a className="hover:underline text-accent-saddle" href={TRADE_DESK.tel}>
+                  {TRADE_DESK.phone}
+                </a>{" "}
+                |{" "}
+                <a className="hover:underline text-accent-saddle" href={`mailto:${TRADE_DESK.email}`}>
+                  {TRADE_DESK.email}
+                </a>
+              </p>
+              <p>
+                <strong className="font-semibold text-primary">European Liaison:</strong> Mayfair, London &amp; Edinburgh
+                Workbenches
+              </p>
             </div>
           </div>
-          <LinkColumn title="Catalog" links={CATALOG_LINKS} />
-          <LinkColumn title="Patron Care" links={CARE_LINKS} />
           <div>
-            <h5 className="text-xs font-semibold tracking-eyebrow uppercase text-on-surface mb-4">The Atelier Journal</h5>
-            <p className="text-xs text-on-surface-variant font-light mb-4">
-              Receive batch notices and 10% off your initial bespoke piece.
+            <h5 className="text-xs font-semibold tracking-eyebrow uppercase text-on-surface mb-3">Contract Programs</h5>
+            <ul className="space-y-2 text-xs text-on-surface-variant font-light">
+              {programs.map((a) => (
+                <li key={a.code}>
+                  <Link className={LINK} href="/#catalog-section">
+                    Art # {a.code} {a.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h5 className="text-xs font-semibold tracking-eyebrow uppercase text-on-surface mb-3">B2B Trade Portal</h5>
+            <ul className="space-y-2 text-xs text-on-surface-variant font-light">
+              <li>
+                <Link className={LINK} href="/#rfq-portal">
+                  Submit RFQ Specification
+                </Link>
+              </li>
+              <li>
+                <Link className={LINK} href="/#production-tracker">
+                  Track Commission Batch
+                </Link>
+              </li>
+              <li>
+                <ToastButton className={LINK} message={LOOKBOOK_MESSAGE}>
+                  Download 2026 Lookbook (PDF)
+                </ToastButton>
+              </li>
+              <li>
+                <ToastButton className={LINK} message="Factory physical tour booking open for B2B buyers">
+                  Factory Visit &amp; Audit Tour
+                </ToastButton>
+              </li>
+              <li>
+                <ToastButton className={LINK} message="Lab reports for REACH chemical analysis requested">
+                  REACH Compliance Sheets
+                </ToastButton>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h5 className="text-xs font-semibold tracking-eyebrow uppercase text-on-surface mb-3">Direct WhatsApp Desk</h5>
+            <p className="text-xs text-on-surface-variant font-light mb-3">
+              Connect directly with our Islamabad engineering desk for instant CAD and MOQ consultation.
             </p>
-            <NewsletterForm />
+            <a
+              className="inline-flex items-center gap-2 bg-primary text-surface px-4 py-2.5 rounded text-xs font-semibold uppercase tracking-wider hover:bg-primary-container shadow-sm transition-colors"
+              href={TRADE_DESK.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name="chat" className="text-[18px] text-secondary-container" />
+              <span>WhatsApp Quick Chat</span>
+            </a>
           </div>
         </div>
         <div className="pt-8 border-t border-outline-variant/25 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-on-surface-variant font-light">
-          <p>© {new Date().getFullYear()} Velluto &amp; Hide Leathercraft Ltd. All rights reserved. London • Edinburgh.</p>
-          <div className="flex items-center gap-6">
+          <p>
+            © {new Date().getFullYear()} {BRAND} Leathercraft Mfg Ltd. All rights reserved. Islamabad, Pakistan.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-6">
             <Link className="hover:text-on-surface transition-colors" href="#">
-              Privacy Policy
+              SEDEX Compliance Terms
             </Link>
             <Link className="hover:text-on-surface transition-colors" href="#">
-              Terms of Service
+              Non-Disclosure Agreement (NDA)
             </Link>
-            <Link className="hover:text-on-surface transition-colors" href="/#shipping">
-              Duties &amp; Freight
+            <Link className="hover:text-on-surface transition-colors" href="#">
+              Incoterms &amp; Freight Rates
             </Link>
           </div>
         </div>

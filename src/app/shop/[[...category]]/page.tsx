@@ -45,7 +45,7 @@ export default async function ShopPage(props: PageProps<"/shop/[[...category]]">
               Formed by patient hands, never stamped in haste.
             </h2>
             <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-              Every hide selected by Velluto &amp; Hide undergoes a sixty-day conditioning period in organic bark
+              Every hide selected by Vale &amp; Rawat undergoes a sixty-day conditioning period in organic bark
               extracts before being skived and saddle-stitched by hand in our Edinburgh and London mews.
             </p>
             <div className="grid grid-cols-3 gap-6 pt-4 border-t border-outline-variant/40">
@@ -113,7 +113,7 @@ export default async function ShopPage(props: PageProps<"/shop/[[...category]]">
                 Guaranteed Transatlantic Delivery
               </p>
               <p className="font-body-sm text-body-sm text-on-surface-variant">
-                All customs duties, tariffs, and shipping insurance are pre-paid by Velluto &amp; Hide.
+                All customs duties, tariffs, and shipping insurance are pre-paid by Vale &amp; Rawat.
               </p>
             </div>
           </div>

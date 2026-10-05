@@ -1,6 +1,6 @@
 @AGENTS.md
 
-# Velluto & Hide — leather store
+# Vale & Rawat — leather store
 
 Next.js 16 (App Router) + React 19 + Tailwind v4 + TypeScript. No backend; static catalog data, client-side cart.
 
@@ -16,12 +16,12 @@ src/
     products/<slug>/      Product detail pages (one folder per product)
     cart/                 Cart
   components/
-    Header, Footer, Icon (Icon + Stars), NewsletterForm
-    Concierge.tsx         Floating "Atelier Concierge" chatbot (scripted keyword replies), mounted in layout
+    Header, Footer, Icon (Icon + Stars), NewsletterForm, Toast (toast() + <Toast/> pill, mounted in layout)
+    Concierge.tsx         Floating "Islamabad Export Desk" chat + WhatsApp launcher (scripted replies), mounted in layout
     home/ shop/ product/ cart/   Feature components, grouped by page
   lib/
     catalog.ts            Types, PRODUCTS, CATEGORY_LABELS, image URLs, formatPrice
-    store.ts              Cart/region/wishlist store (useSyncExternalStore + localStorage)
+    store.ts              Cart/region/wishlist/RFQ store (useSyncExternalStore + localStorage)
     useDispatchCountdown.ts  Countdown to 18:00 dispatch cutoff (harness + cart)
 ```
 
@@ -32,11 +32,11 @@ src/
 - Import via `@/` alias (`@/lib/...`, `@/components/...`).
 - Product/catalog data lives in `src/lib/catalog.ts` only — never hardcode products in components. Prices carry both `priceUsd` and `priceGbp`; display with `formatPrice`.
 - Client state: read with `useStore()`, mutate with `actions.*` from `src/lib/store.ts`. No other state libraries.
-- UI source of truth: Stitch project "Artisan Leather Goods Store" (Editorial Redesign screens) — match its markup and copy.
+- UI source of truth: Stitch project "Artisan Leather Goods Store" — home: "Vale & Rawat Atelier & Manufacture - B2B Storefront"; other pages: Editorial Redesign screens. Match markup and copy.
 - Styling: Tailwind utilities with theme tokens from `globals.css` (`bg-surface`, `text-on-surface`, `text-primary`, `font-headline-lg text-headline-lg`, ...). No raw hex colors, no CSS modules. New tokens go in `@theme`.
 - Icons: `<Icon name="material_symbol_name" />`, never inline SVG.
 - Images: plain `<img>` with descriptive `alt` (remote host not configured for `next/image`).
-- Each non-home page exports `metadata` / `generateMetadata` with a `title` (layout applies `%s | Velluto & Hide`).
+- Each non-home page exports `metadata` / `generateMetadata` with a `title` (layout applies `%s | Vale & Rawat`).
 - Run `npm run lint` and `npm run build` before committing.
 
 ## Commits (MUST follow)
