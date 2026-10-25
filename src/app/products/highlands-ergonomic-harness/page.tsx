@@ -194,8 +194,8 @@ export default function HarnessPage() {
           </p>
         </div>
         <div className="bg-surface-container-low p-6 md:p-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-center">
+            <div className="xl:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
               {SUITE.map((s) => (
                 <div key={s.name} className="bg-surface p-4 flex flex-col space-y-3">
                   <div className="w-full aspect-square bg-surface-container overflow-hidden">
@@ -209,7 +209,7 @@ export default function HarnessPage() {
                 </div>
               ))}
             </div>
-            <div className="lg:col-span-4 bg-surface p-8 flex flex-col justify-between space-y-6">
+            <div className="xl:col-span-4 bg-surface p-8 flex flex-col justify-between space-y-6">
               <div className="space-y-2">
                 <span className={EYEBROW}>Curated Trio Discount</span>
                 <h3 className="font-headline-md text-headline-md text-primary">Highland Field Trio</h3>
@@ -220,9 +220,9 @@ export default function HarnessPage() {
               </div>
               <div className="space-y-4">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <div>
+                  <div className="flex flex-wrap items-baseline gap-x-2">
                     <span className="text-headline-lg font-headline-lg text-primary">$260.00</span>
-                    <span className="text-body-md font-body-md text-on-surface-variant line-through ml-2 opacity-60">
+                    <span className="text-body-md font-body-md text-on-surface-variant line-through opacity-60">
                       $295.00
                     </span>
                   </div>

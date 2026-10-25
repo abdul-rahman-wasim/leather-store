@@ -42,7 +42,7 @@ export function AddSuiteButton() {
       }}
     >
       <Icon name={added ? "check_circle" : "inventory_2"} className="text-[18px]" />
-      <span>{added ? "Suite Added to Satchel" : "Add Complete Suite • $260"}</span>
+      <span>{added ? "Suite Added to Satchel" : "Add Complete Suite • $260"}</span>
     </button>
   );
 }

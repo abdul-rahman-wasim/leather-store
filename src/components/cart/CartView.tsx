@@ -163,14 +163,14 @@ function CartLine({ item, currency }: { item: CartItem; currency: Currency }) {
           <div className={`flex items-center gap-4 text-on-surface-variant ${EYEBROW}`}>
             {item.editLabel && editHref && (
               <>
-                <Link className="hover:text-primary transition-colors flex items-center gap-1" href={editHref}>
+                <Link className="hover:text-primary transition-colors flex items-center gap-1 whitespace-nowrap" href={editHref}>
                   <Icon name={item.editLabel.icon} className="text-[14px]" /> {item.editLabel.label}
                 </Link>
                 <span className="opacity-30">|</span>
               </>
             )}
             <button
-              className="hover:text-error transition-colors flex items-center gap-1 uppercase"
+              className="hover:text-error transition-colors flex items-center gap-1 uppercase whitespace-nowrap"
               type="button"
               onClick={() => actions.removeItem(item.key)}
             >
@@ -243,8 +243,8 @@ export function CartView() {
       </div>
 
       <div className="max-w-360 mx-auto w-full px-6 md:px-12 py-12 lg:py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          <div className="lg:col-span-7 flex flex-col gap-12">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-12 xl:gap-16 items-start">
+          <div className="xl:col-span-7 flex flex-col gap-12">
             <div className="flex items-end justify-between gap-4">
               <div>
                 <span className={`${EYEBROW} text-secondary font-semibold`}>Order Dispatch Docket • No. VH-8492</span>
@@ -315,11 +315,11 @@ export function CartView() {
             </div>
           </div>
 
-          <aside className="lg:col-span-5 lg:sticky lg:top-32 flex flex-col gap-6">
+          <aside className="xl:col-span-5 xl:sticky xl:top-32 flex flex-col gap-6">
             <div className="bg-surface-container-low p-6 md:p-8 shadow-md">
               <div className="flex items-center justify-between pb-6 gap-4">
                 <h2 className="font-headline-md text-headline-md text-primary">Regional Dispatch</h2>
-                <span className={`${EYEBROW} text-on-surface-variant font-semibold`}>Tier 1 Carrier</span>
+                <span className={`${EYEBROW} text-on-surface-variant font-semibold shrink-0 whitespace-nowrap`}>Tier 1 Carrier</span>
               </div>
 
               <div className="mb-6">
@@ -339,7 +339,11 @@ export function CartView() {
                         setVerified(false);
                       }}
                     >
-                      {REGIONS[r].label}
+                      {REGIONS[r].label.split(" (").map((part, i) => (
+                        <span key={part} className={i ? "block text-[10px] opacity-75 whitespace-nowrap" : "block whitespace-nowrap"}>
+                          {i ? `(${part}` : part}
+                        </span>
+                      ))}
                     </button>
                   ))}
                 </div>

@@ -124,8 +124,8 @@ export default function Home() {
         <div className={`relative z-10 ${CONTAINER} w-full py-24 md:py-32`}>
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-primary-container/90 border border-secondary-container/60 px-3 py-1 rounded-full text-[10px] uppercase tracking-wider text-secondary-container font-semibold mb-4 backdrop-blur-md">
-              <span className="w-1.5 h-1.5 rounded-full bg-secondary-container" />
-              Islamabad Atelier &amp; Manufacture • OEM &amp; Private Label Specifications
+              <span className="w-1.5 h-1.5 shrink-0 rounded-full bg-secondary-container" />
+              <span className="hidden sm:inline">Islamabad Atelier &amp; Manufacture • </span>OEM &amp; Private Label Specifications
             </div>
             <h1 className="font-headline text-4xl sm:text-6xl lg:text-7xl font-normal leading-[1.08] tracking-tight text-surface-bright mb-6">
               Bespoke Leather <br />
@@ -173,14 +173,14 @@ export default function Home() {
                 Infrastructure &amp; Audit Traceability
               </span>
               <h2 className="font-headline text-2xl sm:text-3xl text-on-surface">
-                Factory Credentials • Sector I-9 Industrial Area
+                Factory Credentials • Sector <span className="whitespace-nowrap">I-9</span> Industrial Area
               </h2>
             </div>
-            <span className="text-xs text-on-surface-variant font-medium bg-surface px-3 py-1.5 rounded border border-outline-variant/30">
+            <span className="shrink-0 whitespace-nowrap text-xs text-on-surface-variant font-medium bg-surface px-3 py-1.5 rounded border border-outline-variant/30">
               Islamabad Chamber of Commerce Reg. #ICC-4491-L
             </span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
             {CREDENTIALS.map((c) => (
               <div
                 key={c.title}
@@ -214,14 +214,14 @@ export default function Home() {
               and laboratory-verified tensile strength.
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0 whitespace-nowrap">
             <span className="text-xs text-on-surface-variant">Filter Focus:</span>
             <span className="text-xs font-semibold bg-surface-container-high px-3 py-1 rounded text-primary">
               All {CONTRACT_ARTICLES.length} Active Contract Lines
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {CONTRACT_ARTICLES.map((a) => (
             <article
               key={a.code}
@@ -252,7 +252,7 @@ export default function Home() {
                   <dl className="space-y-1.5 text-[11px] text-on-surface-variant bg-surface-container-low p-3 rounded border border-outline-variant/20">
                     {a.specs.map(([label, value]) => (
                       <div key={label} className="flex justify-between gap-3">
-                        <dt>{label}:</dt>
+                        <dt className="shrink-0 whitespace-nowrap">{label}:</dt>
                         <dd className="font-bold text-on-surface text-right">{value}</dd>
                       </div>
                     ))}
@@ -338,7 +338,7 @@ export default function Home() {
             </p>
           </div>
           <Link
-            className="inline-flex items-center justify-center bg-surface text-primary hover:bg-surface-container-lowest transition-all duration-200 active:scale-95 text-xs font-semibold tracking-eyebrow uppercase px-8 py-4 rounded-sm shadow"
+            className="shrink-0 whitespace-nowrap inline-flex items-center justify-center bg-surface text-primary hover:bg-surface-container-lowest transition-all duration-200 active:scale-95 text-xs font-semibold tracking-eyebrow uppercase px-8 py-4 rounded-sm shadow"
             href="/shop"
           >
             Visit Retail Shop

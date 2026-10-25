@@ -88,7 +88,7 @@ export function ShopCatalog({ initialCategory }: { initialCategory: ShopFilter }
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 bg-surface-container-low p-2.5 rounded-xl border border-outline-variant/30">
+        <div className="mt-6 flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-4 bg-surface-container-low p-2.5 rounded-xl border border-outline-variant/30">
           <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Filter by category">
             {TABS.map((tab) => {
               const active = category === tab.value;
@@ -110,7 +110,7 @@ export function ShopCatalog({ initialCategory }: { initialCategory: ShopFilter }
             })}
           </div>
           <div className="flex items-center gap-3">
-            <div className="relative flex-1 lg:flex-none lg:min-w-35">
+            <div className="relative flex-1 xl:flex-none xl:min-w-35">
               <select
                 aria-label="Filter by leather tone"
                 className={SELECT}
@@ -126,7 +126,7 @@ export function ShopCatalog({ initialCategory }: { initialCategory: ShopFilter }
               </select>
               <Icon name="unfold_more" className="text-[16px] text-secondary absolute right-2.5 top-2.5 pointer-events-none" />
             </div>
-            <div className="relative flex-1 lg:flex-none lg:min-w-40">
+            <div className="relative flex-1 xl:flex-none xl:min-w-40">
               <select
                 aria-label="Sort products by"
                 className={SELECT}
@@ -187,7 +187,7 @@ export function ShopCatalog({ initialCategory }: { initialCategory: ShopFilter }
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 md:gap-12">
             {visible.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}

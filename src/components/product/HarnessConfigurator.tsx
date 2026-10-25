@@ -309,7 +309,7 @@ export function HarnessConfigurator() {
                     key={s.value}
                     role="radio"
                     aria-checked={active}
-                    className={`p-3 text-center transition-all ${
+                    className={`py-3 px-1 text-center transition-all ${
                       active ? "bg-primary ring-1 ring-primary shadow-sm" : "bg-surface-container hover:bg-surface-container-high"
                     }`}
                     type="button"
@@ -417,7 +417,7 @@ export function HarnessConfigurator() {
                   {countdown?.tomorrow ? "Next Atelier Batch Departing" : "Atelier Batch Departing"}
                 </span>
               </div>
-              <span className="text-label-sm font-label-sm font-mono text-secondary font-bold tabular-nums">
+              <span className="shrink-0 whitespace-nowrap text-label-sm font-label-sm font-mono text-secondary font-bold tabular-nums">
                 {countdown
                   ? `${pad(countdown.hours)}h ${pad(countdown.minutes)}m ${pad(countdown.seconds)}s`
                   : "--h --m --s"}

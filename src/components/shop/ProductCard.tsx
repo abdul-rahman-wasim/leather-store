@@ -77,9 +77,9 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="flex flex-col flex-1 pt-3 justify-between">
         <div>
-          <div className="flex items-center justify-between text-secondary font-label-sm text-label-sm mb-1">
+          <div className="flex items-start justify-between gap-3 text-secondary font-label-sm text-label-sm mb-1">
             <span>{product.collection}</span>
-            <span className="text-tertiary">{product.tag}</span>
+            <span className="text-tertiary text-right">{product.tag}</span>
           </div>
           <h3 className="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">
             {product.href ? <Link href={product.href}>{product.name}</Link> : product.name}
@@ -88,7 +88,7 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
         <div className="pt-4">
           <div className="flex items-baseline justify-between mb-3">
-            <div className="flex items-baseline gap-1.5">
+            <div className="flex items-baseline gap-1.5 whitespace-nowrap">
               <span className="font-headline-sm text-headline-sm text-primary">${product.priceUsd}</span>
               <span className="font-label-sm text-label-sm text-secondary">/ £{product.priceGbp}</span>
             </div>

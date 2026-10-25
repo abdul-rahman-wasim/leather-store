@@ -59,8 +59,8 @@ export function RfqPortal() {
   const items = CONTRACT_ARTICLES.filter((a) => rfq.includes(a.code));
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-      <div className="lg:col-span-5 space-y-6">
+    <div className="grid grid-cols-1 xl:grid-cols-12 gap-12 items-start">
+      <div className="xl:col-span-5 space-y-6">
         <div>
           <span className="text-xs font-semibold tracking-eyebrow uppercase text-accent-saddle block mb-2">
             Direct Contract Procurement
@@ -76,7 +76,7 @@ export function RfqPortal() {
         <div className="bg-surface-container-lowest p-6 rounded-lg border border-outline-variant/30 saddle-stitch">
           <div className="flex items-center justify-between gap-2 pb-3 border-b border-outline-variant/20 mb-3">
             <span className="text-xs font-semibold uppercase tracking-wider text-primary">Your Selected RFQ Articles</span>
-            <span className="text-[10px] bg-surface-container-high px-2 py-0.5 rounded text-accent-saddle font-bold">
+            <span className="shrink-0 whitespace-nowrap text-[10px] bg-surface-container-high px-2 py-0.5 rounded text-accent-saddle font-bold">
               {items.length} Item{items.length === 1 ? "" : "s"} Attached
             </span>
           </div>
@@ -121,7 +121,7 @@ export function RfqPortal() {
         </div>
       </div>
 
-      <div className="lg:col-span-7 bg-surface-container-lowest p-8 sm:p-10 rounded-lg border border-outline-variant/30 shadow-md">
+      <div className="xl:col-span-7 bg-surface-container-lowest p-8 sm:p-10 rounded-lg border border-outline-variant/30 shadow-md">
         <form
           className="space-y-5"
           onSubmit={(e) => {
@@ -132,7 +132,7 @@ export function RfqPortal() {
             setTimeout(() => setStatus("sent"), 1500);
           }}
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
             <div>
               <label className={LABEL} htmlFor="rfq-company">
                 Company / Brand Legal Name *
@@ -160,7 +160,7 @@ export function RfqPortal() {
               />
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
             <div>
               <label className={LABEL} htmlFor="rfq-region">
                 Destination Country / Port of Entry *
