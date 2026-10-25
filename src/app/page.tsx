@@ -81,21 +81,21 @@ export default function Home() {
   return (
     <div className="flex flex-col w-full">
       <div className="w-full bg-primary border-b border-gold/40 sticky top-28 z-30 shadow-md">
-        <div className={`${CONTAINER} py-2.5 flex flex-col md:flex-row items-center justify-between gap-3`}>
-          <div className="flex items-center gap-2.5">
-            <Icon name="factory" className="text-[16px] text-secondary-container" />
-            <span className="text-[10px] tracking-eyebrow uppercase font-semibold text-secondary-container">
+        <div className={`${CONTAINER} py-2.5 flex items-center justify-between gap-3 whitespace-nowrap`}>
+          <div className="flex items-center gap-2.5 min-w-0">
+            <Icon name="factory" className="text-[16px] text-secondary-container shrink-0" />
+            <span className="truncate text-[10px] tracking-eyebrow uppercase font-semibold text-secondary-container">
               Contract Atelier &amp; Global Export Desk
             </span>
-            <span className="hidden lg:inline-block text-[10px] text-surface-dim/70 font-light border-l border-outline-variant/30 pl-2.5">
+            <span className="hidden 2xl:inline-block text-[10px] text-surface-dim/70 font-light border-l border-outline-variant/30 pl-2.5">
               Islamabad Industrial Estate (I-9/2) • Direct Ocean &amp; Air Logistics
             </span>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             {QUICK_LINKS.map((l) => (
               <a
                 key={l.href}
-                className="text-[10px] uppercase tracking-wider px-2.5 py-1 rounded bg-primary-container hover:bg-secondary/40 text-surface-dim/90 border border-outline-variant/30 transition-colors font-medium"
+                className="hidden xl:inline-block text-[10px] uppercase tracking-wider px-2.5 py-1 rounded bg-primary-container hover:bg-secondary/40 text-surface-dim/90 border border-outline-variant/30 transition-colors font-medium"
                 href={l.href}
               >
                 {l.label}
