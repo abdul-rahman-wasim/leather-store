@@ -94,6 +94,9 @@ export const actions = {
   setRfqNotes(rfqNotes: string) {
     setState((s) => ({ ...s, rfqNotes }));
   },
+  clearRfq() {
+    setState((s) => ({ ...s, rfq: [], rfqNotes: "" }));
+  },
   toggleWishlist(id: string) {
     setState((s) => ({
       ...s,

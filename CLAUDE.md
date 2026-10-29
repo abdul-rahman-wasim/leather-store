@@ -2,7 +2,7 @@
 
 # Vale & Rawat — leather store
 
-Next.js 16 (App Router) + React 19 + Tailwind v4 + TypeScript. No backend; static catalog data, client-side cart.
+Next.js 16 (App Router) + React 19 + Tailwind v4 + TypeScript. No backend; static catalog data, client-side cart. RFQ form emails via EmailJS (browser SDK) behind reCAPTCHA v2 — env keys in `.env.example`, copy to `.env.local`.
 
 ## Structure
 
@@ -18,7 +18,7 @@ src/
   components/
     Header, Footer, Icon (Icon + Stars), NewsletterForm, Toast (toast() + <Toast/> pill, mounted in layout)
     Concierge.tsx         Floating "Islamabad Export Desk" chat + WhatsApp launcher (scripted replies), mounted in layout
-    home/ shop/ product/ cart/   Feature components, grouped by page
+    home/ shop/ product/ cart/   Feature components, grouped by page (home/RfqPortal sends the RFQ, home/Recaptcha is the v2 widget)
   lib/
     catalog.ts            Types, PRODUCTS, CATEGORY_LABELS, image URLs, formatPrice
     store.ts              Cart/region/wishlist/RFQ store (useSyncExternalStore + localStorage)
@@ -45,6 +45,7 @@ src/
 - Never commit straight to `dev` or `main`. Branch off `dev` per fix/feature: `feat/<slug>`, `fix/<slug>`, `docs/<slug>`, `chore/<slug>`.
 - Before every commit, show the commit message and the exact file list and wait for explicit approval. Stage files by name, never `git add -A`; unrelated local changes stay out.
 - Push the branch, open a PR into `dev` titled with the commit message, then squash-merge and delete the branch. `main` is updated from `dev` only.
+- Pushing: Git Credential Manager may block on an account picker. Push with `GH_TOKEN=$(gh auth token --user abdul-rahman-wasim) git -c credential.helper= -c "credential.helper=!gh auth git-credential" push`.
 - `gh`: active account may be `Team1-Sportech` (read-only here). Run PR commands as the owner without switching globally: `GH_TOKEN=$(gh auth token --user abdul-rahman-wasim) gh pr ...`.
 
 ## Commits (MUST follow)
