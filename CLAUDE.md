@@ -37,7 +37,15 @@ src/
 - Icons: `<Icon name="material_symbol_name" />`, never inline SVG.
 - Images: plain `<img>` with descriptive `alt` (remote host not configured for `next/image`).
 - Each non-home page exports `metadata` / `generateMetadata` with a `title` (layout applies `%s | Vale & Rawat`).
+- Responsive: header rows are fixed height (32px strip + 80px bar = `pt-28` in layout, `top-28` for sticky bars) — never let them wrap; trim or hide copy per breakpoint instead. Dense layouts (spec cards, forms, sidebars, 4-up grids) go multi-column at `xl`, not `lg`. Chips, badges and buttons get `whitespace-nowrap`; label/value rows get `shrink-0` labels.
 - Run `npm run lint` and `npm run build` before committing.
+
+## Branches & PRs (MUST follow)
+
+- Never commit straight to `dev` or `main`. Branch off `dev` per fix/feature: `feat/<slug>`, `fix/<slug>`, `docs/<slug>`, `chore/<slug>`.
+- Before every commit, show the commit message and the exact file list and wait for explicit approval. Stage files by name, never `git add -A`; unrelated local changes stay out.
+- Push the branch, open a PR into `dev` titled with the commit message, then squash-merge and delete the branch. `main` is updated from `dev` only.
+- `gh`: active account may be `Team1-Sportech` (read-only here). Run PR commands as the owner without switching globally: `GH_TOKEN=$(gh auth token --user abdul-rahman-wasim) gh pr ...`.
 
 ## Commits (MUST follow)
 
