@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { BRAND, CONTRACT_ARTICLES, LOGO_SRC, LOOKBOOK_MESSAGE, TRADE_DESK } from "@/lib/catalog";
+import { BRAND, CONTRACT_ARTICLES, LOGO_SRC, TRADE_DESK } from "@/lib/catalog";
 import { Icon } from "./Icon";
+import { LookbookButton } from "./Lookbook";
 import { ToastButton } from "./Toast";
 
 const CREDENTIALS = [
@@ -12,7 +13,7 @@ const CREDENTIALS = [
 
 const PROGRAM_CODES = ["VR-101", "VR-204", "VR-308", "VR-412", "VR-620"];
 
-const LINK = "hover:text-primary transition-colors";
+const LINK = "text-left hover:text-primary transition-colors";
 
 export function Footer() {
   const programs = CONTRACT_ARTICLES.filter((a) => PROGRAM_CODES.includes(a.code));
@@ -84,9 +85,9 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <ToastButton className={LINK} message={LOOKBOOK_MESSAGE}>
-                  Download 2026 Lookbook (PDF)
-                </ToastButton>
+                <LookbookButton className={LINK} source="Footer">
+                  Request 2026 Lookbook (PDF)
+                </LookbookButton>
               </li>
               <li>
                 <ToastButton className={LINK} message="Factory physical tour booking open for B2B buyers">

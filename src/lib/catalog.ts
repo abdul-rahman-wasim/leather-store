@@ -16,8 +16,6 @@ export const TRADE_DESK = {
   address: "Plot 144, Sector I-9/2, Industrial Estate, Islamabad, 44000, Pakistan",
 };
 
-export const LOOKBOOK_MESSAGE = `2026 Contract Lookbook requested — the export desk will email the PDF from ${TRADE_DESK.email}`;
-
 export type ContractArticle = {
   code: string;
   name: string;

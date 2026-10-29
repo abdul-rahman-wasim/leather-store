@@ -5,7 +5,10 @@ import { useCallback, useEffect, useImperativeHandle, useRef, type Ref } from "r
 
 type Grecaptcha = {
   ready(cb: () => void): void;
-  render(el: HTMLElement, opts: { sitekey: string; callback(token: string): void; "expired-callback"(): void }): number;
+  render(
+    el: HTMLElement,
+    opts: { sitekey: string; size: "normal" | "compact"; callback(token: string): void; "expired-callback"(): void },
+  ): number;
   reset(id?: number): void;
 };
 
@@ -49,6 +52,8 @@ export function Recaptcha({
       if (!box.current || widget.current !== null || box.current.childElementCount) return;
       widget.current = g.render(box.current, {
         sitekey: siteKey,
+        // The normal checkbox is 304px wide; narrow phone cards get the stacked compact one.
+        size: box.current.offsetWidth < 304 ? "compact" : "normal",
         callback: (token) => tokenCb.current(token),
         "expired-callback": () => tokenCb.current(null),
       });

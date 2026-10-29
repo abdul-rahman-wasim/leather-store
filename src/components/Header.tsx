@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { BRAND, LOGO_SRC, LOOKBOOK_MESSAGE, TRADE_DESK } from "@/lib/catalog";
+import { BRAND, LOGO_SRC, TRADE_DESK } from "@/lib/catalog";
 import { useStore } from "@/lib/store";
 import { Icon } from "./Icon";
-import { toast } from "./Toast";
+import { openLookbook } from "./Lookbook";
 
 const NAV = [
   { label: "Contract Articles", href: "/#catalog-section" },
@@ -90,7 +90,7 @@ export function Header() {
             type="button"
             aria-label="2026 Lookbook (PDF)"
             title="2026 Lookbook (PDF)"
-            onClick={() => toast(LOOKBOOK_MESSAGE)}
+            onClick={() => openLookbook("Header")}
           >
             <Icon name="menu_book" className="text-[16px] text-accent-saddle" />
             <span className="xl:hidden 2xl:inline">Lookbook</span>

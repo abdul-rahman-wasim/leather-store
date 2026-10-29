@@ -18,10 +18,12 @@ src/
   components/
     Header, Footer, Icon (Icon + Stars), NewsletterForm, Toast (toast() + <Toast/> pill, mounted in layout)
     Concierge.tsx         Floating "Islamabad Export Desk" chat + WhatsApp launcher (scripted replies), mounted in layout
+    Lookbook.tsx          openLookbook(source) / <LookbookButton> + <LookbookDialog/> email-gated PDF request, mounted in layout
     home/ shop/ product/ cart/   Feature components, grouped by page (home/RfqPortal sends the RFQ, home/Recaptcha is the v2 widget)
   lib/
     catalog.ts            Types, PRODUCTS, CATEGORY_LABELS, image URLs, formatPrice
     store.ts              Cart/region/wishlist/RFQ store (useSyncExternalStore + localStorage)
+    emailjs.ts            useEmailForm(template): EmailJS send + reCAPTCHA token + status/error; register templates in TEMPLATES
     useDispatchCountdown.ts  Countdown to 18:00 dispatch cutoff (harness + cart)
 ```
 

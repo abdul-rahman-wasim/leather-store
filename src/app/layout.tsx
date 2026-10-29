@@ -3,6 +3,7 @@ import { Bodoni_Moda, Hanken_Grotesk } from "next/font/google";
 import { Concierge } from "@/components/Concierge";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { LookbookDialog } from "@/components/Lookbook";
 import { Toast } from "@/components/Toast";
 import { BRAND } from "@/lib/catalog";
 import "./globals.css";
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Footer />
         <Concierge />
         <Toast />
+        <LookbookDialog />
       </body>
     </html>
   );
