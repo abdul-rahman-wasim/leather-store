@@ -1,10 +1,19 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { CONTRACT_ARTICLES } from "@/lib/catalog";
+import emailjs from "@emailjs/browser";
+import { useRef, useState, type FormEvent } from "react";
+import { CONTRACT_ARTICLES, TRADE_DESK } from "@/lib/catalog";
 import { actions, useStore } from "@/lib/store";
 import { Icon } from "../Icon";
 import { toast } from "../Toast";
+import { Recaptcha, type RecaptchaHandle } from "./Recaptcha";
+
+const EMAILJS = {
+  serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+  templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+  publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+};
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
 const DESTINATIONS = [
   { value: "UK", label: "United Kingdom (Heathrow / Tilbury DDP)" },
@@ -51,12 +60,60 @@ const LABEL = "block text-[11px] font-semibold uppercase tracking-wider text-on-
 const FIELD =
   "w-full bg-surface-container-low border border-outline-variant/40 rounded-sm px-3.5 py-2.5 text-xs text-on-surface focus:outline-none focus:border-primary";
 
+const labelOf = (list: { value: string; label: string }[], value: FormDataEntryValue | null) =>
+  list.find((o) => o.value === value)?.label ?? String(value ?? "");
+
 export function RfqPortal() {
   const { rfq, rfqNotes } = useStore();
-  const [status, setStatus] = useState<"idle" | "received" | "sent">("idle");
-  const [techPack, setTechPack] = useState<string | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [error, setError] = useState<string | null>(null);
+  const [captcha, setCaptcha] = useState<string | null>(null);
+  const captchaRef = useRef<RecaptchaHandle>(null);
   const items = CONTRACT_ARTICLES.filter((a) => rfq.includes(a.code));
+
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const { serviceId, templateId, publicKey } = EMAILJS;
+    if (!serviceId || !templateId || !publicKey || !RECAPTCHA_SITE_KEY) {
+      setError(`The online RFQ desk is offline. Please email your specification to ${TRADE_DESK.email}.`);
+      return;
+    }
+    if (!captcha) {
+      setError("Please confirm you are not a robot before submitting.");
+      return;
+    }
+    const data = new FormData(form);
+    const company = String(data.get("company") ?? "");
+    setError(null);
+    setStatus("sending");
+    try {
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          company,
+          reply_to: data.get("email"),
+          region: labelOf(DESTINATIONS, data.get("region")),
+          volume: labelOf(VOLUMES, data.get("volume")),
+          customizations: data.getAll("customizations").join(", ") || "None",
+          articles: items.map((a) => `${a.code}: ${a.name} (MOQ ${a.moq} ${a.unit})`).join("\n") || "None selected",
+          notes: rfqNotes || "—",
+          "g-recaptcha-response": captcha,
+        },
+        { publicKey },
+      );
+      setStatus("sent");
+      toast(`Quotation inquiry lodged for ${company}. Factory costing follows within 24 hours.`);
+      form.reset();
+      actions.clearRfq();
+    } catch {
+      setStatus("idle");
+      setError(`We couldn't transmit your RFQ. Please try again or email ${TRADE_DESK.email}.`);
+    } finally {
+      captchaRef.current?.reset();
+    }
+  }
 
   return (
     <div className="grid grid-cols-1 xl:grid-cols-12 gap-12 items-start">
@@ -122,16 +179,7 @@ export function RfqPortal() {
       </div>
 
       <div className="xl:col-span-7 bg-surface-container-lowest p-8 sm:p-10 rounded-lg border border-outline-variant/30 shadow-md">
-        <form
-          className="space-y-5"
-          onSubmit={(e) => {
-            e.preventDefault();
-            const company = new FormData(e.currentTarget).get("company") || "Client";
-            setStatus("received");
-            toast(`Quotation inquiry lodged for ${company}. Tech pack passed to engineering.`);
-            setTimeout(() => setStatus("sent"), 1500);
-          }}
-        >
+        <form className="space-y-5" onSubmit={submit}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
             <div>
               <label className={LABEL} htmlFor="rfq-company">
@@ -221,27 +269,17 @@ export function RfqPortal() {
               onChange={(e) => actions.setRfqNotes(e.target.value)}
             />
           </div>
-          <div className="flex flex-wrap items-center justify-between gap-2 p-3 bg-surface-container-low rounded border border-dashed border-outline-variant/60 text-xs">
-            <div className="flex items-center gap-2 text-on-surface-variant min-w-0">
-              <Icon name="cloud_upload" className="text-[20px] text-accent-saddle" />
-              <span className="truncate">{techPack ?? "Attach Tech Pack / Vector CAD (.pdf, .ai, .zip)"}</span>
-            </div>
-            <button
-              className="text-[11px] font-semibold text-primary uppercase underline hover:text-accent-saddle"
-              type="button"
-              onClick={() => fileRef.current?.click()}
-            >
-              Browse Files
-            </button>
-            <input
-              ref={fileRef}
-              className="hidden"
-              type="file"
-              accept=".pdf,.ai,.zip"
-              tabIndex={-1}
-              onChange={(e) => setTechPack(e.target.files?.[0]?.name ?? null)}
-            />
+          <div className="flex items-start gap-2 p-3 bg-surface-container-low rounded border border-dashed border-outline-variant/60 text-xs text-on-surface-variant">
+            <Icon name="attach_file" className="text-[18px] text-accent-saddle shrink-0" />
+            <span>
+              Tech packs &amp; vector CAD (.pdf, .ai, .zip): reply to our confirmation email or send them to{" "}
+              <a className="text-accent-saddle font-semibold hover:underline" href={`mailto:${TRADE_DESK.email}`}>
+                {TRADE_DESK.email}
+              </a>
+              .
+            </span>
           </div>
+          {RECAPTCHA_SITE_KEY && <Recaptcha ref={captchaRef} siteKey={RECAPTCHA_SITE_KEY} onToken={setCaptcha} />}
           <button
             className={`w-full text-surface transition-all duration-200 active:scale-95 text-xs font-semibold tracking-eyebrow uppercase py-4 rounded-sm shadow-md flex items-center justify-center gap-2 disabled:cursor-default ${
               status === "idle" ? "bg-primary hover:bg-primary-container" : "bg-secondary"
@@ -250,15 +288,24 @@ export function RfqPortal() {
             disabled={status !== "idle"}
             aria-live="polite"
           >
-            <Icon name={status === "idle" ? "send" : "check_circle"} className="text-[18px] text-secondary-container" />
+            <Icon
+              name={status === "idle" ? "send" : status === "sending" ? "progress_activity" : "check_circle"}
+              className={`text-[18px] text-secondary-container ${status === "sending" ? "animate-spin" : ""}`}
+            />
             <span>
               {status === "idle"
                 ? "Submit RFQ for Guaranteed 24h Factory Costing"
-                : status === "received"
-                  ? "RFQ Received • 24h Costing Initiated"
-                  : "BOM Specification Transmitted"}
+                : status === "sending"
+                  ? "Transmitting RFQ…"
+                  : "RFQ Received • 24h Costing Initiated"}
             </span>
           </button>
+          {error && (
+            <p role="alert" className="text-xs text-error flex items-start gap-1.5">
+              <Icon name="error" className="text-[16px] shrink-0" />
+              {error}
+            </p>
+          )}
         </form>
       </div>
     </div>
