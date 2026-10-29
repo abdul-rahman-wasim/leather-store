@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { BRAND, TRADE_DESK } from "@/lib/catalog";
 import { Icon } from "./Icon";
+import { WhatsAppLink } from "./WhatsAppLink";
 
 type Message = { id: number; from: "buyer" | "desk"; text: string };
 
@@ -203,11 +204,8 @@ export function Concierge() {
       </div>
 
       <div className="fixed bottom-6 right-4 sm:right-8 z-50 flex items-center gap-3">
-        <a
+        <WhatsAppLink
           className="flex items-center gap-2 bg-primary text-surface px-4 py-3 rounded-full shadow-2xl border-2 border-secondary-container/70 hover:border-secondary-container transition-all active:scale-95 animate-candle-glow"
-          href={TRADE_DESK.whatsapp}
-          target="_blank"
-          rel="noopener noreferrer"
           title="Chat on WhatsApp"
         >
           <span className="w-8 h-8 rounded-full bg-secondary-container text-primary flex items-center justify-center shadow">
@@ -222,7 +220,7 @@ export function Concierge() {
             </span>
             <span className="text-[9px] text-surface-dim/90 mt-0.5">{TRADE_DESK.phone}</span>
           </span>
-        </a>
+        </WhatsAppLink>
         <button
           aria-label={open ? "Close export desk chat" : "Open export desk chat"}
           aria-expanded={open}
