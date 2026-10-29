@@ -27,8 +27,6 @@ export function whatsappRfqLink(codes: string[]) {
   return `${TRADE_DESK.whatsapp}?text=${encodeURIComponent(text)}`;
 }
 
-export const LOOKBOOK_MESSAGE = `2026 Contract Lookbook requested — the export desk will email the PDF from ${TRADE_DESK.email}`;
-
 export type ContractArticle = {
   code: string;
   name: string;
