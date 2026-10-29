@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BRAND, CONTRACT_ARTICLES, LOGO_SRC, LOOKBOOK_MESSAGE, TRADE_DESK } from "@/lib/catalog";
 import { Icon } from "./Icon";
 import { ToastButton } from "./Toast";
+import { WhatsAppLink } from "./WhatsAppLink";
 
 const CREDENTIALS = [
   { icon: "verified", title: "SEDEX SMETA Member", text: "4-Pillar Audited Workplace" },
@@ -105,15 +106,12 @@ export function Footer() {
             <p className="text-xs text-on-surface-variant font-light mb-3">
               Connect directly with our Islamabad engineering desk for instant CAD and MOQ consultation.
             </p>
-            <a
+            <WhatsAppLink
               className="inline-flex items-center gap-2 bg-primary text-surface px-4 py-2.5 rounded text-xs font-semibold uppercase tracking-wider hover:bg-primary-container shadow-sm transition-colors"
-              href={TRADE_DESK.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
             >
               <Icon name="chat" className="text-[18px] text-secondary-container" />
               <span>WhatsApp Quick Chat</span>
-            </a>
+            </WhatsAppLink>
           </div>
         </div>
         <div className="pt-8 border-t border-outline-variant/25 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-on-surface-variant font-light">
