@@ -6,6 +6,7 @@ import { CONTRACT_ARTICLES, TRADE_DESK } from "@/lib/catalog";
 import { actions, useStore } from "@/lib/store";
 import { Icon } from "../Icon";
 import { toast } from "../Toast";
+import { WhatsAppLink } from "../WhatsAppLink";
 import { Recaptcha, type RecaptchaHandle } from "./Recaptcha";
 
 const EMAILJS = {
@@ -306,6 +307,13 @@ export function RfqPortal() {
               {error}
             </p>
           )}
+          <p className="text-xs text-on-surface-variant text-center">
+            Prefer WhatsApp?{" "}
+            <WhatsAppLink className="inline-flex items-center gap-1 font-semibold text-accent-saddle hover:underline">
+              <Icon name="chat" className="text-[15px]" />
+              {items.length ? "Send these articles to the export desk" : "Message the export desk"}
+            </WhatsAppLink>
+          </p>
         </form>
       </div>
     </div>

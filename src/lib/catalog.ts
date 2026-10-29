@@ -16,6 +16,17 @@ export const TRADE_DESK = {
   address: "Plot 144, Sector I-9/2, Industrial Estate, Islamabad, 44000, Pakistan",
 };
 
+/** wa.me link to the export desk, pre-filled with the RFQ articles (or a general opener when none are attached). */
+export function whatsappRfqLink(codes: string[]) {
+  const items = CONTRACT_ARTICLES.filter((a) => codes.includes(a.code));
+  const text = items.length
+    ? `Hello ${BRAND} export desk, please quote factory costing for:\n${items
+        .map((a) => `• ${a.code} ${a.name} (MOQ ${a.moq} ${a.unit})`)
+        .join("\n")}`
+    : `Hello ${BRAND} export desk, I'd like to discuss a contract manufacturing order.`;
+  return `${TRADE_DESK.whatsapp}?text=${encodeURIComponent(text)}`;
+}
+
 export type ContractArticle = {
   code: string;
   name: string;

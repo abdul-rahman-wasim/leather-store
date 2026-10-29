@@ -6,6 +6,7 @@ import { BRAND, LOGO_SRC, TRADE_DESK } from "@/lib/catalog";
 import { useStore } from "@/lib/store";
 import { Icon } from "./Icon";
 import { openLookbook } from "./Lookbook";
+import { WhatsAppLink } from "./WhatsAppLink";
 
 const NAV = [
   { label: "Contract Articles", href: "/#catalog-section" },
@@ -40,15 +41,12 @@ export function Header() {
             </span>
           </div>
           <div className="hidden md:flex items-center gap-5 shrink-0 text-[11px] tracking-wider uppercase">
-            <a
+            <WhatsAppLink
               className="flex items-center gap-1.5 text-primary font-semibold hover:text-accent-saddle transition-colors"
-              href={TRADE_DESK.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
             >
               <Icon name="chat" className="text-[15px] text-accent-saddle" />
               <span>WhatsApp: {TRADE_DESK.phone}</span>
-            </a>
+            </WhatsAppLink>
             <span className="opacity-30 hidden xl:inline">|</span>
             <span className="text-on-surface-variant/80 hidden xl:inline">OEM &amp; Private Label Spec</span>
             <span className="opacity-30">|</span>
@@ -118,14 +116,9 @@ export function Header() {
               {item.label}
             </Link>
           ))}
-          <a
-            className="text-[12px] uppercase font-semibold tracking-eyebrow py-1 text-primary"
-            href={TRADE_DESK.whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <WhatsAppLink className="text-[12px] uppercase font-semibold tracking-eyebrow py-1 text-primary">
             WhatsApp: {TRADE_DESK.phone}
-          </a>
+          </WhatsAppLink>
         </nav>
       )}
     </header>
