@@ -431,6 +431,7 @@ export type DayRange = [number, number];
 const MAKE_DAYS: Record<string, DayRange> = {
   "edinburgh-field-set": [2, 3],
   "highlands-harness": [5, 7],
+  "highlands-suite": [5, 7],
   "heritage-moto": [10, 14],
   "atelier-aviator": [14, 18],
 };
@@ -492,8 +493,8 @@ export const RECOMMENDED: CartItemInput[] = [
     collection: "The Canine Collection",
     image: `${IMG}AB6AXuAxk5A36q2fRdvzT5L-HTMjn2oYQvsa31vqc2PSK75TM_ZiW2KzBXp1YvtZAWL7axXC2U5wowSjgll4QL9UYWOSSHe4NsBUZka8fVHW3b_v23YZjotRJcyOEw9iEelwqmjUwi4_y7XSKhWVS4NQqBRWQ6Wxz6hWD8mYzJgr7MrK24fBryvwroogaSHsWqfbxJHmuakJh7RVYl_E5EkikGDTaVeKUZ_uhY4nTJVYXYjUnwML4BukfnGH`,
     imageAlt: "Braided bridle leather six-foot dog walking lead with heavy brass trigger clasp coiled on stone",
-    priceUsd: 78,
-    priceGbp: 62,
+    priceUsd: 85,
+    priceGbp: 70,
     material: "Bridle Leather",
     details: [
       { label: "Color", value: "Cognac Tan" },
