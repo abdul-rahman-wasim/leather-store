@@ -275,7 +275,7 @@ export default function Home() {
         <div className="mb-10 max-w-2xl">
           <div className="inline-flex items-center gap-2 bg-surface-container-high border border-secondary/30 px-3 py-1 rounded-full text-[10px] uppercase tracking-wider text-secondary font-semibold mb-2">
             <Icon name="timeline" className="text-[13px] text-secondary" />
-            Live Industrial Ledger &amp; Progress Portal
+            Industrial Ledger &amp; Progress Portal
           </div>
           <span className={`${EYEBROW} mb-1`}>Contract Milestone Transparency</span>
           <h2 className="font-headline text-3xl sm:text-4xl text-on-surface font-normal">

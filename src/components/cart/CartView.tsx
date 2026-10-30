@@ -6,6 +6,7 @@ import { HARNESS_SLUG, IMG, RECOMMENDED, formatPrice, type CartItem, type Curren
 import { actions, useStore, type Region } from "@/lib/store";
 import { useDispatchCountdown } from "@/lib/useDispatchCountdown";
 import { Icon } from "../Icon";
+import { InvoiceRequest } from "./InvoiceRequest";
 
 const REGIONS: Record<
   Region,
@@ -188,7 +189,6 @@ export function CartView() {
   const info = REGIONS[region];
   const [postalByRegion, setPostalByRegion] = useState<Partial<Record<Region, string>>>({});
   const [verified, setVerified] = useState(false);
-  const [checkoutNote, setCheckoutNote] = useState(false);
   const countdown = useDispatchCountdown(30_000);
 
   const postal = postalByRegion[region] ?? info.postal;
@@ -441,45 +441,13 @@ export function CartView() {
                 </div>
               </div>
 
-              <div className="mt-6 space-y-2.5">
-                <button
-                  className="w-full bg-primary hover:bg-black text-on-primary py-3.5 flex items-center justify-center gap-2 font-label-md text-label-md uppercase tracking-eyebrow shadow-sm transition-all active:scale-95"
-                  type="button"
-                  onClick={() => setCheckoutNote(true)}
-                >
-                  <Icon name="phone_iphone" className="text-[18px]" /> Pay with Apple Pay
-                </button>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    className={`bg-surface hover:bg-surface-container text-primary py-2.5 flex items-center justify-center gap-1 ${EYEBROW} shadow-sm transition-all active:scale-95`}
-                    type="button"
-                    onClick={() => setCheckoutNote(true)}
-                  >
-                    Google Pay
-                  </button>
-                  <button
-                    className={`bg-surface hover:bg-surface-container text-primary py-2.5 flex items-center justify-center gap-1 ${EYEBROW} shadow-sm transition-all active:scale-95`}
-                    type="button"
-                    onClick={() => setCheckoutNote(true)}
-                  >
-                    Klarna <span className="text-[11px] font-normal normal-case tracking-normal">(3x {fmt(subtotal / 3)})</span>
-                  </button>
-                </div>
-              </div>
-
-              <button
-                className="mt-4 w-full bg-secondary hover:bg-secondary/90 text-on-secondary py-4 text-center font-label-lg text-label-lg tracking-eyebrow uppercase font-bold shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-3"
-                type="button"
-                onClick={() => setCheckoutNote(true)}
-              >
-                <span>Proceed to Private Checkout</span>
-                <Icon name="lock" className="text-[18px]" />
-              </button>
-              {checkoutNote && (
-                <p className="mt-3 font-body-sm text-body-sm text-on-surface-variant text-center" role="status">
-                  Checkout isn&apos;t connected yet — payment processing is coming soon.
-                </p>
-              )}
+              <InvoiceRequest
+                cart={cart}
+                currency={currency}
+                total={fmt(subtotal)}
+                destination={info.label}
+                postal={postal}
+              />
 
               <div className="mt-6 bg-surface-container p-4 shadow-sm flex items-start gap-3.5">
                 <Icon name="support_agent" className="text-secondary text-[22px]" />
