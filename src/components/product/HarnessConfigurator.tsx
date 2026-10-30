@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { IMG, formatPrice } from "@/lib/catalog";
+import { IMG, TRANSIT_DAYS, addDays, formatDays, formatPrice, makeDays } from "@/lib/catalog";
 import { actions, useStore } from "@/lib/store";
 import { useDispatchCountdown } from "@/lib/useDispatchCountdown";
 import { Icon } from "../Icon";
@@ -62,6 +62,13 @@ const BREEDS: { label: string; size: Size }[] = [
 const FINISHES = [
   { value: "blind", label: "Blind Deboss (Tactile)", tag: "Blind Deboss" },
   { value: "gold", label: "24K Florentine Gold Leaf", tag: "24K Gold Leaf" },
+] as const;
+
+const MAKE = makeDays("highlands-harness");
+const DELIVERY = [
+  ["United Kingdom", TRANSIT_DAYS.uk],
+  ["European Union", TRANSIT_DAYS.eu],
+  ["United States & Canada", TRANSIT_DAYS.us],
 ] as const;
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -400,9 +407,9 @@ export function HarnessConfigurator() {
                 router.push("/cart");
               }}
             >
-              <span>Express Pay</span>
+              <span>Order Now</span>
               <span className="opacity-40">|</span>
-              <span className="font-bold tracking-normal">Apple Pay / G Pay</span>
+              <span className="font-bold tracking-normal">Invoice &amp; Payment Link</span>
             </button>
           </div>
 
@@ -414,7 +421,7 @@ export function HarnessConfigurator() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary" />
                 </span>
                 <span className="text-label-sm font-label-sm uppercase tracking-eyebrow font-bold text-primary">
-                  {countdown?.tomorrow ? "Next Atelier Batch Departing" : "Atelier Batch Departing"}
+                  {countdown?.tomorrow ? "Next Bench Intake Closes" : "Today’s Bench Intake Closes"}
                 </span>
               </div>
               <span className="shrink-0 whitespace-nowrap text-label-sm font-label-sm font-mono text-secondary font-bold tabular-nums">
@@ -424,16 +431,23 @@ export function HarnessConfigurator() {
               </span>
             </div>
             <div className="space-y-2 text-body-sm font-body-sm text-on-surface-variant">
-              {[
-                ["United Kingdom", "3–5 Days via DHL Express"],
-                ["European Union", "4–6 Days via DHL Express"],
-                ["United States & Canada", "4–6 Days via DHL Express"],
-              ].map(([region, eta]) => (
+              <div className="flex items-center justify-between gap-4 pb-2 border-b border-outline-variant/30">
+                <span className="flex items-center gap-1.5">
+                  <Icon name="handyman" className="text-[16px] text-secondary" /> Hand-made in Islamabad
+                </span>
+                <span className="font-semibold text-primary text-right">{formatDays(MAKE)} business days</span>
+              </div>
+              {DELIVERY.map(([region, transit]) => (
                 <div key={region} className="flex items-center justify-between gap-4">
-                  <span>{region}</span>
-                  <span className="font-semibold text-primary text-right">{eta}</span>
+                  <span>Arrives {region}</span>
+                  <span className="font-semibold text-primary text-right">
+                    {formatDays(addDays(MAKE, transit))} business days
+                  </span>
                 </div>
               ))}
+              <p className="text-[11px] font-light pt-1">
+                Bench time plus DHL Express air from Islamabad, all duties pre-paid.
+              </p>
             </div>
           </div>
         </div>
