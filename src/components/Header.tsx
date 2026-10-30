@@ -119,6 +119,17 @@ export function Header() {
           <WhatsAppLink className="text-[12px] uppercase font-semibold tracking-eyebrow py-1 text-primary">
             WhatsApp: {TRADE_DESK.phone}
           </WhatsAppLink>
+          <button
+            className="sm:hidden flex items-center gap-1.5 text-left text-[12px] uppercase font-semibold tracking-eyebrow py-1 text-primary"
+            type="button"
+            onClick={() => {
+              setMenuOpen(false);
+              openLookbook("Mobile menu");
+            }}
+          >
+            <Icon name="menu_book" className="text-[16px] text-accent-saddle" />
+            Request 2026 Lookbook
+          </button>
         </nav>
       )}
     </header>

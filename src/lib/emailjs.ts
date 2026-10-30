@@ -11,6 +11,7 @@ export const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 const TEMPLATES = {
   rfq: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
   lookbook: process.env.NEXT_PUBLIC_EMAILJS_LOOKBOOK_TEMPLATE_ID,
+  invoice: process.env.NEXT_PUBLIC_EMAILJS_INVOICE_TEMPLATE_ID,
 };
 
 export type EmailTemplate = keyof typeof TEMPLATES;

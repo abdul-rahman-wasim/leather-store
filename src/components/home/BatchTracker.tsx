@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { TRADE_DESK } from "@/lib/catalog";
 import { Icon } from "../Icon";
-import { toast } from "../Toast";
 
+/** Illustrative commission; real orders get a tracking ID and stage sign-offs by email. */
+const SAMPLE_PO = "VR-COMM-849";
 const PROGRESS = 74;
 
 const STEPS = [
@@ -44,7 +46,8 @@ const STEPS = [
 const pad = (n: number) => String(n).padStart(2, "0");
 
 export function BatchTracker() {
-  const [po, setPo] = useState("VR-COMM-849");
+  const [po, setPo] = useState(SAMPLE_PO);
+  const [lookup, setLookup] = useState<string | null>(null);
 
   return (
     <div className="bg-surface-container-lowest p-6 sm:p-8 rounded-lg border border-outline-variant/30 shadow-md saddle-stitch">
@@ -53,7 +56,8 @@ export function BatchTracker() {
           className="md:col-span-5"
           onSubmit={(e) => {
             e.preventDefault();
-            toast(`Real-time bench status verified for Commission ${po.trim().toUpperCase()}`);
+            const id = po.trim().toUpperCase();
+            setLookup(id && id !== SAMPLE_PO ? id : null);
           }}
         >
           <label className="block text-[11px] font-semibold uppercase tracking-wider text-on-surface mb-1.5" htmlFor="track-po">
@@ -64,7 +68,10 @@ export function BatchTracker() {
               className="flex-1 min-w-0 bg-surface-container-low border border-outline-variant/40 rounded-sm px-3.5 py-2 text-xs text-on-surface font-mono uppercase focus:outline-none focus:border-primary"
               id="track-po"
               value={po}
-              onChange={(e) => setPo(e.target.value)}
+              onChange={(e) => {
+                setPo(e.target.value);
+                setLookup(null);
+              }}
             />
             <button
               className="bg-primary hover:bg-primary-container text-surface text-xs uppercase tracking-wider font-semibold px-5 py-2 rounded-sm transition-all"
@@ -73,8 +80,22 @@ export function BatchTracker() {
               Track
             </button>
           </div>
+          {lookup && (
+            <p className="text-[11px] text-on-surface-variant mt-2" role="status">
+              Stage updates for {lookup} are emailed to your procurement contact.{" "}
+              <a
+                className="text-accent-saddle font-semibold hover:underline"
+                href={`mailto:${TRADE_DESK.email}?subject=${encodeURIComponent(`Status update: ${lookup}`)}`}
+              >
+                Request a status update
+              </a>
+            </p>
+          )}
         </form>
         <div className="md:col-span-7 flex flex-wrap items-center gap-3 text-xs text-on-surface-variant md:justify-end">
+          <span className="inline-flex items-center gap-1.5 bg-secondary-container text-on-secondary-container font-semibold px-3 py-1 rounded uppercase tracking-wider text-[10px] whitespace-nowrap">
+            <Icon name="visibility" className="text-[14px]" /> Sample Commission
+          </span>
           <span className="inline-flex items-center gap-1.5 bg-surface-container px-3 py-1 rounded border border-outline-variant/30">
             <strong className="text-on-surface">Client:</strong> Kensington Saddlery Co. (London)
           </span>
@@ -89,7 +110,7 @@ export function BatchTracker() {
 
       <div className="space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-semibold uppercase tracking-wider text-primary">
-          <span>Islamabad Manufacturing Floor Real-Time Progress</span>
+          <span>Sample Commission Progress • Islamabad Floor</span>
           <span className="text-accent-saddle">{PROGRESS}% Complete</span>
         </div>
         <div
@@ -139,6 +160,10 @@ export function BatchTracker() {
             );
           })}
         </ol>
+        <p className="text-[11px] text-on-surface-variant font-light">
+          Illustrative timeline. Confirmed commissions receive a tracking ID and dated stage sign-offs by email from{" "}
+          {TRADE_DESK.email}.
+        </p>
       </div>
     </div>
   );

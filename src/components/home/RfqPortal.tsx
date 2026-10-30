@@ -1,20 +1,13 @@
 "use client";
 
-import emailjs from "@emailjs/browser";
-import { useRef, useState, type FormEvent } from "react";
+import type { FormEvent } from "react";
 import { CONTRACT_ARTICLES, TRADE_DESK } from "@/lib/catalog";
+import { RECAPTCHA_SITE_KEY, useEmailForm } from "@/lib/emailjs";
 import { actions, useStore } from "@/lib/store";
 import { Icon } from "../Icon";
 import { toast } from "../Toast";
 import { WhatsAppLink } from "../WhatsAppLink";
-import { Recaptcha, type RecaptchaHandle } from "./Recaptcha";
-
-const EMAILJS = {
-  serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-  templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-  publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
-};
-const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+import { Recaptcha } from "./Recaptcha";
 
 const DESTINATIONS = [
   { value: "UK", label: "United Kingdom (Heathrow / Tilbury DDP)" },
@@ -66,54 +59,27 @@ const labelOf = (list: { value: string; label: string }[], value: FormDataEntryV
 
 export function RfqPortal() {
   const { rfq, rfqNotes } = useStore();
-  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
-  const [error, setError] = useState<string | null>(null);
-  const [captcha, setCaptcha] = useState<string | null>(null);
-  const captchaRef = useRef<RecaptchaHandle>(null);
+  const { status, error, send, captchaRef, setCaptcha } = useEmailForm("rfq");
   const items = CONTRACT_ARTICLES.filter((a) => rfq.includes(a.code));
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const { serviceId, templateId, publicKey } = EMAILJS;
-    if (!serviceId || !templateId || !publicKey || !RECAPTCHA_SITE_KEY) {
-      setError(`The online RFQ desk is offline. Please email your specification to ${TRADE_DESK.email}.`);
-      return;
-    }
-    if (!captcha) {
-      setError("Please confirm you are not a robot before submitting.");
-      return;
-    }
     const data = new FormData(form);
     const company = String(data.get("company") ?? "");
-    setError(null);
-    setStatus("sending");
-    try {
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          company,
-          reply_to: data.get("email"),
-          region: labelOf(DESTINATIONS, data.get("region")),
-          volume: labelOf(VOLUMES, data.get("volume")),
-          customizations: data.getAll("customizations").join(", ") || "None",
-          articles: items.map((a) => `${a.code}: ${a.name} (MOQ ${a.moq} ${a.unit})`).join("\n") || "None selected",
-          notes: rfqNotes || "—",
-          "g-recaptcha-response": captcha,
-        },
-        { publicKey },
-      );
-      setStatus("sent");
-      toast(`Quotation inquiry lodged for ${company}. Factory costing follows within 24 hours.`);
-      form.reset();
-      actions.clearRfq();
-    } catch {
-      setStatus("idle");
-      setError(`We couldn't transmit your RFQ. Please try again or email ${TRADE_DESK.email}.`);
-    } finally {
-      captchaRef.current?.reset();
-    }
+    const sent = await send({
+      company,
+      reply_to: data.get("email"),
+      region: labelOf(DESTINATIONS, data.get("region")),
+      volume: labelOf(VOLUMES, data.get("volume")),
+      customizations: data.getAll("customizations").join(", ") || "None",
+      articles: items.map((a) => `${a.code}: ${a.name} (MOQ ${a.moq} ${a.unit})`).join("\n") || "None selected",
+      notes: rfqNotes || "—",
+    });
+    if (!sent) return;
+    toast(`Quotation inquiry lodged for ${company}. Factory costing follows within 24 hours.`);
+    form.reset();
+    actions.clearRfq();
   }
 
   return (
