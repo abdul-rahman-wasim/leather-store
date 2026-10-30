@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { ArticleActions } from "@/components/home/ArticleActions";
 import { BatchTracker } from "@/components/home/BatchTracker";
+import { QuoteEstimator } from "@/components/home/QuoteEstimator";
 import { RfqPortal } from "@/components/home/RfqPortal";
 import { CONTRACT_ARTICLES, IMG } from "@/lib/catalog";
 
@@ -263,6 +264,18 @@ export default function Home() {
             </article>
           ))}
         </div>
+      </section>
+
+      <section id="quote-estimator" className={`${CONTAINER} pb-20 md:pb-28 w-full scroll-mt-40`}>
+        <div className="mb-10 max-w-2xl">
+          <span className={`${EYEBROW} mb-2`}>Instant Contract Costing</span>
+          <h2 className="font-headline text-3xl sm:text-4xl text-on-surface font-normal">Estimate Your Contract Order</h2>
+          <p className="text-on-surface-variant font-light text-sm sm:text-base mt-2 leading-relaxed">
+            Choose an article, volume and private-label options for an indicative FOB price, then send it to the export
+            desk for confirmed costing within 24 hours.
+          </p>
+        </div>
+        <QuoteEstimator />
       </section>
 
       <section id="rfq-portal" className="bg-surface-container-high/60 border-y border-outline-variant/30 py-24 w-full scroll-mt-40">

@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent } from "react";
-import { CONTRACT_ARTICLES, TRADE_DESK } from "@/lib/catalog";
+import { CONTRACT_ARTICLES, CUSTOMIZATIONS, TRADE_DESK } from "@/lib/catalog";
 import { RECAPTCHA_SITE_KEY, useEmailForm } from "@/lib/emailjs";
 import { actions, useStore } from "@/lib/store";
 import { Icon } from "../Icon";
@@ -23,13 +23,6 @@ const VOLUMES = [
   { value: "mid", label: "Commercial Volume (50 – 250 Units)" },
   { value: "high", label: "Wholesale Contract (250 – 1,000 Units)" },
   { value: "annual", label: "Enterprise Annual Agreement (1,000+ Units)" },
-];
-
-const CUSTOMIZATIONS = [
-  "Blind Deboss / Hot-Foil Brand Monogram",
-  "Custom Sand-Cast Brass Mold Casting",
-  "Custom Woven Neck / Interior Fabric Label",
-  "Bespoke Lasting / Anatomical Wooden Molds",
 ];
 
 const ASSURANCES = [
@@ -208,7 +201,7 @@ export function RfqPortal() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-on-surface">
               {CUSTOMIZATIONS.map((c, i) => (
                 <label
-                  key={c}
+                  key={c.id}
                   className="flex items-center gap-2 bg-surface-container-low p-2 rounded cursor-pointer border border-outline-variant/20 hover:border-outline-variant"
                 >
                   <input
@@ -216,9 +209,9 @@ export function RfqPortal() {
                     defaultChecked={i === 0}
                     name="customizations"
                     type="checkbox"
-                    value={c}
+                    value={c.label}
                   />
-                  <span>{c}</span>
+                  <span>{c.label}</span>
                 </label>
               ))}
             </div>

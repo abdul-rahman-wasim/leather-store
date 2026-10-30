@@ -19,9 +19,9 @@ src/
     Header, Footer, Icon (Icon + Stars), NewsletterForm, Toast (toast() + <Toast/> pill, mounted in layout), WhatsAppLink (wa.me link prefilled with RFQ articles — use for every WhatsApp CTA)
     Concierge.tsx         Floating "Islamabad Export Desk" chat + WhatsApp launcher (scripted replies), mounted in layout
     Lookbook.tsx          openLookbook(source) / <LookbookButton> + <LookbookDialog/> email-gated PDF request, mounted in layout
-    home/ shop/ product/ cart/   Feature components, grouped by page (home/RfqPortal sends the RFQ, home/Recaptcha is the v2 widget, cart/InvoiceRequest emails the satchel — no online payments; the desk replies with an invoice + payment link)
+    home/ shop/ product/ cart/   Feature components, grouped by page (home/RfqPortal sends the RFQ, home/Recaptcha is the v2 widget, home/QuoteEstimator gives indicative contract costing, cart/InvoiceRequest emails the satchel — no online payments; the desk replies with an invoice + payment link)
   lib/
-    catalog.ts            Types, PRODUCTS, CATEGORY_LABELS, image URLs, formatPrice, lead times (makeDays, TRANSIT_DAYS)
+    catalog.ts            Types, PRODUCTS, CATEGORY_LABELS, image URLs, formatPrice, lead times (makeDays, TRANSIT_DAYS), contract pricing (unitPrice, CUSTOMIZATIONS, estimateQuote — PLACEHOLDER figures)
     store.ts              Cart/region/wishlist/RFQ store (useSyncExternalStore + localStorage)
     emailjs.ts            useEmailForm(template): EmailJS send + reCAPTCHA token + status/error; register templates in TEMPLATES
     useDispatchCountdown.ts  Countdown to 18:00 dispatch cutoff (harness + cart)
