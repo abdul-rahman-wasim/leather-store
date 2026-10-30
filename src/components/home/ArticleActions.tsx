@@ -1,7 +1,7 @@
 "use client";
 
 import type { ContractArticle } from "@/lib/catalog";
-import { actions } from "@/lib/store";
+import { actions, useStore } from "@/lib/store";
 import { toast } from "../Toast";
 
 function scrollToRfq() {
@@ -9,6 +9,8 @@ function scrollToRfq() {
 }
 
 export function ArticleActions({ article }: { article: ContractArticle }) {
+  const { rfqNotes } = useStore();
+
   return (
     <div className="p-6 pt-0 flex gap-2">
       <button
@@ -27,11 +29,10 @@ export function ArticleActions({ article }: { article: ContractArticle }) {
         title="Request Swatch Sample"
         type="button"
         onClick={() => {
-          const label = `${article.code} (${article.sample})`;
-          actions.setRfqNotes(
-            `Please dispatch physical leather swatch kit for ${label} with certification paperwork. Target delivery address: `,
-          );
-          toast(`Physical swatch kit request initiated for ${label}. Dispatched via DHL.`);
+          const line = `Swatch kit: please send ${article.sample} swatches for ${article.code} with certification paperwork.`;
+          actions.addRfq(article.code);
+          if (!rfqNotes.includes(line)) actions.setRfqNotes(rfqNotes ? `${rfqNotes}\n${line}` : line);
+          toast(`Swatch kit for ${article.code} added to your RFQ. Submit it below to request dispatch.`);
           scrollToRfq();
         }}
       >

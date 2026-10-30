@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "./Icon";
 
 const TOAST_EVENT = "toast:show";
@@ -8,15 +8,6 @@ const TOAST_EVENT = "toast:show";
 /** Shows a short confirmation pill below the header */
 export function toast(message: string) {
   window.dispatchEvent(new CustomEvent<string>(TOAST_EVENT, { detail: message }));
-}
-
-/** Text button that raises a toast, for use inside server components */
-export function ToastButton({ message, className, children }: { message: string; className?: string; children: ReactNode }) {
-  return (
-    <button className={className} type="button" onClick={() => toast(message)}>
-      {children}
-    </button>
-  );
 }
 
 export function Toast() {

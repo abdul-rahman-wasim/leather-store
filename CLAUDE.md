@@ -16,8 +16,8 @@ src/
     products/<slug>/      Product detail pages (one folder per product)
     cart/                 Cart
   components/
-    Header, Footer, Icon (Icon + Stars), NewsletterForm, Toast (toast() + <Toast/> pill, mounted in layout), WhatsAppLink (wa.me link prefilled with RFQ articles — use for every WhatsApp CTA)
-    Concierge.tsx         Floating "Islamabad Export Desk" chat + WhatsApp launcher (scripted replies), mounted in layout
+    Header, Footer, Icon (Icon + Stars), Toast (toast() + <Toast/> pill, mounted in layout), WhatsAppLink (wa.me link prefilled with RFQ articles — use for every WhatsApp CTA)
+    Concierge.tsx         Floating "Islamabad Export Desk" chat + WhatsApp launcher (automated replies from site data, each with a WhatsApp handoff), mounted in layout
     Lookbook.tsx          openLookbook(source) / <LookbookButton> + <LookbookDialog/> email-gated PDF request, mounted in layout
     home/ shop/ product/ cart/   Feature components, grouped by page (home/RfqPortal sends the RFQ, home/Recaptcha is the v2 widget, home/QuoteEstimator gives indicative contract costing, cart/InvoiceRequest emails the satchel — no online payments; the desk replies with an invoice + payment link)
   lib/

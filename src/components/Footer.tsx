@@ -2,7 +2,6 @@ import Link from "next/link";
 import { BRAND, CONTRACT_ARTICLES, LOGO_SRC, TRADE_DESK } from "@/lib/catalog";
 import { Icon } from "./Icon";
 import { LookbookButton } from "./Lookbook";
-import { ToastButton } from "./Toast";
 import { WhatsAppLink } from "./WhatsAppLink";
 
 const CREDENTIALS = [
@@ -14,6 +13,8 @@ const CREDENTIALS = [
 
 const PROGRAM_CODES = ["VR-101", "VR-204", "VR-308", "VR-412", "VR-620"];
 
+/** Documents are sent on request by the export desk. */
+const request = (subject: string) => `mailto:${TRADE_DESK.email}?subject=${encodeURIComponent(`Request: ${subject}`)}`;
 const LINK = "text-left hover:text-primary transition-colors";
 
 export function Footer() {
@@ -87,14 +88,14 @@ export function Footer() {
                 </LookbookButton>
               </li>
               <li>
-                <ToastButton className={LINK} message="Factory physical tour booking open for B2B buyers">
+                <a className={LINK} href={request("Factory visit & audit tour")}>
                   Factory Visit &amp; Audit Tour
-                </ToastButton>
+                </a>
               </li>
               <li>
-                <ToastButton className={LINK} message="Lab reports for REACH chemical analysis requested">
+                <a className={LINK} href={request("REACH compliance sheets")}>
                   REACH Compliance Sheets
-                </ToastButton>
+                </a>
               </li>
             </ul>
           </div>
@@ -116,15 +117,15 @@ export function Footer() {
             © {new Date().getFullYear()} {BRAND} Leathercraft Mfg Ltd. All rights reserved. Islamabad, Pakistan.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-6">
-            <Link className="hover:text-on-surface transition-colors" href="#">
+            <a className="hover:text-on-surface transition-colors" href={request("SEDEX compliance terms")}>
               SEDEX Compliance Terms
-            </Link>
-            <Link className="hover:text-on-surface transition-colors" href="#">
+            </a>
+            <a className="hover:text-on-surface transition-colors" href={request("Mutual NDA")}>
               Non-Disclosure Agreement (NDA)
-            </Link>
-            <Link className="hover:text-on-surface transition-colors" href="#">
+            </a>
+            <a className="hover:text-on-surface transition-colors" href={request("Incoterms & freight rates")}>
               Incoterms &amp; Freight Rates
-            </Link>
+            </a>
           </div>
         </div>
       </div>

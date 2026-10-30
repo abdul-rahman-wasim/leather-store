@@ -89,13 +89,12 @@ export default async function ShopPage(props: PageProps<"/shop/[[...category]]">
             </div>
             <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">In The Atelier</h2>
             <p className="font-body-md text-body-md text-on-surface-variant max-w-xl">
-              Editions currently at the cutting and burnishing stage. Patrons can join the reserve registry for 24-hour
-              priority before release.
+              Editions currently at the cutting and burnishing stage in Islamabad, released in small numbered batches.
             </p>
           </div>
           <Link
             className="font-label-md text-label-md uppercase tracking-wider text-secondary hover:text-primary transition-colors flex items-center gap-1 group pb-1"
-            href="/#craftsmanship"
+            href="/#provenance"
           >
             <span>Production Notes</span>
             <Icon name="arrow_forward" className="text-[18px] group-hover:translate-x-1 transition-transform" />
