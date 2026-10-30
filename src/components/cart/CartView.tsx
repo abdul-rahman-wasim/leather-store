@@ -2,7 +2,19 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { HARNESS_SLUG, IMG, RECOMMENDED, TRADE_DESK, formatPrice, type CartItem, type Currency } from "@/lib/catalog";
+import {
+  HARNESS_SLUG,
+  IMG,
+  RECOMMENDED,
+  TRADE_DESK,
+  TRANSIT_DAYS,
+  addDays,
+  formatDays,
+  formatPrice,
+  orderMakeDays,
+  type CartItem,
+  type Currency,
+} from "@/lib/catalog";
 import { actions, useStore, type Region } from "@/lib/store";
 import { useDispatchCountdown } from "@/lib/useDispatchCountdown";
 import { Icon } from "../Icon";
@@ -24,7 +36,7 @@ const REGIONS: Record<
     label: "USA ($ USD)",
     courierTitle: "Express International Courier",
     courierDesc:
-      "DHL Express air from Islamabad to the United States (4–6 business days). All US customs tariffs, border clearances, and state import duties are 100% pre-paid by Vale & Rawat.",
+      `DHL Express air from Islamabad to the United States (${formatDays(TRANSIT_DAYS.us)} business days). All US customs tariffs, border clearances, and state import duties are 100% pre-paid by Vale & Rawat.`,
     postalLabel: "Zip Code / State",
     postal: "10021 (New York, NY)",
     hub: "Verified US Hub",
@@ -34,7 +46,7 @@ const REGIONS: Record<
     label: "UK (£ GBP)",
     courierTitle: "DHL Express UK Courier",
     courierDesc:
-      "DHL Express air from Islamabad to the UK mainland (3–5 business days). Signed delivery in padded protective linen cases, all duties and VAT pre-paid.",
+      `DHL Express air from Islamabad to the UK mainland (${formatDays(TRANSIT_DAYS.uk)} business days). Signed delivery in padded protective linen cases, all duties and VAT pre-paid.`,
     postalLabel: "UK Postcode",
     postal: "W1S 2JR (Mayfair, London)",
     hub: "UK DDP Delivery",
@@ -44,7 +56,7 @@ const REGIONS: Record<
     label: "Scotland (£)",
     courierTitle: "DHL Express Highlands & Islands",
     courierDesc:
-      "DHL Express air from Islamabad to Scotland, including Highlands & Islands addresses (4–6 business days). Signed delivery, all duties and VAT pre-paid.",
+      `DHL Express air from Islamabad to Scotland, including Highlands & Islands addresses (${formatDays(TRANSIT_DAYS.scot)} business days). Signed delivery, all duties and VAT pre-paid.`,
     postalLabel: "Scottish Postal Code",
     postal: "EH2 3BU (Edinburgh)",
     hub: "Scotland DDP Delivery",
@@ -195,6 +207,8 @@ export function CartView() {
   const fmt = (n: number) => formatPrice(n, n, currency);
   const inCart = (productId: string) => cart.some((c) => c.productId === productId);
   const releaseWindow = countdown ? `${countdown.hours}h ${countdown.minutes}m` : "—";
+  const benchDays = orderMakeDays(cart.map((c) => c.productId));
+  const arrival = formatDays(addDays(benchDays, TRANSIT_DAYS[region]));
 
   if (cart.length === 0) {
     return (
@@ -236,7 +250,7 @@ export function CartView() {
           <div className="flex items-center gap-3 bg-surface px-4 py-1.5 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
             <span className={`${EYEBROW} text-on-surface-variant`}>
-              Bench Slot Reserved • Release Window: <strong className="text-on-surface">{releaseWindow}</strong>
+              Next Bench Intake Closes In: <strong className="text-on-surface">{releaseWindow}</strong>
             </span>
           </div>
         </div>
@@ -428,6 +442,15 @@ export function CartView() {
                   <span>Aromatic Cedar Coffret &amp; Bags</span>
                   <span className="text-on-surface font-medium">Included</span>
                 </div>
+                <div className="flex items-start justify-between gap-4 pt-3 border-t border-outline-variant/30">
+                  <span>
+                    Estimated Arrival
+                    <span className="block text-[11px]">
+                      Bench {formatDays(benchDays)} + DHL {formatDays(TRANSIT_DAYS[region])} business days
+                    </span>
+                  </span>
+                  <span className="text-on-surface font-medium text-right whitespace-nowrap">{arrival} business days</span>
+                </div>
               </div>
 
               <div className="mt-4 bg-surface p-4 shadow-sm flex items-end justify-between gap-4">
@@ -447,6 +470,7 @@ export function CartView() {
                 total={fmt(subtotal)}
                 destination={info.label}
                 postal={postal}
+                arrival={`${arrival} business days`}
               />
 
               <div className="mt-6 bg-surface-container p-4 shadow-sm flex items-start gap-3.5">

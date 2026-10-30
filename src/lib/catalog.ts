@@ -387,6 +387,43 @@ export type CartItemInput = {
 
 export type CartItem = CartItemInput & { key: string; qty: number };
 
+/** [min, max] business days. */
+export type DayRange = [number, number];
+
+/** Islamabad bench time before dispatch, by productId. Anything unlisted ships from stock. */
+const MAKE_DAYS: Record<string, DayRange> = {
+  "edinburgh-field-set": [2, 3],
+  "highlands-harness": [5, 7],
+  "heritage-moto": [10, 14],
+  "atelier-aviator": [14, 18],
+};
+const STOCK_DAYS: DayRange = [1, 2];
+
+/** DHL Express air from Islamabad, duties pre-paid. */
+export const TRANSIT_DAYS = {
+  uk: [3, 5],
+  scot: [4, 6],
+  eu: [4, 6],
+  us: [4, 6],
+} satisfies Record<string, DayRange>;
+
+export function makeDays(productId: string): DayRange {
+  return MAKE_DAYS[productId] ?? STOCK_DAYS;
+}
+
+/** Bench time for a whole order: it ships together once the slowest piece is finished. */
+export function orderMakeDays(productIds: string[]): DayRange {
+  return productIds.map(makeDays).reduce<DayRange>((a, b) => [Math.max(a[0], b[0]), Math.max(a[1], b[1])], STOCK_DAYS);
+}
+
+export function addDays(a: DayRange, b: DayRange): DayRange {
+  return [a[0] + b[0], a[1] + b[1]];
+}
+
+export function formatDays([min, max]: DayRange) {
+  return min === max ? `${min}` : `${min}–${max}`;
+}
+
 export const BALM: CartItemInput = {
   productId: "highlands-balm",
   name: "Highlands Leather Protection Balm & Beeswax Bar",

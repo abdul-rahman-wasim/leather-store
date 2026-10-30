@@ -23,12 +23,14 @@ export function InvoiceRequest({
   total,
   destination,
   postal,
+  arrival,
 }: {
   cart: CartItem[];
   currency: Currency;
   total: string;
   destination: string;
   postal: string;
+  arrival: string;
 }) {
   const { status, error, send, captchaRef, setCaptcha } = useEmailForm("invoice");
   const [email, setEmail] = useState("");
@@ -46,6 +48,7 @@ export function InvoiceRequest({
       currency,
       items: cart.map((item) => lineSummary(item, currency)).join("\n"),
       total,
+      arrival,
     });
   }
 
