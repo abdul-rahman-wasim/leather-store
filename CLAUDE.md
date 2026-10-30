@@ -34,6 +34,7 @@ src/
 - Import via `@/` alias (`@/lib/...`, `@/components/...`).
 - Product/catalog data lives in `src/lib/catalog.ts` only — never hardcode products in components. Prices carry both `priceUsd` and `priceGbp`; display with `formatPrice`.
 - Client state: read with `useStore()`, mutate with `actions.*` from `src/lib/store.ts`. No other state libraries.
+- Brand story: everything is made in, and shipped from, the Islamabad factory. No UK/EU offices, workshops or dispatch hubs. UK/EU place names only as destinations, customers or product style names.
 - UI source of truth: Stitch project "Artisan Leather Goods Store" — home: "Vale & Rawat Atelier & Manufacture - B2B Storefront"; other pages: Editorial Redesign screens. Match markup and copy.
 - Styling: Tailwind utilities with theme tokens from `globals.css` (`bg-surface`, `text-on-surface`, `text-primary`, `font-headline-lg text-headline-lg`, ...). No raw hex colors, no CSS modules. New tokens go in `@theme`.
 - Icons: `<Icon name="material_symbol_name" />`, never inline SVG.
@@ -45,7 +46,7 @@ src/
 ## Branches & PRs (MUST follow)
 
 - Never commit straight to `dev` or `main`. Branch off `dev` per fix/feature: `feat/<slug>`, `fix/<slug>`, `docs/<slug>`, `chore/<slug>`.
-- Before every commit, show the commit message and the exact file list and wait for explicit approval. Stage files by name, never `git add -A`; unrelated local changes stay out.
+- Before every commit: stage exactly the commit's files by name (never `git add -A`; unrelated local changes stay out) and write the one-line message to `.git/SQUASH_MSG` so it shows in VS Code's Source Control box. Then show message + file list and wait for explicit approval. If rejected, unstage and delete `.git/SQUASH_MSG`.
 - Push the branch, open a PR into `dev` titled with the commit message, then squash-merge and delete the branch. `main` is updated from `dev` only.
 - Pushing: Git Credential Manager may block on an account picker. Push with `GH_TOKEN=$(gh auth token --user abdul-rahman-wasim) git -c credential.helper= -c "credential.helper=!gh auth git-credential" push`.
 - `gh`: active account may be `Team1-Sportech` (read-only here). Run PR commands as the owner without switching globally: `GH_TOKEN=$(gh auth token --user abdul-rahman-wasim) gh pr ...`.

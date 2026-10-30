@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { HARNESS_SLUG, IMG, RECOMMENDED, formatPrice, type CartItem, type Currency } from "@/lib/catalog";
+import { HARNESS_SLUG, IMG, RECOMMENDED, TRADE_DESK, formatPrice, type CartItem, type Currency } from "@/lib/catalog";
 import { actions, useStore, type Region } from "@/lib/store";
 import { useDispatchCountdown } from "@/lib/useDispatchCountdown";
 import { Icon } from "../Icon";
@@ -22,9 +22,9 @@ const REGIONS: Record<
 > = {
   us: {
     label: "USA ($ USD)",
-    courierTitle: "Express Transatlantic Courier",
+    courierTitle: "Express International Courier",
     courierDesc:
-      "Direct Express Air to United States (2–3 Business Days via DHL Express). All US customs tariffs, border clearances, and state import duties are 100% pre-paid by Vale & Rawat.",
+      "DHL Express air from Islamabad to the United States (4–6 business days). All US customs tariffs, border clearances, and state import duties are 100% pre-paid by Vale & Rawat.",
     postalLabel: "Zip Code / State",
     postal: "10021 (New York, NY)",
     hub: "Verified US Hub",
@@ -32,22 +32,22 @@ const REGIONS: Record<
   },
   uk: {
     label: "UK (£ GBP)",
-    courierTitle: "Royal Mail Special Bespoke Courier",
+    courierTitle: "DHL Express UK Courier",
     courierDesc:
-      "Next-Day Guaranteed Delivery from Savile Row Atelier. Signed delivery in padded protective linen cases.",
+      "DHL Express air from Islamabad to the UK mainland (3–5 business days). Signed delivery in padded protective linen cases, all duties and VAT pre-paid.",
     postalLabel: "UK Postcode",
     postal: "W1S 2JR (Mayfair, London)",
-    hub: "London Atelier Hub",
+    hub: "UK DDP Delivery",
     currencyTag: "GBP Domestic",
   },
   scot: {
     label: "Scotland (£)",
-    courierTitle: "Scottish Workbench Direct Courier",
+    courierTitle: "DHL Express Highlands & Islands",
     courierDesc:
-      "Same-day or overnight courier dispatched direct from George Street, Edinburgh. Hand-inspected with certified tartan seal.",
+      "DHL Express air from Islamabad to Scotland, including Highlands & Islands addresses (4–6 business days). Signed delivery, all duties and VAT pre-paid.",
     postalLabel: "Scottish Postal Code",
     postal: "EH2 3BU (Edinburgh)",
-    hub: "Edinburgh Workbench",
+    hub: "Scotland DDP Delivery",
     currencyTag: "GBP Scotland",
   },
 };
@@ -85,7 +85,7 @@ const UPCOMING = [
 const GUARANTEES = [
   ["inventory_2", "Cedarwood Unboxing", "Each item rests inside aromatic Scottish cedar gift caskets with raw flax dustbags."],
   ["workspace_premium", "Lifetime Welt Guarantee", "Continuous warranty covering hand-saddled seams, welts, and bespoke brass rivets."],
-  ["flight_takeoff", "Carbon-Neutral Freight", "DHL GoGreen transatlantic transport with Scottish peatland restoration offset."],
+  ["flight_takeoff", "Carbon-Neutral Freight", "DHL GoGreen air freight from Islamabad with certified carbon offsets."],
 ];
 
 const EYEBROW = "font-label-sm text-label-sm tracking-eyebrow uppercase";
@@ -231,7 +231,7 @@ export function CartView() {
               Atelier Index
             </Link>
             <span className="opacity-40">/</span>
-            <span className="text-secondary font-semibold">Bespoke Satchel &amp; Transatlantic Freight</span>
+            <span className="text-secondary font-semibold">Bespoke Satchel &amp; International Freight</span>
           </nav>
           <div className="flex items-center gap-3 bg-surface px-4 py-1.5 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
@@ -458,9 +458,9 @@ export function CartView() {
                   </p>
                   <a
                     className="font-label-md text-label-md tracking-eyebrow text-secondary hover:underline font-semibold mt-1 inline-block"
-                    href="tel:+441315550198"
+                    href={TRADE_DESK.tel}
                   >
-                    +44 (0)131 555 0198 (London/Edin)
+                    {TRADE_DESK.phone} (Islamabad Export Desk)
                   </a>
                 </div>
               </div>
@@ -471,7 +471,7 @@ export function CartView() {
         <div className="mt-24 pt-16">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
             <div>
-              <span className={`${EYEBROW} text-secondary font-semibold`}>Savile Row &amp; Edinburgh Workbenches</span>
+              <span className={`${EYEBROW} text-secondary font-semibold`}>Islamabad Workbenches</span>
               <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mt-1">
                 Upcoming Small-Batch Releases
               </h2>

@@ -39,14 +39,14 @@ export default async function ShopPage(props: PageProps<"/shop/[[...category]]">
         <div className="max-w-360 mx-auto px-margin md:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           <div className="lg:col-span-5 space-y-6">
             <span className="font-label-sm text-label-sm uppercase tracking-[0.25em] text-secondary font-semibold">
-              Tuscan Tannery • Scottish Benchwork
+              Tuscan Tannery • Islamabad Benchwork
             </span>
             <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">
               Formed by patient hands, never stamped in haste.
             </h2>
             <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
               Every hide selected by Vale &amp; Rawat undergoes a sixty-day conditioning period in organic bark
-              extracts before being skived and saddle-stitched by hand in our Edinburgh and London mews.
+              extracts before being skived and saddle-stitched by hand in our Islamabad workshop.
             </p>
             <div className="grid grid-cols-3 gap-6 pt-4 border-t border-outline-variant/40">
               {[
@@ -65,7 +65,7 @@ export default async function ShopPage(props: PageProps<"/shop/[[...category]]">
             <div className="aspect-3/4 rounded-xl overflow-hidden shadow-sm border border-outline-variant/30">
               <img
                 className="w-full h-full object-cover"
-                alt="Artisan hand-beveling the edges of full-grain saddle leather in a sunlit Scottish workshop"
+                alt="Artisan hand-beveling the edges of full-grain saddle leather in a sunlit Islamabad workshop"
                 src={`${IMG}AB6AXuAbqZvDv7s9Y6QMCtFSDT-FECMFfRbtOmKT_j8m7E-wiY_2xBz1cJ6RoKixRDPfgTLIfiKEMtVRMMFbMopk-UPthP6RXmgzotMuegVBiANGfjDTUEur149QgMz2eeJLCOHjLXH7T--45m0TTYaaszHCsJt6j6eRCdrHwFdZYpqERGK6ZVmORLp9W0U7R6gtWV1vwg_2lM3qj-A-bvp5ePwXuIEfwnu8RrIvsipIl8cTPh7TAhA82iqW`}
               />
             </div>
@@ -110,7 +110,7 @@ export default async function ShopPage(props: PageProps<"/shop/[[...category]]">
             <Icon name="verified" className="text-secondary text-[24px]" />
             <div>
               <p className="font-label-md text-label-md uppercase tracking-wider text-primary">
-                Guaranteed Transatlantic Delivery
+                Guaranteed DDP Delivery
               </p>
               <p className="font-body-sm text-body-sm text-on-surface-variant">
                 All customs duties, tariffs, and shipping insurance are pre-paid by Vale &amp; Rawat.

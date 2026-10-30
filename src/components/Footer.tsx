@@ -54,10 +54,6 @@ export function Footer() {
                   {TRADE_DESK.email}
                 </a>
               </p>
-              <p>
-                <strong className="font-semibold text-primary">European Liaison:</strong> Mayfair, London &amp; Edinburgh
-                Workbenches
-              </p>
             </div>
           </div>
           <div>
