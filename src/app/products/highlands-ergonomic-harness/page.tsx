@@ -92,8 +92,8 @@ const REVIEWS = [
 
 const GUARANTEES = [
   ["spa", "Full-Grain Bavarian Leather", "Naturally drum-dyed without harsh toxic chromium salts."],
-  ["workspace_premium", "Lifetime Saddle Stitch Guarantee", "Complimentary restitching at our London or Edinburgh workshop."],
-  ["sync_alt", "30-Day Bespoke Exchanges", "Prepaid express return parcel across US, UK & Highlands."],
+  ["workspace_premium", "Lifetime Saddle Stitch Guarantee", "Complimentary restitching at our Islamabad workshop, with a prepaid return courier."],
+  ["sync_alt", "30-Day Bespoke Exchanges", "Prepaid express return parcel from the US, UK & EU."],
 ];
 
 const EYEBROW = "text-label-sm font-label-sm uppercase tracking-eyebrow text-secondary font-bold";

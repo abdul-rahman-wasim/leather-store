@@ -177,12 +177,12 @@ export function HarnessConfigurator() {
               <div>
                 <p className="font-headline-sm text-headline-sm text-primary">Highland Field Provenance</p>
                 <p className="font-body-sm text-body-sm text-on-surface-variant">
-                  Each harness is logged into our Mayfair ledger with an individual serial stamp.
+                  Each harness is logged into our Islamabad ledger with an individual serial stamp.
                 </p>
               </div>
             </div>
             <span className="text-label-sm font-label-sm uppercase tracking-eyebrow text-secondary font-bold shrink-0">
-              Edinburgh Bench 04
+              Islamabad Bench 04
             </span>
           </div>
         </div>
@@ -425,9 +425,9 @@ export function HarnessConfigurator() {
             </div>
             <div className="space-y-2 text-body-sm font-body-sm text-on-surface-variant">
               {[
-                ["United States & Canada", "2–3 Days via DHL Express"],
-                ["United Kingdom Mainlands", "Next-Day Special Delivery"],
-                ["Scottish Highlands & Islands", "1–2 Days Tracked Courier"],
+                ["United Kingdom", "3–5 Days via DHL Express"],
+                ["European Union", "4–6 Days via DHL Express"],
+                ["United States & Canada", "4–6 Days via DHL Express"],
               ].map(([region, eta]) => (
                 <div key={region} className="flex items-center justify-between gap-4">
                   <span>{region}</span>

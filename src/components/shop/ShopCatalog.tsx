@@ -52,7 +52,7 @@ export function ShopCatalog({ initialCategory }: { initialCategory: ShopFilter }
     category === "preview"
       ? "In The Atelier"
       : category === "all"
-        ? "Mayfair & Edinburgh Workrooms"
+        ? "Islamabad Workshop"
         : CATEGORY_LABELS[category];
 
   return (
@@ -61,7 +61,7 @@ export function ShopCatalog({ initialCategory }: { initialCategory: ShopFilter }
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-outline-variant/30">
           <div className="max-w-2xl space-y-2">
             <div className="flex flex-wrap items-center gap-2 text-secondary font-label-sm text-label-sm uppercase tracking-[0.2em]">
-              <span>Handcrafted In Mayfair &amp; Edinburgh</span>
+              <span>Handcrafted in Islamabad</span>
               <span className="opacity-40">•</span>
               <span>Slow-Batch Vegetable Tanned</span>
             </div>
@@ -83,7 +83,7 @@ export function ShopCatalog({ initialCategory }: { initialCategory: ShopFilter }
             <div className="h-8 w-px bg-outline-variant/40" />
             <div className="text-left">
               <p className="font-label-md font-semibold text-primary">Direct Express</p>
-              <p className="text-secondary text-[10px]">US, UK &amp; Scotland Hubs</p>
+              <p className="text-secondary text-[10px]">DDP to UK, EU &amp; US</p>
             </div>
           </div>
         </div>
