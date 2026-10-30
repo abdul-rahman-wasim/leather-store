@@ -47,7 +47,7 @@ const SUITE = [
   {
     label: "Companion",
     labelClass: "text-outline",
-    name: "Highlands 6ft Lead",
+    name: "Highland 6ft Walking Lead",
     price: "$85.00",
     image: `${IMG}AB6AXuB7Pexmw6Tx1v0FzPSVH6pIle9woYFiT6DbASdIdenMVOvkey7W0e-Pfv-iLPJZ1w1FOnf7AAGuSz_RcJMKFJXUC6lc62sa7g62gPmrSPn1FAJeCSHodHu5PIrEsexahiWhpgB2gDGTvgpNffWSk9gvsyKPzCOi-BoZbaTPxhiULE5qTIbRCy4WbEe_hsoXZVoepQnJ0FBs3-rOuLMlOknnvsps-ZHoZa_U7xPbmRUNy9pwQWyHqqa9`,
     alt: "Six-foot matching English bridle leather lead with solid brass snap hook rolled on a cream surface",

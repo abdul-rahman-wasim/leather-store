@@ -8,14 +8,17 @@ import { CONTRACT_ARTICLES, IMG } from "@/lib/catalog";
 
 const HERO_IMG =`${IMG}AB6AXuDgaIgUltyX9WIw1EsfhtDXu5vFrXYz-_Gabh0PApS-x453to42xs6gc6kublziMWbtMBaR3Gd2G5Iu3Q9uKqixA4UiEVCo8vz5on0EvF2Bd6sDfKsM0_r-bCxmuG0SYRpGFDmt-0XAcalTv_swRVRVuggjIG8HL-2w8ZP-zF4z_IuZIURJ_6vjZM1KcmLGdqcMgunsHomHf98KqqC3OWhyakPcNodB2CLwqETeyHyEDVrPgxBL6NuT`;
 
+const MOQS = CONTRACT_ARTICLES.map((a) => a.moq);
+const MOQ_MIN = Math.min(...MOQS);
+
 const QUICK_LINKS = [
   { label: "Factory Credentials", href: "#factory-credentials" },
-  { label: "Contract Articles (MOQ 15–50)", href: "#catalog-section" },
-  { label: "Live Batch Tracker", href: "#production-tracker" },
+  { label: `Contract Articles (MOQ ${MOQ_MIN}–${Math.max(...MOQS)})`, href: "#catalog-section" },
+  { label: "Batch Tracker", href: "#production-tracker" },
 ];
 
 const TRUST = [
-  ["payments", "Factory Pricing (MOQ 25 Units)"],
+  ["payments", `Factory Pricing (MOQ from ${MOQ_MIN} Units)`],
   ["verified", "REACH, SEDEX & ISO 9001"],
   ["local_shipping", "Duty-Paid: US, UK & EU"],
   ["flight_takeoff", "Air Cargo & Ocean Freight"],

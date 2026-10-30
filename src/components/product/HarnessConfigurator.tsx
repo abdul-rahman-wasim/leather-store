@@ -201,12 +201,12 @@ export function HarnessConfigurator() {
                 Canine Equestrian Series
               </span>
               <div className="flex items-center gap-1.5 text-secondary">
-                <div className="flex" role="img" aria-label="4.9 out of 5 stars">
+                <div className="flex" role="img" aria-label="4.96 out of 5 stars">
                   {["star", "star", "star", "star", "star_half"].map((s, i) => (
                     <Icon key={i} name={s} filled className="text-[16px]" />
                   ))}
                 </div>
-                <span className="text-label-sm font-label-sm text-primary font-semibold">4.9</span>
+                <span className="text-label-sm font-label-sm text-primary font-semibold">4.96</span>
                 <a
                   className="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4 decoration-outline-variant/60 ml-1"
                   href="#patron-appraisals"
