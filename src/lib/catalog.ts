@@ -27,6 +27,35 @@ export function whatsappRfqLink(codes: string[]) {
   return `${TRADE_DESK.whatsapp}?text=${encodeURIComponent(text)}`;
 }
 
+/** Private-label options offered on contract orders. Costs are PLACEHOLDERS (USD) — replace with factory pricing before launch. */
+export const CUSTOMIZATIONS = [
+  { id: "deboss", label: "Blind Deboss / Hot-Foil Brand Monogram", perUnit: 1.5, setup: 120, setupLabel: "brass die" },
+  { id: "brass", label: "Custom Sand-Cast Brass Mold Casting", perUnit: 3, setup: 350, setupLabel: "casting mold" },
+  { id: "label", label: "Custom Woven Neck / Interior Fabric Label", perUnit: 0.6, setup: 80, setupLabel: "loom setup" },
+  { id: "lasts", label: "Bespoke Lasting / Anatomical Wooden Molds", perUnit: 0, setup: 900, setupLabel: "lasts & molds" },
+] as const;
+
+export type CustomizationId = (typeof CUSTOMIZATIONS)[number]["id"];
+
+/** Volume discount by order size in multiples of MOQ, largest first. PLACEHOLDERS. */
+const VOLUME_TIERS = [
+  { minMultiple: 10, discount: 0.2 },
+  { minMultiple: 5, discount: 0.14 },
+  { minMultiple: 2, discount: 0.08 },
+  { minMultiple: 0, discount: 0 },
+];
+
+/** Spread shown around every estimate until the desk confirms costing. */
+export const QUOTE_SPREAD = 0.15;
+
+export function estimateQuote(article: ContractArticle, qty: number, options: CustomizationId[]) {
+  const { discount } = VOLUME_TIERS.find((t) => qty >= article.moq * t.minMultiple)!;
+  const chosen = CUSTOMIZATIONS.filter((c) => options.includes(c.id));
+  const unit = article.unitPrice * (1 - discount) + chosen.reduce((sum, c) => sum + c.perUnit, 0);
+  const setup = chosen.reduce((sum, c) => sum + c.setup, 0);
+  return { unit, setup, total: unit * qty + setup, discount };
+}
+
 export type ContractArticle = {
   code: string;
   name: string;
@@ -34,6 +63,8 @@ export type ContractArticle = {
   description: string;
   moq: number;
   unit: string;
+  /** Indicative USD unit price at MOQ, FOB Islamabad. */
+  unitPrice: number;
   image: string;
   imageAlt: string;
   specs: [label: string, value: string][];
@@ -50,6 +81,7 @@ export const CONTRACT_ARTICLES: ContractArticle[] = [
       "Hand-lasted French calf uppers, 360° Goodyear storm welt, channel-carved oak bark soles, and natural granulated cork footbed filler.",
     moq: 25,
     unit: "Pairs",
+    unitPrice: 145,
     image: `${IMG}AB6AXuDLnRgKa78yn3UhiBN2nC4wNczlcaa0QL-EWObgFm063tfJYalJjOYT_kqVwEu36kIjQBn4ubILeV3JrNSo0QOywvoCCmLEVZ4W1OCczKw15EHit08yZwPcG35VDwA8i7oPu1J29dNbnMNElLHq_Fi4urYT909CRGG5lbSZKi5nkcQYxLkp9ffDFO70C4HRfnXbIYLiaYGORGhaZa3rnRXDo3FMUCvGlxAU6LFsoHw0dzmZe3xIW5sP`,
     imageAlt: "Cognac leather oxford and Chelsea boot with visible Goodyear welt stitching on an oak floor",
     specs: [
@@ -67,6 +99,7 @@ export const CONTRACT_ARTICLES: ContractArticle[] = [
       "Heavyweight Sedgwick-tanned English bridle leather, padded lambskin sternum guard, and solid sand-cast English brass hardware rated to 450 kg pull.",
     moq: 50,
     unit: "Units",
+    unitPrice: 38,
     image: `${IMG}AB6AXuCjp1yyAQjqG3l7TZRzmYwTLZVEg-5SWzq3MAZY2LtilfhkF6_v6NdhreY6OQhUQJmmq2pVn10Rt1foSnqRi5VTTwVUNhUK_YBFj8Oljg__ifOY4o67Z3uZtYO-O3vcuiHlaezYek120YlrgiWduZr8-iaIqNElrWqnQ4NZL0rMrUKadZsTOPXpuV6B38Tv0m86VJcDAm1lwl4SK7zbfzyXJ2GQaLeJcc0r2U7DpN9yFE6DP6U9xxVj`,
     imageAlt: "Sporting dog wearing a saddle cognac bridle leather harness with brass hardware",
     specs: [
@@ -84,6 +117,7 @@ export const CONTRACT_ARTICLES: ContractArticle[] = [
       "0.9–1.1mm washed lambskin or calf hides, antiqued Swiss Riri zippers, heavy-gauge waxed nylon stitching, and custom silk/cupro jacquard lining.",
     moq: 15,
     unit: "Pieces",
+    unitPrice: 210,
     image: `${IMG}AB6AXuAC1oPjK--7I65-R9WRfIsDTlBGNE7oE9uiWd2lYE_vpG-0z-kxZraDWjjIQIUV9qbfPAjNARhF86piistia2oJkI4MVqYQD2ZW8qRe4GfghwiZtMGN1-58yq1rNnP054bsHMAXbF-orQJsXXP3T1o6RvpfV00_agHVJIroTJAXxXhVBHrl94CliHJvKwSqvYoTSsdBbv08YFNHVHFd1YwiEK9O1ljyh3FdkwHNqE3hTVZJFVFff2wo`,
     imageAlt: "Umber lambskin aviator jacket with shearling collar on a mahogany valet stand",
     specs: [
@@ -101,6 +135,7 @@ export const CONTRACT_ARTICLES: ContractArticle[] = [
       "Vegetable-tanned full-grain bridle leather, hand-creased French edges, beeswax edge burnishing, and surgical stainless or sand-cast buckles.",
     moq: 100,
     unit: "Pcs",
+    unitPrice: 14,
     image: `${IMG}AB6AXuCPqud05xo_1r-K7k8iioP2elcu4egTfFCy73_Z1Fx1SG5y71sndnhBt1RVDJTbE--ISAoV4mg1D_KmZy95gEBqwgEGsfB3x_OXKmxcMlIfgs4iAxATHrGjghnQhadmJS2GzqNJAV-DjMeKJYEWumuItM9DnkfTCmALmHpTaGYXedSXCjrNVFjVWQB2SKITSlNB2xjc8Q7R8Xgf-I7deH4HV-6iNGeM0uX783pAZfxpdt8HaL91WPLa`,
     imageAlt: "Bridle leather watch straps and dress belts with brass buckles on a jeweler's cloth",
     specs: [
@@ -118,6 +153,7 @@ export const CONTRACT_ARTICLES: ContractArticle[] = [
       "24oz Scottish dry-finish waxed canvas reinforced with 3.5mm Tuscan vegetable hide, hand-peened solid copper saddlery rivets, and heavy YKK Excella zippers.",
     moq: 30,
     unit: "Pcs",
+    unitPrice: 95,
     image: `${IMG}AB6AXuCcbpIgSNPdJOCvwYZDKEOwc7JK_UJ6TicKbeHMX3mLn2kmCgmIx42qfmTIF5astq48hY1lvHZi1YO8U5KK96zioxDslY7pDUqSPiz1AziJ_jsmR_Ink0GxHT8Q07CztaOYw7yRV2Pbgb1_2Prnpy9wp2XO91xN7qvjHuOJUjFU8wV8CVBZeewLNb54wm6CluZllSJvZ3SnOXqbnlMHtKrczKhZCzJcYX9YuLukgIx1J6OGgG8an9vz`,
     imageAlt: "Vegetable-tanned leather duffle bag with brass buckles against a vintage steamer trunk",
     specs: [
@@ -135,6 +171,7 @@ export const CONTRACT_ARTICLES: ContractArticle[] = [
       "Pure molten brass hand-poured in fine sand molds. Zero zinc pot-metal alloys. Available in high-buff foundry polish, antique bronze patina, or matte nickel plate.",
     moq: 200,
     unit: "Pcs",
+    unitPrice: 4.5,
     image: `${IMG}AB6AXuBqEboT7u1wVD02K1gporw9B1xu4ZhqPweWezoYPvYcScHTGaug0ENznwzbxgCFdnofObPqYeHrzNxOxvyK9MqcgELlPRW5nnUGIw8uL_oMGxMsKqy0JUK-lfsb077gBqta3PhyxrRZsFdQQVPA8cR9V12i_HBG-rl6YAGcC3y-K6BjEU_-AzZmgWqvvBrkmE4u3LuiORiUgDEoEnlE_GLAeAWDvYWgr1-kHUFrH1bI3jLpfV-w3EF5`,
     imageAlt: "Foundry craftsman pouring molten brass into sand casting molds for saddlery buckles",
     specs: [
