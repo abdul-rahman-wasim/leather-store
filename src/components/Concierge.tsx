@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { BRAND, TRADE_DESK } from "@/lib/catalog";
+import { BRAND, CONTRACT_ARTICLES, TRADE_DESK, TRANSIT_DAYS, formatDays } from "@/lib/catalog";
 import { Icon } from "./Icon";
 import { WhatsAppLink } from "./WhatsAppLink";
 
-type Message = { id: number; from: "buyer" | "desk"; text: string };
+type Message = { id: number; from: "buyer" | "desk"; text: string; query?: string };
 
 const QUICK_PROMPTS = [
   { label: "Boot MOQs", text: "What are your MOQ requirements for custom embossed boots?" },
@@ -13,8 +13,19 @@ const QUICK_PROMPTS = [
   { label: "Air Logistics", text: "What is your DDP air freight transit time to the UK and US?" },
 ];
 
+const MOQS = CONTRACT_ARTICLES.map((a) => `${a.code} ${a.moq} ${a.unit.toLowerCase()}`).join(", ");
+
+/** Automated first answer from site data; every reply also offers a personal follow-up on WhatsApp. */
 function replyTo(query: string) {
-  return `Thank you for your inquiry regarding: “${query}”. Our Islamabad master pattern designer can facilitate this with sample batches in 7–10 days. An account director can also connect via WhatsApp at ${TRADE_DESK.phone}.`;
+  const q = query.toLowerCase();
+  if (/moq|minimum|how many/.test(q)) return `Contract MOQs per article: ${MOQS}. The estimator on the home page prices any volume.`;
+  if (/swatch|sample/.test(q))
+    return "Swatch kits ship with REACH paperwork. Press \"Sample\" on any contract article to add a kit to your RFQ, then submit the form.";
+  if (/freight|ship|deliver|transit|ddp|air/.test(q))
+    return `After production, DHL Express from Islamabad takes ${formatDays(TRANSIT_DAYS.uk)} business days to the UK and ${formatDays(TRANSIT_DAYS.us)} to the EU and US, duties pre-paid. Ocean freight is quoted per order.`;
+  if (/price|cost|quote|pricing/.test(q))
+    return "The instant estimator on the home page gives indicative FOB pricing; submit an RFQ for confirmed costing within 24 hours.";
+  return "That one needs a person. Send it to the export desk on WhatsApp for a personal reply.";
 }
 
 function DeskAvatar({ size = "w-8 h-8 text-[10px]" }: { size?: string }) {
@@ -60,7 +71,7 @@ export function Concierge() {
     setMessages((m) => [...m, { id: nextId.current++, from: "buyer", text: query }]);
     clearTimeout(replyTimer.current);
     replyTimer.current = setTimeout(() => {
-      setMessages((m) => [...m, { id: nextId.current++, from: "desk", text: replyTo(query) }]);
+      setMessages((m) => [...m, { id: nextId.current++, from: "desk", text: replyTo(query), query }]);
     }, 600);
   }
 
@@ -86,7 +97,7 @@ export function Concierge() {
                 <div className="flex items-center gap-1.5">
                   <h2 className="font-headline text-[16px] text-surface leading-tight">Islamabad Export Desk</h2>
                   <span className="bg-secondary-container/20 text-secondary-container border border-secondary-container/40 text-[8px] uppercase tracking-wider px-1.5 rounded font-semibold">
-                    Live
+                    Auto-reply
                   </span>
                 </div>
                 <p className="text-[10px] text-secondary-container font-semibold mt-0.5">
@@ -120,16 +131,16 @@ export function Concierge() {
             <DeskAvatar />
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] text-on-surface font-semibold">Director of International Accounts</span>
-                <span className="text-[9px] text-secondary uppercase tracking-wider font-medium">B2B Engineer</span>
+                <span className="text-[10px] text-on-surface font-semibold">Export Desk Assistant</span>
+                <span className="text-[9px] text-secondary uppercase tracking-wider font-medium">Automated</span>
               </div>
               <div className="bg-surface-container-lowest saddle-stitch text-on-surface p-4 rounded-2xl rounded-tl-sm shadow-sm leading-relaxed">
                 <p className="mb-2">
-                  Welcome to {BRAND} Atelier &amp; Manufacture. I am on hand to advise on contract MOQs, custom brass mold
-                  tooling, FOB/DDP freight calculations, or material test sheets.
+                  Welcome to {BRAND} Atelier &amp; Manufacture. I answer the common questions on MOQs, swatches, freight
+                  and pricing straight away.
                 </p>
                 <p className="text-on-surface-variant font-light">
-                  Which article number or volume run are you planning to commission?
+                  For anything else, the export desk replies personally on WhatsApp or at {TRADE_DESK.email}.
                 </p>
               </div>
             </div>
@@ -149,9 +160,19 @@ export function Concierge() {
               <div key={m.id} className="flex items-start gap-2.5 max-w-[92%]">
                 <DeskAvatar />
                 <div className="space-y-1">
-                  <span className="text-[10px] text-on-surface font-semibold">Atelier Engineering Desk</span>
+                  <span className="text-[10px] text-on-surface font-semibold">Export Desk Assistant</span>
                   <div className="bg-surface-container-lowest saddle-stitch text-on-surface p-3.5 rounded-2xl rounded-tl-sm shadow-sm leading-relaxed">
                     {m.text}
+                    {m.query && (
+                      <a
+                        className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold text-accent-saddle hover:underline"
+                        href={`${TRADE_DESK.whatsapp}?text=${encodeURIComponent(m.query)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Icon name="chat" className="text-[14px]" /> Continue on WhatsApp
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
@@ -215,7 +236,7 @@ export function Concierge() {
             <span className="flex items-center gap-1.5">
               <span className="font-headline text-[13px] text-surface tracking-wide">Factory Desk</span>
               <span className="bg-emerald-900 text-emerald-200 text-[8px] uppercase tracking-wider px-1 rounded font-bold">
-                Online
+                WhatsApp
               </span>
             </span>
             <span className="text-[9px] text-surface-dim/90 mt-0.5">{TRADE_DESK.phone}</span>

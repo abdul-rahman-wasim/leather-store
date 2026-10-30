@@ -39,7 +39,7 @@ const REGIONS: Record<
       `DHL Express air from Islamabad to the United States (${formatDays(TRANSIT_DAYS.us)} business days). All US customs tariffs, border clearances, and state import duties are 100% pre-paid by Vale & Rawat.`,
     postalLabel: "Zip Code / State",
     postal: "10021 (New York, NY)",
-    hub: "Verified US Hub",
+    hub: "US DDP Delivery",
     currencyTag: "USD Freight",
   },
   uk: {
@@ -387,7 +387,7 @@ export function CartView() {
                     {info.postalLabel}
                   </label>
                   <span className={`${EYEBROW} text-secondary`} role="status">
-                    {verified ? "Recalculated: Pre-Cleared" : info.hub}
+                    {verified ? "Saved for your invoice" : info.hub}
                   </span>
                 </div>
                 <div className="flex">
@@ -406,7 +406,7 @@ export function CartView() {
                     className="bg-primary hover:bg-primary-container text-surface px-4 font-label-md text-label-md uppercase tracking-eyebrow transition-all active:scale-95"
                     type="submit"
                   >
-                    Apply
+                    Save
                   </button>
                 </div>
               </form>
@@ -531,7 +531,7 @@ export function CartView() {
                     className={`bg-surface hover:bg-primary hover:text-surface text-primary ${EYEBROW} px-4 py-2 shadow-sm transition-all active:scale-95`}
                     href="/shop/preview"
                   >
-                    Join Allocation
+                    Preview Batch
                   </Link>
                 </div>
               </div>

@@ -170,7 +170,7 @@ export function HarnessConfigurator() {
               >
                 <img
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  alt=""
+                  alt={g.alt}
                   src={g.thumb ?? g.main}
                 />
                 <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors" />
