@@ -2,7 +2,7 @@
 
 # Vale & Rawat — leather store
 
-Next.js 16 (App Router) + React 19 + Tailwind v4 + TypeScript. No backend; static catalog data, client-side cart. RFQ form emails via EmailJS (browser SDK) behind reCAPTCHA v2 — env keys in `.env.example`, copy to `.env.local`.
+Next.js 16 (App Router) + React 19 + Tailwind v4 + TypeScript. No backend; static catalog data, client-side cart. Forms (RFQ, lookbook, invoice) email the export desk via EmailJS (browser SDK) behind reCAPTCHA v2, all through ONE shared template (Free plan allows 2) — env keys in `.env.example`, copy to `.env.local`.
 
 ## Structure
 
@@ -23,7 +23,7 @@ src/
   lib/
     catalog.ts            Types, PRODUCTS, CATEGORY_LABELS, image URLs, formatPrice, lead times (makeDays, TRANSIT_DAYS), contract pricing (unitPrice, CUSTOMIZATIONS, estimateQuote — PLACEHOLDER figures)
     store.ts              Cart/region/wishlist/RFQ store (useSyncExternalStore + localStorage)
-    emailjs.ts            useEmailForm(template): EmailJS send + reCAPTCHA token + status/error; register templates in TEMPLATES
+    emailjs.ts            useEmailForm(): send({ form, subject, name, replyTo, details }) via the shared template + reCAPTCHA + status/error
     useDispatchCountdown.ts  Countdown to 18:00 dispatch cutoff (harness + cart)
 ```
 

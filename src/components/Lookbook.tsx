@@ -63,7 +63,7 @@ export function LookbookDialog() {
 }
 
 function LookbookForm({ source, onClose }: { source: string; onClose: () => void }) {
-  const { status, error, send, captchaRef, setCaptcha } = useEmailForm("lookbook");
+  const { status, error, send, captchaRef, setCaptcha } = useEmailForm();
   const [email, setEmail] = useState("");
 
   async function submit(e: FormEvent<HTMLFormElement>) {
@@ -71,10 +71,11 @@ function LookbookForm({ source, onClose }: { source: string; onClose: () => void
     const data = new FormData(e.currentTarget);
     setEmail(String(data.get("email")));
     await send({
-      name: data.get("name"),
-      company: data.get("company"),
-      reply_to: data.get("email"),
-      source,
+      form: "Lookbook",
+      subject: `2026 Lookbook request — ${data.get("company")}`,
+      name: String(data.get("name")),
+      replyTo: String(data.get("email")),
+      details: { Company: data.get("company"), Email: data.get("email"), Source: source },
     });
   }
 

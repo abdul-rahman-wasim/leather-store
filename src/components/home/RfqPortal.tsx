@@ -52,7 +52,7 @@ const labelOf = (list: { value: string; label: string }[], value: FormDataEntryV
 
 export function RfqPortal() {
   const { rfq, rfqNotes } = useStore();
-  const { status, error, send, captchaRef, setCaptcha } = useEmailForm("rfq");
+  const { status, error, send, captchaRef, setCaptcha } = useEmailForm();
   const items = CONTRACT_ARTICLES.filter((a) => rfq.includes(a.code));
 
   async function submit(e: FormEvent<HTMLFormElement>) {
@@ -61,13 +61,21 @@ export function RfqPortal() {
     const data = new FormData(form);
     const company = String(data.get("company") ?? "");
     const sent = await send({
-      company,
-      reply_to: data.get("email"),
-      region: labelOf(DESTINATIONS, data.get("region")),
-      volume: labelOf(VOLUMES, data.get("volume")),
-      customizations: data.getAll("customizations").join(", ") || "None",
-      articles: items.map((a) => `${a.code}: ${a.name} (MOQ ${a.moq} ${a.unit})`).join("\n") || "None selected",
-      notes: rfqNotes || "—",
+      form: "RFQ",
+      subject: `RFQ — ${company}`,
+      name: company,
+      replyTo: String(data.get("email")),
+      details: {
+        Company: company,
+        Email: data.get("email"),
+        Destination: labelOf(DESTINATIONS, data.get("region")),
+        Volume: labelOf(VOLUMES, data.get("volume")),
+        Customizations: data.getAll("customizations").join(", ") || "None",
+        Articles: items.length
+          ? `\n${items.map((a) => `• ${a.code}: ${a.name} (MOQ ${a.moq} ${a.unit})`).join("\n")}`
+          : "None selected",
+        Notes: rfqNotes || "—",
+      },
     });
     if (!sent) return;
     toast(`Quotation inquiry lodged for ${company}. Factory costing follows within 24 hours.`);
