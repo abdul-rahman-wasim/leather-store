@@ -32,7 +32,7 @@ export function InvoiceRequest({
   postal: string;
   arrival: string;
 }) {
-  const { status, error, send, captchaRef, setCaptcha } = useEmailForm("invoice");
+  const { status, error, send, captchaRef, setCaptcha } = useEmailForm();
   const [email, setEmail] = useState("");
 
   async function submit(e: FormEvent<HTMLFormElement>) {
@@ -40,15 +40,19 @@ export function InvoiceRequest({
     const data = new FormData(e.currentTarget);
     setEmail(String(data.get("email")));
     await send({
-      name: data.get("name"),
-      reply_to: data.get("email"),
-      address: data.get("address"),
-      destination,
-      postal,
-      currency,
-      items: cart.map((item) => lineSummary(item, currency)).join("\n"),
-      total,
-      arrival,
+      form: "Invoice",
+      subject: `Invoice request — ${total} (${destination})`,
+      name: String(data.get("name")),
+      replyTo: String(data.get("email")),
+      details: {
+        Email: data.get("email"),
+        "Delivery address": data.get("address"),
+        Destination: destination,
+        Postcode: postal,
+        Items: `\n${cart.map((item) => `• ${lineSummary(item, currency)}`).join("\n")}`,
+        Total: `${total} ${currency}`,
+        "Estimated arrival": arrival,
+      },
     });
   }
 
