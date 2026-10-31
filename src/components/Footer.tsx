@@ -36,7 +36,13 @@ export function Footer() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 py-12">
           <div className="lg:col-span-2 space-y-4">
-            <img alt={`${BRAND} Logo`} className="h-8 w-auto object-contain" src={LOGO_SRC} />
+            <img
+              loading="lazy"
+              decoding="async"
+              alt={`${BRAND} Logo`}
+              className="h-8 w-auto object-contain"
+              src={LOGO_SRC}
+            />
             <p className="text-xs text-on-surface-variant font-light leading-relaxed max-w-sm">
               Contract leather manufacturing facility and export house combining master Pakistani leather artisans with
               British and European anatomical design benchmarks.

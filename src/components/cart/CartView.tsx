@@ -12,6 +12,7 @@ import {
   formatDays,
   formatPrice,
   orderMakeDays,
+  sized,
   type CartItem,
   type Currency,
 } from "@/lib/catalog";
@@ -294,7 +295,13 @@ export function CartView() {
                       className="bg-surface p-4 flex items-center gap-4 shadow-sm hover:bg-surface-container transition-colors"
                     >
                       <div className="w-16 h-16 bg-surface-container-highest shrink-0 overflow-hidden">
-                        <img className="w-full h-full object-cover" alt={r.imageAlt} src={r.image} />
+                        <img
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover"
+                          alt={r.imageAlt}
+                          src={sized(r.image, 160)}
+                        />
                       </div>
                       <div className="flex-1 min-w-0">
                         <h4 className="font-headline-sm text-body-md text-primary truncate">{r.name}</h4>
@@ -513,6 +520,8 @@ export function CartView() {
                 <div>
                   <div className="h-64 bg-surface-container-high overflow-hidden mb-5">
                     <img
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       alt={u.alt}
                       src={u.image}

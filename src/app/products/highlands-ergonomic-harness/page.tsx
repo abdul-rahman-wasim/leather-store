@@ -144,6 +144,8 @@ export default function HarnessPage() {
                 </div>
                 <div className="w-full aspect-4/3 bg-surface-container overflow-hidden">
                   <img
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                     alt={s.alt}
                     src={s.image}
@@ -199,7 +201,13 @@ export default function HarnessPage() {
               {SUITE.map((s) => (
                 <div key={s.name} className="bg-surface p-4 flex flex-col space-y-3">
                   <div className="w-full aspect-square bg-surface-container overflow-hidden">
-                    <img className="w-full h-full object-cover" alt={s.alt} src={s.image} />
+                    <img
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover"
+                      alt={s.alt}
+                      src={s.image}
+                    />
                   </div>
                   <div>
                     <span className={`text-[9px] uppercase tracking-wider font-bold ${s.labelClass}`}>{s.label}</span>
