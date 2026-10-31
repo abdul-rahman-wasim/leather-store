@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { LookbookDialog } from "@/components/Lookbook";
 import { Toast } from "@/components/Toast";
 import { BRAND } from "@/lib/catalog";
+import { ICON_FONT_URL } from "@/lib/icons";
 import "./globals.css";
 
 const hanken = Hanken_Grotesk({
@@ -35,11 +36,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${hanken.variable} ${bodoni.variable}`}>
       <head>
         {/* Icon font must block: swap would flash raw ligature names like "shopping_bag" */}
-        {/* eslint-disable-next-line @next/next/no-page-custom-font, @next/next/google-font-display */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block"
-        />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="stylesheet" href={ICON_FONT_URL} />
       </head>
       <body className="bg-surface font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-surface">
         <Header />

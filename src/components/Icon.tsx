@@ -1,4 +1,9 @@
+import { ICON_NAMES } from "@/lib/icons";
+
 export function Icon({ name, className = "", filled }: { name: string; className?: string; filled?: boolean }) {
+  if (process.env.NODE_ENV !== "production" && !ICON_NAMES.has(name)) {
+    console.error(`Icon "${name}" is missing from ICON_NAMES in src/lib/icons.ts; it will render as text.`);
+  }
   return (
     <span aria-hidden="true" className={`icon ${filled ? "icon-filled" : ""} ${className}`}>
       {name}

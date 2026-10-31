@@ -64,6 +64,8 @@ export default async function ShopPage(props: PageProps<"/shop/[[...category]]">
           <div className="lg:col-span-7 grid grid-cols-2 gap-6">
             <div className="aspect-3/4 rounded-xl overflow-hidden shadow-sm border border-outline-variant/30">
               <img
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
                 alt="Artisan hand-beveling the edges of full-grain saddle leather in a sunlit Islamabad workshop"
                 src={`${IMG}AB6AXuAbqZvDv7s9Y6QMCtFSDT-FECMFfRbtOmKT_j8m7E-wiY_2xBz1cJ6RoKixRDPfgTLIfiKEMtVRMMFbMopk-UPthP6RXmgzotMuegVBiANGfjDTUEur149QgMz2eeJLCOHjLXH7T--45m0TTYaaszHCsJt6j6eRCdrHwFdZYpqERGK6ZVmORLp9W0U7R6gtWV1vwg_2lM3qj-A-bvp5ePwXuIEfwnu8RrIvsipIl8cTPh7TAhA82iqW`}
@@ -71,6 +73,8 @@ export default async function ShopPage(props: PageProps<"/shop/[[...category]]">
             </div>
             <div className="aspect-3/4 rounded-xl overflow-hidden shadow-sm border border-outline-variant/30 mt-8">
               <img
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
                 alt="Macro view of golden linen saddle-stitching on cognac Tuscan leather with brass buckle detail"
                 src={`${IMG}AB6AXuC47oAMbSlb-Ta_nctBwMdfjbZEirgMfji7twpygB_PyyRV2-dsySVSlTe0ojI7xkWCe_ocR68lvlSTb8OzjoJo3eDZ0YDXV-wHOFSX1SGXkhX6mWLiQb_unR-uq7HQssTNnvCRP8bH_fPzh9-mCjF5zk3hKwWQtk5AFP6hN9-Rd2be1FbkvCsQ0_xrE2P-qXG2XRP8DPUTnI3H141TSSkHIC0iBHfq3H-4MNa3ZOBB2MxxiFweELtm`}
