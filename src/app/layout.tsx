@@ -7,6 +7,7 @@ import { LookbookDialog } from "@/components/Lookbook";
 import { Toast } from "@/components/Toast";
 import { BRAND } from "@/lib/catalog";
 import { ICON_FONT_URL } from "@/lib/icons";
+import { SITE_DESCRIPTION, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const hanken = Hanken_Grotesk({
@@ -27,8 +28,10 @@ export const metadata: Metadata = {
     default: `${BRAND} Atelier & Manufacture | Islamabad Leathercraft Exporters`,
     template: `%s | ${BRAND}`,
   },
-  description:
-    "Contract leather manufacturing for luxury brands and private labels: hand-welted footwear, canine harnesses, outerwear and sand-cast brass hardware from Islamabad.",
+  description: SITE_DESCRIPTION,
+  metadataBase: new URL(SITE_URL),
+  openGraph: { type: "website", siteName: BRAND, locale: "en_GB", description: SITE_DESCRIPTION },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -40,8 +43,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <link rel="stylesheet" href={ICON_FONT_URL} />
       </head>
       <body className="bg-surface font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-surface">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-60 focus:bg-primary focus:text-surface focus:px-4 focus:py-2.5 focus:rounded focus:text-xs focus:font-semibold focus:uppercase focus:tracking-wider"
+        >
+          Skip to content
+        </a>
         <Header />
-        <main className="w-full pt-28 bg-surface min-h-[calc(100vh-14rem)]">{children}</main>
+        <main id="main-content" tabIndex={-1} className="w-full pt-28 bg-surface min-h-[calc(100vh-14rem)] outline-none">
+          {children}
+        </main>
         <Footer />
         <Concierge />
         <Toast />

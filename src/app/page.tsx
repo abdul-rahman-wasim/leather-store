@@ -4,7 +4,8 @@ import { ArticleActions } from "@/components/home/ArticleActions";
 import { BatchTracker } from "@/components/home/BatchTracker";
 import { QuoteEstimator } from "@/components/home/QuoteEstimator";
 import { RfqPortal } from "@/components/home/RfqPortal";
-import { CONTRACT_ARTICLES, IMG } from "@/lib/catalog";
+import { BRAND, CONTRACT_ARTICLES, IMG, LOGO_SRC, TRADE_DESK } from "@/lib/catalog";
+import { SITE_DESCRIPTION, SITE_URL, jsonLd } from "@/lib/site";
 
 const HERO_IMG =`${IMG}AB6AXuDgaIgUltyX9WIw1EsfhtDXu5vFrXYz-_Gabh0PApS-x453to42xs6gc6kublziMWbtMBaR3Gd2G5Iu3Q9uKqixA4UiEVCo8vz5on0EvF2Bd6sDfKsM0_r-bCxmuG0SYRpGFDmt-0XAcalTv_swRVRVuggjIG8HL-2w8ZP-zF4z_IuZIURJ_6vjZM1KcmLGdqcMgunsHomHf98KqqC3OWhyakPcNodB2CLwqETeyHyEDVrPgxBL6NuT`;
 
@@ -81,9 +82,27 @@ const PROVENANCE = [
 const CONTAINER = "max-w-360 mx-auto px-margin md:px-12";
 const EYEBROW = "text-xs font-semibold tracking-eyebrow uppercase text-accent-saddle block";
 
+const ORGANIZATION_LD = jsonLd({
+  "@type": "Organization",
+  name: BRAND,
+  url: SITE_URL,
+  logo: `${SITE_URL}${LOGO_SRC}`,
+  description: SITE_DESCRIPTION,
+  email: TRADE_DESK.email,
+  telephone: TRADE_DESK.phone,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Plot 144, Sector I-9/2, Industrial Estate",
+    addressLocality: "Islamabad",
+    postalCode: "44000",
+    addressCountry: "PK",
+  },
+});
+
 export default function Home() {
   return (
     <div className="flex flex-col w-full">
+      <script type="application/ld+json" dangerouslySetInnerHTML={ORGANIZATION_LD} />
       <div className="w-full bg-primary border-b border-gold/40 sticky top-28 z-30 shadow-md">
         <div className={`${CONTAINER} py-2.5 flex items-center justify-between gap-3 whitespace-nowrap`}>
           <div className="flex items-center gap-2.5 min-w-0">

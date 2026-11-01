@@ -11,7 +11,8 @@ src/
   app/
     layout.tsx            Root layout: fonts (Hanken Grotesk, Bodoni Moda), Material Symbols, Header/Footer
     globals.css           Tailwind @theme tokens (colors, type scale) + .icon / .nav-link components
-    page.tsx              Home
+    page.tsx              Home (+ Organization JSON-LD)
+    not-found.tsx         Branded 404; robots.ts, sitemap.ts, opengraph-image.tsx (share card), icon.svg (favicon)
     shop/[[...category]]/ Shop; optional catch-all (shoes|canine|jackets|preview), statically generated
     products/<slug>/      Product detail pages (one folder per product)
     cart/                 Cart
@@ -23,6 +24,7 @@ src/
   lib/
     catalog.ts            Types, PRODUCTS, CATEGORY_LABELS, image URLs, formatPrice, lead times (makeDays, TRANSIT_DAYS), contract pricing (unitPrice, CUSTOMIZATIONS, estimateQuote — PLACEHOLDER figures)
     store.ts              Cart/region/wishlist/RFQ store (useSyncExternalStore + localStorage)
+    site.ts               SITE_URL (NEXT_PUBLIC_SITE_URL), SITE_DESCRIPTION, jsonLd() for <script type="application/ld+json">
     emailjs.ts            useEmailForm(): send({ form, subject, name, replyTo, details }) via the shared template + reCAPTCHA + status/error
     useDispatchCountdown.ts  Countdown to 18:00 dispatch cutoff (harness + cart)
 ```
@@ -40,7 +42,7 @@ src/
 - Styling: Tailwind utilities with theme tokens from `globals.css` (`bg-surface`, `text-on-surface`, `text-primary`, `font-headline-lg text-headline-lg`, ...). No raw hex colors, no CSS modules. New tokens go in `@theme`.
 - Icons: `<Icon name="material_symbol_name" />`, never inline SVG. The icon font is subset: add every new name to `ICON_NAMES` in `src/lib/icons.ts`, or it renders as plain text.
 - Images: plain `<img>` with descriptive `alt` (remote host not configured for `next/image`). Below the fold: `loading="lazy" decoding="async"`; the page's main/LCP image: `fetchPriority="high"`; thumbnails: `src={sized(url, px)}`.
-- Each non-home page exports `metadata` / `generateMetadata` with a `title` (layout applies `%s | Vale & Rawat`).
+- Each non-home page exports `metadata` / `generateMetadata` with a `title` (layout applies `%s | Vale & Rawat`). New routes go in `sitemap.ts`; product pages add `openGraph.images` + Product JSON-LD (no `aggregateRating` until reviews are real).
 - Responsive: header rows are fixed height (32px strip + 80px bar = `pt-28` in layout, `top-28` for sticky bars) — never let them wrap; trim or hide copy per breakpoint instead. Dense layouts (spec cards, forms, sidebars, 4-up grids) go multi-column at `xl`, not `lg`. Chips, badges and buttons get `whitespace-nowrap`; label/value rows get `shrink-0` labels.
 - Run `npm run lint` and `npm run build` before committing.
 
