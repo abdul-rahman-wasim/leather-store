@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { IMG, TRANSIT_DAYS, addDays, formatDays, formatPrice, makeDays } from "@/lib/catalog";
+import { IMG, TRANSIT_DAYS, addDays, formatDays, formatPrice, makeDays, sized } from "@/lib/catalog";
 import { actions, useStore } from "@/lib/store";
 import { useDispatchCountdown } from "@/lib/useDispatchCountdown";
 import { Icon } from "../Icon";
@@ -134,6 +134,7 @@ export function HarnessConfigurator() {
           <div className="relative w-full aspect-4/5 bg-surface-container overflow-hidden">
             <img
               key={imageIndex}
+              fetchPriority={imageIndex === 0 ? "high" : "auto"}
               className="w-full h-full object-cover object-center animate-fade-in"
               alt={GALLERY[imageIndex].alt}
               src={GALLERY[imageIndex].main}
@@ -169,9 +170,11 @@ export function HarnessConfigurator() {
                 }`}
               >
                 <img
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   alt={g.alt}
-                  src={g.thumb ?? g.main}
+                  src={sized(g.thumb ?? g.main, 200)}
                 />
                 <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors" />
               </button>

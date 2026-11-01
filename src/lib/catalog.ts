@@ -3,6 +3,9 @@ export type Currency = "USD" | "GBP";
 
 export const IMG = "https://lh3.googleusercontent.com/aida-public/";
 
+/** Ask the image host for a narrower rendition (its `=w<px>` suffix); use for thumbnails. */
+export const sized = (url: string, width: number) => (url.startsWith(IMG) ? `${url}=w${width}` : url);
+
 export const LOGO_SRC = "/vale-rawat-logo.svg";
 
 export const BRAND = "Vale & Rawat";

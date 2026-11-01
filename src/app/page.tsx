@@ -117,11 +117,11 @@ export default function Home() {
       </div>
 
       <section className="relative min-h-[88vh] flex items-center justify-center overflow-hidden bg-primary text-surface">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          role="img"
-          aria-label="Master leather craftsman cutting full-grain vegetable tanned hides under warm bench light with brass tools and saddle stitch awls"
-          style={{ backgroundImage: `url('${HERO_IMG}')` }}
+        <img
+          fetchPriority="high"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          alt="Master leather craftsman cutting full-grain vegetable tanned hides under warm bench light with brass tools and saddle stitch awls"
+          src={HERO_IMG}
         />
         <div className="absolute inset-0 bg-linear-to-t from-primary via-primary/75 to-primary/45" />
         <div className="absolute inset-0 bg-linear-to-r from-primary/90 via-primary/65 to-transparent" />
@@ -234,6 +234,8 @@ export default function Home() {
               <div>
                 <div className="relative aspect-4/3 bg-surface-container-low overflow-hidden">
                   <img
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     alt={a.imageAlt}
                     src={a.image}
@@ -325,7 +327,13 @@ export default function Home() {
               >
                 <div>
                   <div className="aspect-16/10 bg-surface-container rounded overflow-hidden mb-4">
-                    <img className="w-full h-full object-cover" alt={p.alt} src={p.image} />
+                    <img
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover"
+                      alt={p.alt}
+                      src={p.image}
+                    />
                   </div>
                   <span className="text-[10px] font-semibold uppercase tracking-eyebrow text-secondary block mb-1">
                     {p.eyebrow}

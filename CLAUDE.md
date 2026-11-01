@@ -38,8 +38,8 @@ src/
 - Delivery estimates = bench time (`makeDays` / `orderMakeDays`) + `TRANSIT_DAYS`, shown with `formatDays`. Never hardcode day counts in components.
 - UI source of truth: Stitch project "Artisan Leather Goods Store" — home: "Vale & Rawat Atelier & Manufacture - B2B Storefront"; other pages: Editorial Redesign screens. Match markup and copy.
 - Styling: Tailwind utilities with theme tokens from `globals.css` (`bg-surface`, `text-on-surface`, `text-primary`, `font-headline-lg text-headline-lg`, ...). No raw hex colors, no CSS modules. New tokens go in `@theme`.
-- Icons: `<Icon name="material_symbol_name" />`, never inline SVG.
-- Images: plain `<img>` with descriptive `alt` (remote host not configured for `next/image`).
+- Icons: `<Icon name="material_symbol_name" />`, never inline SVG. The icon font is subset: add every new name to `ICON_NAMES` in `src/lib/icons.ts`, or it renders as plain text.
+- Images: plain `<img>` with descriptive `alt` (remote host not configured for `next/image`). Below the fold: `loading="lazy" decoding="async"`; the page's main/LCP image: `fetchPriority="high"`; thumbnails: `src={sized(url, px)}`.
 - Each non-home page exports `metadata` / `generateMetadata` with a `title` (layout applies `%s | Vale & Rawat`).
 - Responsive: header rows are fixed height (32px strip + 80px bar = `pt-28` in layout, `top-28` for sticky bars) — never let them wrap; trim or hide copy per breakpoint instead. Dense layouts (spec cards, forms, sidebars, 4-up grids) go multi-column at `xl`, not `lg`. Chips, badges and buttons get `whitespace-nowrap`; label/value rows get `shrink-0` labels.
 - Run `npm run lint` and `npm run build` before committing.

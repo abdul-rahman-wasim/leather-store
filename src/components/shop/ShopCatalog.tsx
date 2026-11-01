@@ -188,8 +188,8 @@ export function ShopCatalog({ initialCategory }: { initialCategory: ShopFilter }
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 md:gap-12">
-            {visible.map((p) => (
-              <ProductCard key={p.id} product={p} />
+            {visible.map((p, i) => (
+              <ProductCard key={p.id} product={p} priority={i < 4} />
             ))}
           </div>
         )}

@@ -23,7 +23,8 @@ function MaybeLink({ href, className, children }: { href?: string; className?: s
   );
 }
 
-export function ProductCard({ product }: { product: Product }) {
+/** `priority` = first row, above the fold: load eagerly. */
+export function ProductCard({ product, priority = false }: { product: Product; priority?: boolean }) {
   const { wishlist } = useStore();
   const [added, setAdded] = useState(false);
   const wished = wishlist.includes(product.id);
@@ -57,6 +58,8 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="relative w-full aspect-4/5 bg-surface-container rounded-lg overflow-hidden">
         <MaybeLink href={product.href} className="block w-full h-full">
           <img
+            loading={priority ? "eager" : "lazy"}
+            decoding="async"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
             alt={product.imageAlt}
             src={product.image}
