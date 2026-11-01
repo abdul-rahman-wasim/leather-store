@@ -4,20 +4,19 @@ import { notFound } from "next/navigation";
 import { Icon } from "@/components/Icon";
 import { AtelierTeasers } from "@/components/shop/AtelierTeasers";
 import { ShopCatalog, type ShopFilter } from "@/components/shop/ShopCatalog";
-import { CATEGORY_LABELS, IMG } from "@/lib/catalog";
+import { CATEGORY_LABELS, IMG, SHOP_FILTERS } from "@/lib/catalog";
 
-const FILTERS = ["shoes", "canine", "jackets", "preview"] as const;
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return [{ category: [] }, ...FILTERS.map((f) => ({ category: [f] }))];
+  return [{ category: [] }, ...SHOP_FILTERS.map((f) => ({ category: [f] }))];
 }
 
 function parseFilter(segments: string[] | undefined): ShopFilter {
   if (!segments || segments.length === 0) return "all";
   const [first] = segments;
-  if (segments.length > 1 || !(FILTERS as readonly string[]).includes(first)) notFound();
+  if (segments.length > 1 || !(SHOP_FILTERS as readonly string[]).includes(first)) notFound();
   return first as ShopFilter;
 }
 

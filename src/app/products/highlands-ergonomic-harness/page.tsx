@@ -3,13 +3,35 @@ import Link from "next/link";
 import { Icon, Stars } from "@/components/Icon";
 import { AddSuiteButton } from "@/components/product/AddSuiteButton";
 import { HarnessConfigurator } from "@/components/product/HarnessConfigurator";
-import { IMG } from "@/lib/catalog";
+import { BRAND, HARNESS_SLUG, IMG, PRODUCTS } from "@/lib/catalog";
+import { SITE_URL, jsonLd } from "@/lib/site";
+
+const HARNESS = PRODUCTS.find((p) => p.id === "highlands-harness")!;
+const TITLE = "The Highlands Ergonomic Canine Leather Harness";
+const DESCRIPTION =
+  "Hand-crafted from 9oz vegetable-tanned bridle leather with unlacquered solid brass hardware and complimentary bespoke monogramming.";
 
 export const metadata: Metadata = {
-  title: "The Highlands Ergonomic Canine Leather Harness",
-  description:
-    "Hand-crafted from 9oz vegetable-tanned bridle leather with unlacquered solid brass hardware and complimentary bespoke monogramming.",
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: { title: TITLE, description: DESCRIPTION, images: [{ url: HARNESS.image, alt: HARNESS.imageAlt }] },
 };
+
+// No aggregateRating until the appraisals are real customer reviews (Google's review-snippet policy).
+const PRODUCT_LD = jsonLd({
+  "@type": "Product",
+  name: TITLE,
+  description: DESCRIPTION,
+  image: HARNESS.image,
+  brand: { "@type": "Brand", name: BRAND },
+  offers: {
+    "@type": "Offer",
+    url: `${SITE_URL}/products/${HARNESS_SLUG}`,
+    price: HARNESS.priceUsd,
+    priceCurrency: "USD",
+    availability: "https://schema.org/MadeToOrder",
+  },
+});
 
 const STORY = [
   {
@@ -101,6 +123,7 @@ const EYEBROW = "text-label-sm font-label-sm uppercase tracking-eyebrow text-sec
 export default function HarnessPage() {
   return (
     <div className="flex flex-col w-full">
+      <script type="application/ld+json" dangerouslySetInnerHTML={PRODUCT_LD} />
       <section className="max-w-360 mx-auto w-full px-6 md:px-12 py-6">
         <nav
           aria-label="Breadcrumb"

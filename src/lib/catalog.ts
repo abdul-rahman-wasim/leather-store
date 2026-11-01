@@ -213,6 +213,9 @@ export type Product = {
   addedOrder: number;
 };
 
+/** Shop sub-routes: /shop/<filter>. */
+export const SHOP_FILTERS = ["shoes", "canine", "jackets", "preview"] as const;
+
 export const CATEGORY_LABELS: Record<Category, string> = {
   shoes: "Footwear",
   canine: "Canine Field",
